@@ -40,7 +40,6 @@ class MainMenuScreen extends StatelessWidget {
                   )
                 ),
               ),
-              ///ElevatedButton(onPressed: () => context.go('/temp'), child: const Text('temp'))
             ],
           ),
         )

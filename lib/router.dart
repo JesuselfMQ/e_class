@@ -22,7 +22,7 @@ final GoRouter router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             double aspectRatio = MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height);
             double arrowIconSize = (aspectRatio / 0.0163).round().toDouble();
-            return SettingsScreen(arrowIconSize: arrowIconSize);
+            return const SettingsScreen();
           },
         ),
         GoRoute(

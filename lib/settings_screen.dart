@@ -3,22 +3,21 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'settings_controller.dart';
 import 'responsive_screen.dart';
+import 'size_config.dart';
 
 class SettingsScreen extends StatefulWidget {
 
-  final double arrowIconSize;
-  const SettingsScreen({required this.arrowIconSize,super.key});
+  const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState(arrowIconSize);
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  var arrowIconSize;
-  _SettingsScreenState(this.arrowIconSize);
   static const _gap = SizedBox(height: 60);
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context); 
     final settings = context.watch<SettingsController>();
 
     return Scaffold(
@@ -62,7 +61,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         rectangularMenuArea: IconButton(
           onPressed: () => GoRouter.of(context).pop(),
-          icon: Image.asset('assets/arrow_button_back.png', width: arrowIconSize, height: arrowIconSize)
+          icon: Image.asset('assets/arrow_button_back.png',
+            width: SizeConfig.blockSizeVertical * 12,
+            height: SizeConfig.blockSizeVertical * 16,
+            )
           )
         ),
       ),
