@@ -95,7 +95,7 @@ class _SettingsLine extends StatelessWidget {
       highlightShape: BoxShape.rectangle,
       onTap: onSelected,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.zero,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

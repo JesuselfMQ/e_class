@@ -272,6 +272,8 @@ flutter:
     - assets/play_sound_button.png
     - assets/settings_button.png
     - assets/arrow_button_back.png
+    - assets/disable.png
+    - assets/enable.png
     - assets/note.png
     - assets/white/lives_1.png
     - assets/white/lives_2.png

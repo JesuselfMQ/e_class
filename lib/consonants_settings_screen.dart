@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'responsive_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'size_config.dart';
+import 'settings_screen.dart';
 
 class ConsonantsSettingsScreen extends StatefulWidget {
   const ConsonantsSettingsScreen({super.key});
@@ -95,7 +96,7 @@ class _ConsonantSettingsLine extends StatelessWidget {
     return InkResponse(
       highlightShape: BoxShape.rectangle,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.zero,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
