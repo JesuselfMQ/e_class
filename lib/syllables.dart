@@ -87,7 +87,7 @@ Future<List<String>> generateSpanishSyllables() async {
 
 List<String> getRandomSyllables(List<String> sounds) {
   List<String> selected = [];
-  for (int i = 0; i < 12; i++) {
+  for (int i = 0; i < 10; i++) {
     selected.add(sounds[Random().nextInt(sounds.length)]);
   }
   return selected;

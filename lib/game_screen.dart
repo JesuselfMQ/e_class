@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import "dart:math";
 import 'syllables.dart';
+import 'size_config.dart';
 import 'audio_controller.dart';
 
 class GameScreen extends StatefulWidget {
@@ -18,8 +19,6 @@ class _GameScreenState extends State<GameScreen> {
   int score = 0;
   int attempts = 3;
   int imageScore = 0;
-
-  double syllablesFontSize = 60;
   
   var syllables;
   var syllables2Display;
@@ -49,9 +48,13 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  double getFitMode() {
+    return 1.0;
+  }
+
   void onSyllablePressed(String syllable) {
-    print(MediaQuery.of(context).size.width);
-    print(MediaQuery.of(context).size.height);
+    print(SizeConfig.blockSizeHorizontal);
+    print(SizeConfig.blockSizeVertical);
     if (syllable == syllableSound) {
       // Play winning sound
       playSound(isWinning: true);
@@ -83,8 +86,10 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -97,14 +102,35 @@ class _GameScreenState extends State<GameScreen> {
           children:[
             Expanded(
               child: GridView.count(
-                childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.7 ),
+                childAspectRatio: SizeConfig.aspectRatio * 1.4,
                 crossAxisCount: 3,
+                padding: EdgeInsets.zero,
                 children: [
-                  Align(alignment: Alignment.center, child: Image.asset('assets/white/points_$imageScore.png', width: 360, height: 180)),
-                  Align(alignment: Alignment.center, child: Image.asset('assets/white/lives_$attempts.png', width: 200, height: 180)),
-                  Align(alignment: Alignment.center, 
+                  Align(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      'assets/white/points_$imageScore.png',
+                      width: SizeConfig.blockSizeHorizontal * 30,
+                      height: SizeConfig.blockSizeVertical * 30
+                    )
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      'assets/white/lives_$attempts.png',
+                      width: SizeConfig.blockSizeHorizontal * 18,
+                      height: SizeConfig.blockSizeVertical * 18
+                    )
+                  ),
+                  Align(
+                    alignment: Alignment.center, 
                     child: IconButton(
-                      icon: Image.asset('assets/play_sound_button.png', width: 150, height: 130),
+                      icon: Image.asset(
+                        'assets/play_sound_button.png',
+                        fit: BoxFit.fill,
+                        width: SizeConfig.blockSizeHorizontal * 8,
+                        height: SizeConfig.blockSizeVertical * 16
+                      ),
                       onPressed: () {
                         playSound();
                       },
@@ -114,25 +140,38 @@ class _GameScreenState extends State<GameScreen> {
               )
             ),
             Expanded(
-              flex: 3,
+              flex: 2,
               child: GridView.count(
-                crossAxisCount: 4,
-                childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.3 ),
+                childAspectRatio: SizeConfig.aspectRatio * 0.8,
+                crossAxisCount: 5,
+                padding: EdgeInsets.zero,
                 children: <Widget>[
                   ...List.generate(syllables2Display.length, (index) {
                     return Stack(
                       children: [
                         Center(
-                          child: Image.asset('assets/note.png', alignment: Alignment.center),
+                          child: Image.asset(
+                            'assets/note.png',
+                            alignment: Alignment.center,
+                            width: SizeConfig.blockSizeHorizontal * 33.9750,
+                            height: SizeConfig.blockSizeVertical * 36.4077
+                          )
                         ),
                         Center(
                           child: TextButton(
                             onPressed: () => onSyllablePressed(syllables2Display[index]),
-                            child: Text(syllables2Display[index], style: TextStyle(fontSize: syllablesFontSize, fontWeight: FontWeight.bold, fontFamily: 'Heirany Slight', foreground: Paint()
-                              ..style = PaintingStyle.fill
-                              ..strokeWidth = 4
-                              ..color = Colors.black
-                            ))
+                            child: Text(
+                              syllables2Display[index],
+                              style: TextStyle(
+                                fontSize: SizeConfig.blockSizeVertical * 12.1359,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Heirany Slight',
+                                foreground: Paint()
+                                ..style = PaintingStyle.fill
+                                ..strokeWidth = 4
+                                ..color = Colors.black
+                              )
+                            )
                           )
                         )
                       ]
@@ -142,10 +181,14 @@ class _GameScreenState extends State<GameScreen> {
               )
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.zero,
               child: IconButton(
                 onPressed: () => GoRouter.of(context).go('/'),
-                icon: Image.asset('assets/arrow_button_back.png', width: 70, height: 60)
+                icon: Image.asset(
+                  'assets/arrow_button_back.png',
+                  width: SizeConfig.blockSizeHorizontal * 8,
+                  height: SizeConfig.blockSizeVertical * 16
+                )
               )
             )
           ]

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'responsive_screen.dart';
 import 'package:go_router/go_router.dart';
+import 'size_config.dart';
 
 class ConsonantsSettingsScreen extends StatefulWidget {
   const ConsonantsSettingsScreen({super.key});
@@ -16,6 +17,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -35,18 +37,21 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
                 if (!snapshot.hasData) {
                 return const CircularProgressIndicator();
                 }
-                return _ConsonantSettingsLine(
-                  SwitchListTile(
-                    title: Text(consonant.toUpperCase(),
-                      style: const TextStyle(
-                        fontFamily: 'Heirany Slight',
-                        fontSize: 50,
+                return Material(
+                  type: MaterialType.transparency,
+                  child: _ConsonantSettingsLine(
+                    SwitchListTile(
+                      title: Text(consonant.toUpperCase(),
+                        style: TextStyle(
+                          fontFamily: 'Heirany Slight',
+                          fontSize: SizeConfig.blockSizeVertical * 8,
+                        ),
                       ),
-                    ),
-                    value: snapshot.data!,
-                    onChanged: (bool value) {
-                      _saveConsonantSetting(consonant, value);
-                    }
+                      value: snapshot.data!,
+                      onChanged: (bool value) {
+                        _saveConsonantSetting(consonant, value);
+                      }
+                    )
                   )
                 );
               }
@@ -55,7 +60,10 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
         ),
         rectangularMenuArea: IconButton(
           onPressed: () => GoRouter.of(context).go('/settings'),
-          icon: Image.asset('assets/arrow_button_back.png', width: 100, height: 100)
+          icon: Image.asset('assets/arrow_button_back.png',
+            width: SizeConfig.blockSizeHorizontal * 7,
+            height: SizeConfig.blockSizeVertical * 14
+          )
         )
       )
       )

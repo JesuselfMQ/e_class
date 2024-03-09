@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'size_config.dart';
 
 ///import 'responsive_screen.dart';
 
@@ -8,6 +9,8 @@ class MainMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double iconScaleFactor = 20;
+    SizeConfig().init(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -21,12 +24,12 @@ class MainMenuScreen extends StatelessWidget {
             fit: StackFit.expand,
             children: <Widget>[
               Align(
-                alignment: const Alignment(0.0,0.3),
+                alignment: const Alignment(0.0,0.4),
                 child: IconButton(
                   onPressed: () => context.go('/game'),
-                  icon: const ImageIcon(
-                    AssetImage('assets/play_button.png'),
-                    size: 100,
+                  icon: Image.asset('assets/play_button.png',
+                    width: SizeConfig.blockSizeHorizontal * (iconScaleFactor / SizeConfig.aspectRatio),
+                    height: SizeConfig.blockSizeVertical * iconScaleFactor,
                   )
                 )
               ),
@@ -34,9 +37,9 @@ class MainMenuScreen extends StatelessWidget {
                 alignment: const Alignment(0.9,0.9),
                 child: IconButton(
                   onPressed: () => context.go('/settings'),
-                  icon: const ImageIcon(
-                    AssetImage('assets/settings_button.png'),
-                    size: 100,
+                  icon: Image.asset('assets/settings_button.png',
+                    width: SizeConfig.blockSizeHorizontal * (iconScaleFactor / SizeConfig.aspectRatio),
+                    height: SizeConfig.blockSizeVertical * iconScaleFactor,
                   )
                 ),
               ),

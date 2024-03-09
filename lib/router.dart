@@ -9,9 +9,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (BuildContext context, GoRouterState state) {
-        return const MainMenuScreen();
-      },
+      builder: (BuildContext context, GoRouterState state) => const MainMenuScreen(),
       routes: [
         GoRoute(
           path: 'game',
@@ -19,17 +17,15 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: 'settings',
-          builder: (BuildContext context, GoRouterState state) {
-            double aspectRatio = MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height);
-            double arrowIconSize = (aspectRatio / 0.0163).round().toDouble();
-            return const SettingsScreen();
-          },
+          builder: (BuildContext context, GoRouterState state) => const SettingsScreen(),
+          routes: [
+            GoRoute(
+              path: 'consonants',
+              builder: (BuildContext context, GoRouterState state) => const ConsonantsSettingsScreen()
+            )
+          ]
         ),
-        GoRoute(
-          path: 'consonants',
-          builder: (BuildContext context, GoRouterState state) => const ConsonantsSettingsScreen()
-        ),
-      ]  
+      ]
     )
   ]
 );

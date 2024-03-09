@@ -14,11 +14,11 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  static const _gap = SizedBox(height: 60);
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context); 
+    SizeConfig().init(context);
     final settings = context.watch<SettingsController>();
+    final _gap = SizedBox(height: SizeConfig.blockSizeVertical * 0.5);
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 218, 33, 1),
@@ -33,37 +33,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
         squarishMainArea: ListView(
           children: [
             _gap,
-            const Text(
+            Text(
               'Ajustes',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Heirany Slight',
                 fontWeight: FontWeight.bold,
-                fontSize: 100,
+                fontSize: SizeConfig.blockSizeVertical * 16,
                 height: 1,
               ),
             ),
             _gap,
             ValueListenableBuilder<bool>(
               valueListenable: settings.soundEnabled,
-              builder: (context, soundEnabled, child) => _SettingsLine(
-                'Sonido',
-                Icon(soundEnabled ? Icons.graphic_eq : Icons.volume_off, size: 50),
-                onSelected: () => settings.toggleSoundEnabled(),
+              builder: (context, soundEnabled, child) => Material(
+                type: MaterialType.transparency,
+                  child: _SettingsLine(
+                  'Sonido',
+                  Icon(soundEnabled ? Icons.graphic_eq : Icons.volume_off, size: SizeConfig.blockSizeVertical * 8),
+                  onSelected: () {
+                    settings.toggleSoundEnabled();
+                  },
+                )
               ),
             ),
             _gap,
-            _SettingsLine('Consonantes',
-              const Icon(Icons.font_download, size: 50),
-              onSelected: () => context.go('/consonants')
+            Material(
+              type: MaterialType.transparency,
+              child: _SettingsLine('Consonantes',
+                Icon(Icons.font_download, size: SizeConfig.blockSizeVertical * 8),
+                onSelected: () => context.go('/settings/consonants')
+              )
             )
           ],
         ),
         rectangularMenuArea: IconButton(
           onPressed: () => GoRouter.of(context).pop(),
           icon: Image.asset('assets/arrow_button_back.png',
-            width: SizeConfig.blockSizeVertical * 12,
-            height: SizeConfig.blockSizeVertical * 16,
+            width: SizeConfig.blockSizeHorizontal * 7,
+            height: SizeConfig.blockSizeVertical * 14
             )
           )
         ),
@@ -96,9 +104,9 @@ class _SettingsLine extends StatelessWidget {
                 title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Heirany Slight',
-                  fontSize: 60,
+                  fontSize: SizeConfig.blockSizeVertical * 10,
                 ),
               ),
             ),
