@@ -9,7 +9,8 @@ class MainMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double iconScaleFactor = 20;
+    double verticalScaleFactor = 20;
+    double horizontalScaleFactor = verticalScaleFactor / 2;
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
@@ -44,8 +45,8 @@ class MainMenuScreen extends StatelessWidget {
                 child: IconButton(
                   onPressed: () => context.go('/game'),
                   icon: Image.asset('assets/play_button.png',
-                    width: SizeConfig.blockSizeHorizontal * (iconScaleFactor / SizeConfig.aspectRatio),
-                    height: SizeConfig.blockSizeVertical * iconScaleFactor,
+                    width: SizeConfig.blockSizeHorizontal * horizontalScaleFactor,
+                    height: SizeConfig.blockSizeVertical * verticalScaleFactor,
                   )
                 )
               ),
@@ -54,8 +55,8 @@ class MainMenuScreen extends StatelessWidget {
                 child: IconButton(
                   onPressed: () => context.go('/settings'),
                   icon: Image.asset('assets/settings_button.png',
-                    width: SizeConfig.blockSizeHorizontal * (iconScaleFactor / SizeConfig.aspectRatio),
-                    height: SizeConfig.blockSizeVertical * iconScaleFactor,
+                    width: SizeConfig.blockSizeHorizontal * horizontalScaleFactor,
+                    height: SizeConfig.blockSizeVertical * verticalScaleFactor,
                   )
                 ),
               ),
