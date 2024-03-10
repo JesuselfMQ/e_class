@@ -37,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               'Ajustes',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Heirany Slight',
+                fontFamily: 'Ginthul',
                 fontWeight: FontWeight.bold,
                 fontSize: SizeConfig.blockSizeVertical * 16,
                 height: 1,
@@ -105,7 +105,7 @@ class _SettingsLine extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontFamily: 'Heirany Slight',
+                  fontFamily: 'Ginthul',
                   fontSize: SizeConfig.blockSizeVertical * 10,
                 ),
               ),

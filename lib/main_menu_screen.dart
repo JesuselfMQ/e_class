@@ -24,6 +24,22 @@ class MainMenuScreen extends StatelessWidget {
             fit: StackFit.expand,
             children: <Widget>[
               Align(
+                alignment: const Alignment(-0.6, -0.4),
+                child: Image.asset(
+                  'assets/star.gif',
+                  width: SizeConfig.blockSizeHorizontal * 6.9444,
+                  height: SizeConfig.blockSizeVertical * 17
+                ),
+              ),
+              Align(
+                alignment: const Alignment(-0.45, -0.5),
+                child: Image.asset(
+                  'assets/star_2.gif',
+                  width: SizeConfig.blockSizeHorizontal * 6.9444,
+                  height: SizeConfig.blockSizeVertical * 17
+                ),
+              ),
+              Align(
                 alignment: const Alignment(0.0,0.4),
                 child: IconButton(
                   onPressed: () => context.go('/game'),

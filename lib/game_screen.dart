@@ -146,7 +146,7 @@ class _GameScreenState extends State<GameScreen> {
                 crossAxisCount: 5,
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  ...List.generate(syllables2Display.length, (index) {
+                  ...List.generate(10, (index) {
                     return Stack(
                       children: [
                         Center(
@@ -164,8 +164,7 @@ class _GameScreenState extends State<GameScreen> {
                               syllables2Display[index],
                               style: TextStyle(
                                 fontSize: SizeConfig.blockSizeVertical * 12.1359,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Heirany Slight',
+                                fontFamily: 'Ginthul',
                                 foreground: Paint()
                                 ..style = PaintingStyle.fill
                                 ..strokeWidth = 4

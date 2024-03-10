@@ -275,6 +275,8 @@ flutter:
     - assets/disable.png
     - assets/enable.png
     - assets/note.png
+    - assets/star.gif
+    - assets/star_2.gif
     - assets/white/lives_1.png
     - assets/white/lives_2.png
     - assets/white/lives_3.png
@@ -292,3 +294,6 @@ flutter:
     - family: Fifth Grader
       fonts:
         - asset: assets/Fifth-Grader.ttf
+    - family: Ginthul
+      fonts:
+        - asset: assets/Ginthul.ttf

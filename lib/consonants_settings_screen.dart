@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'responsive_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'size_config.dart';
-import 'settings_screen.dart';
 
 class ConsonantsSettingsScreen extends StatefulWidget {
   const ConsonantsSettingsScreen({super.key});
@@ -40,19 +39,14 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
                 }
                 return Material(
                   type: MaterialType.transparency,
-                  child: _ConsonantSettingsLine(
-                    SwitchListTile(
-                      title: Text(consonant.toUpperCase(),
-                        style: TextStyle(
-                          fontFamily: 'Heirany Slight',
-                          fontSize: SizeConfig.blockSizeVertical * 8,
-                        ),
-                      ),
-                      value: snapshot.data!,
-                      onChanged: (bool value) {
-                        _saveConsonantSetting(consonant, value);
-                      }
-                    )
+                  child: _SettingsLine(
+                    consonant.toUpperCase(),
+                    Image.asset(
+                      snapshot.data! ? 'assets/enable.png' : 'assets/disable.png',
+                      width: SizeConfig.blockSizeHorizontal * 12,
+                      height: SizeConfig.blockSizeVertical * 6,
+                    ),
+                    onSelected: () => _saveConsonantSetting(consonant)
                   )
                 );
               }
@@ -77,32 +71,46 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
     return prefs.getBool(consonant) ?? true;
   }
 
-  void _saveConsonantSetting(String consonant, bool value) async {
+  void _saveConsonantSetting(String consonant) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(consonant, value);
+    final consonantValue = prefs.getBool(consonant) ?? true;
+    await prefs.setBool(consonant, !consonantValue);
     // Trigger a rebuild to reflect changes
     setState(() {});
   }
 }
 
-class _ConsonantSettingsLine extends StatelessWidget {
+class _SettingsLine extends StatelessWidget {
+  final String title;
 
-  final Widget tile;
+  final Widget icon;
 
-  const _ConsonantSettingsLine(this.tile);
+  final VoidCallback? onSelected;
+
+  const _SettingsLine(this.title, this.icon, {this.onSelected});
 
   @override
   Widget build(BuildContext context) {
     return InkResponse(
       highlightShape: BoxShape.rectangle,
+      onTap: onSelected,
       child: Padding(
         padding: EdgeInsets.zero,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              child: tile
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontFamily: 'Ginthul',
+                  fontSize: SizeConfig.blockSizeVertical * 8,
+                ),
+              ),
             ),
+            icon,
           ],
         ),
       ),
