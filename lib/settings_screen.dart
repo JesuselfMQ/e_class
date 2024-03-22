@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'settings_controller.dart';
 import 'responsive_screen.dart';
 import 'size_config.dart';
+import 'audio_controller.dart';
+import 'widget_builder.dart' as wb;
 
 class SettingsScreen extends StatefulWidget {
 
@@ -14,25 +16,22 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  AudioController audioController = AudioController();
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final settings = context.watch<SettingsController>();
-    final _gap = SizedBox(height: SizeConfig.blockSizeVertical * 0.5);
+    final gap = SizedBox(height: SizeConfig.blockSizeVertical * 0.5);
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 218, 33, 1),
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/settings_background.jpg"),
-            fit: BoxFit.fill,
-          ),
-        ),
+        decoration: wb.WidgetBuilder().getBackground('assets/settings_background.jpg'),
         child: ResponsiveScreen(
         squarishMainArea: ListView(
           children: [
-            _gap,
+            gap,
             Text(
               'Ajustes',
               textAlign: TextAlign.center,
@@ -43,25 +42,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 height: 1,
               ),
             ),
-            _gap,
+            gap,
             ValueListenableBuilder<bool>(
               valueListenable: settings.soundEnabled,
               builder: (context, soundEnabled, child) => Material(
                 type: MaterialType.transparency,
-                  child: _SettingsLine(
+                  child: SettingsLine(
                   'Sonido',
-                  Icon(soundEnabled ? Icons.graphic_eq : Icons.volume_off, size: SizeConfig.blockSizeVertical * 8),
+                  Icon(soundEnabled ? Icons.graphic_eq : Icons.volume_off, size: SizeConfig.blockSizeVertical * 8), 10,
                   onSelected: () {
                     settings.toggleSoundEnabled();
-                  },
+                    audioController.playSwitchSound();
+                  }
                 )
               ),
             ),
-            _gap,
+            gap,
             Material(
               type: MaterialType.transparency,
-              child: _SettingsLine('Consonantes',
-                Icon(Icons.font_download, size: SizeConfig.blockSizeVertical * 8),
+              child: SettingsLine('Consonantes',
+                Icon(Icons.font_download, size: SizeConfig.blockSizeVertical * 8), 10,
                 onSelected: () => context.go('/settings/consonants')
               )
             )
@@ -80,14 +80,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 }
 
-class _SettingsLine extends StatelessWidget {
+class SettingsLine extends StatelessWidget {
   final String title;
 
   final Widget icon;
 
+  final double fonScaleFactor;
+
   final VoidCallback? onSelected;
 
-  const _SettingsLine(this.title, this.icon, {this.onSelected});
+  const SettingsLine(this.title, this.icon,this.fonScaleFactor, {this.onSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +108,7 @@ class _SettingsLine extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: 'Ginthul',
-                  fontSize: SizeConfig.blockSizeVertical * 10,
+                  fontSize: SizeConfig.blockSizeVertical * fonScaleFactor,
                 ),
               ),
             ),

@@ -264,7 +264,11 @@ flutter:
     - assets/Audio/Syllables/Ñi.mp3
     - assets/Audio/Syllables/Ño.mp3
     - assets/Audio/Syllables/Ñu.mp3
-    - assets/Audio/win.mp3
+    - assets/Audio/win_1.mp3
+    - assets/Audio/win_0.mp3
+    - assets/Audio/lose.mp3
+    - assets/Audio/switch.mp3
+    - assets/Audio/taylorswift-x-hozier-forest-gtr-by-prorefx.mp3
     - assets/menu_background.jpg
     - assets/settings_background.jpg
     - assets/game_background.jpg
@@ -275,11 +279,11 @@ flutter:
     - assets/disable.png
     - assets/enable.png
     - assets/note.png
+    - assets/flower.gif
     - assets/star.gif
-    - assets/star_2.gif
-    - assets/white/lives_1.png
-    - assets/white/lives_2.png
-    - assets/white/lives_3.png
+    - assets/lives_1.gif
+    - assets/lives_2.gif
+    - assets/lives_3.gif
     - assets/white/points_0.png
     - assets/white/points_1.png
     - assets/white/points_2.png

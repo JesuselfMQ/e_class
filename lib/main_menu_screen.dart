@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'size_config.dart';
-
-///import 'responsive_screen.dart';
+import 'widget_builder.dart' as wb;
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -14,52 +13,37 @@ class MainMenuScreen extends StatelessWidget {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/menu_background.jpg"),
-            fit: BoxFit.fill,
-          ),
-        ),
+        decoration: wb.WidgetBuilder().getBackground('assets/menu_background.jpg'),
         child: Center(
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              Align(
-                alignment: const Alignment(-0.6, -0.4),
-                child: Image.asset(
-                  'assets/star.gif',
-                  width: SizeConfig.blockSizeHorizontal * 6.9444,
-                  height: SizeConfig.blockSizeVertical * 17
-                ),
-              ),
-              Align(
-                alignment: const Alignment(-0.45, -0.5),
-                child: Image.asset(
-                  'assets/star_2.gif',
-                  width: SizeConfig.blockSizeHorizontal * 6.9444,
-                  height: SizeConfig.blockSizeVertical * 17
-                ),
-              ),
-              Align(
-                alignment: const Alignment(0.0,0.4),
-                child: IconButton(
-                  onPressed: () => context.go('/game'),
-                  icon: Image.asset('assets/play_button.png',
-                    width: SizeConfig.blockSizeHorizontal * horizontalScaleFactor,
-                    height: SizeConfig.blockSizeVertical * verticalScaleFactor,
-                  )
-                )
-              ),
-              Align(
-                alignment: const Alignment(0.9,0.9),
-                child: IconButton(
-                  onPressed: () => context.go('/settings'),
-                  icon: Image.asset('assets/settings_button.png',
-                    width: SizeConfig.blockSizeHorizontal * horizontalScaleFactor,
-                    height: SizeConfig.blockSizeVertical * verticalScaleFactor,
-                  )
-                ),
-              ),
+              wb.WidgetBuilder().getImageButton(
+                'assets/star.gif',-0.68, -0.7,
+                SizeConfig.blockSizeHorizontal,
+                SizeConfig.blockSizeVertical,20,40),
+              wb.WidgetBuilder().getImageButton(
+                'assets/star.gif',0.68, -0.7,
+                SizeConfig.blockSizeHorizontal,
+                SizeConfig.blockSizeVertical,20,40),
+              wb.WidgetBuilder().getImageButton(
+                'assets/flower.gif',0.5, 1.15,
+                SizeConfig.blockSizeHorizontal,
+                SizeConfig.blockSizeVertical,20,40),
+              wb.WidgetBuilder().getImageButton(
+                'assets/play_button.png',0.0,0.4,
+                SizeConfig.blockSizeHorizontal,
+                SizeConfig.blockSizeVertical,
+                horizontalScaleFactor,
+                verticalScaleFactor,
+                onSelected: () => context.go('/game')),
+              wb.WidgetBuilder().getImageButton(
+                'assets/settings_button.png',0.9,0.9,
+                SizeConfig.blockSizeHorizontal,
+                SizeConfig.blockSizeVertical,
+                horizontalScaleFactor,
+                verticalScaleFactor,
+                onSelected: () => context.go('/settings'))
             ],
           ),
         )

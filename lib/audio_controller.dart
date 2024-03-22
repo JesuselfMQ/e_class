@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'dart:math';
 
 class AudioController {
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -9,6 +10,20 @@ class AudioController {
   }
 
   Future<void> playWinningSound() async {
-      await _audioPlayer.play(AssetSource('Audio/win.mp3'));
+      int randomNumber = Random().nextInt(2);
+      await _audioPlayer.play(AssetSource('Audio/win_$randomNumber.mp3'));
   }
+
+  Future<void> playLosingSound() async {
+      await _audioPlayer.play(AssetSource('Audio/lose.mp3'));
+  }
+
+  Future<void> playSwitchSound() async {
+    await _audioPlayer.play(AssetSource('Audio/switch.mp3'));
+  }
+
+  Future<void> playMenuMusic() async {
+    await _audioPlayer.play(AssetSource('Audio/taylorswift-x-hozier-forest-gtr-by-prorefx.mp3'));
+  }
+
 }

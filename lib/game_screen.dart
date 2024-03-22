@@ -5,6 +5,7 @@ import "dart:math";
 import 'syllables.dart';
 import 'size_config.dart';
 import 'audio_controller.dart';
+import 'widget_builder.dart' as wb;
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -20,9 +21,9 @@ class _GameScreenState extends State<GameScreen> {
   int attempts = 3;
   int imageScore = 0;
   
-  var syllables;
-  var syllables2Display;
-  var syllableSound;
+  late List<String> syllables;
+  late List<String> syllables2Display;
+  late String syllableSound;
 
   @override
   void initState() {
@@ -43,7 +44,8 @@ class _GameScreenState extends State<GameScreen> {
     if (!isSoundEnabled) return;
     if (isWinning) {
       audioController.playWinningSound();
-    } else {
+    }
+    else {
       audioController.playSyllableSound(syllableSound);
     }
   }
@@ -52,9 +54,7 @@ class _GameScreenState extends State<GameScreen> {
     return 1.0;
   }
 
-  void onSyllablePressed(String syllable) {
-    print(SizeConfig.blockSizeHorizontal);
-    print(SizeConfig.blockSizeVertical);
+  void onSyllablePressed(String syllable) async {
     if (syllable == syllableSound) {
       // Play winning sound
       playSound(isWinning: true);
@@ -75,6 +75,9 @@ class _GameScreenState extends State<GameScreen> {
       });
     } else {
       if (attempts > 1) {
+
+        audioController.playLosingSound();
+
         // Subtract one attempt
         setState(() {
           attempts -= 1;
@@ -92,12 +95,7 @@ class _GameScreenState extends State<GameScreen> {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/game_background.jpg"),
-            fit: BoxFit.fill,
-          )
-        ),
+        decoration: wb.WidgetBuilder().getBackground('assets/game_background.jpg'),
         child: Column(
           children:[
             Expanded(
@@ -117,9 +115,9 @@ class _GameScreenState extends State<GameScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Image.asset(
-                      'assets/white/lives_$attempts.png',
-                      width: SizeConfig.blockSizeHorizontal * 18,
-                      height: SizeConfig.blockSizeVertical * 18
+                      'assets/lives_$attempts.gif',
+                      width: SizeConfig.blockSizeHorizontal * 25,
+                      height: SizeConfig.blockSizeVertical * 25
                     )
                   ),
                   Align(

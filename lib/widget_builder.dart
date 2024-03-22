@@ -1,65 +1,45 @@
 import 'package:flutter/material.dart';
 
-class WidgetBuilder extends StatelessWidget {
+class WidgetBuilder {
 
-  late final String identifier;
-
-  late final String imageAddress;
-  
-  late final double horizontalAlignment;
-
-  late final double verticalAlignment;
-
-  late final double blockHorizontal;
-
-  late final double blockVertical;
-
-  late final double horizontalScaleFactor;
-
-  late final double verticalScaleFactor;
-
-  late final VoidCallback? onSelected;
-
-  WidgetBuilder.boxDecoration({
-    required this.identifier,
-    required this.imageAddress,
-    super.key
-  });
-
-  WidgetBuilder.image({
-    required this.identifier,
-    required this.imageAddress,
-    required this.horizontalAlignment,
-    required this.verticalAlignment,
-    required this.blockHorizontal,
-    required this.blockVertical,
-    required this.horizontalScaleFactor,
-    required this.verticalScaleFactor,
-    super.key
-  });
-
-  WidgetBuilder.iconButton({
-    required this.identifier,
-    required this.imageAddress,
-    required this.horizontalAlignment,
-    required this.verticalAlignment,
-    required this.blockHorizontal,
-    required this.blockVertical,
-    required this.horizontalScaleFactor,
-    required this.verticalScaleFactor,
-    required this.onSelected,
-    super.key
-  });
-
-  BoxDecoration getBackgroundImage(){
-    return BoxDecoration();
+  BoxDecoration getBackground(String imageAddress) {
+    return BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage(imageAddress),
+        fit: BoxFit.fill,
+      ),
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if(identifier == "box_decoration"){
-      return Scaffold();
+  Align getImageButton(String imageAddress,
+    double horizontalAlignment,
+    double verticalAlignment,
+    double blockhorizontal,
+    double blockvertical,
+    double horizontalScaleFactor,
+    double verticalScaleFactor,
+    {VoidCallback? onSelected}) {
+    if(onSelected != null) {
+      return Align(
+        alignment: Alignment(horizontalAlignment, verticalAlignment),
+        child: IconButton(
+          onPressed: onSelected,
+          icon: Image.asset(
+            imageAddress,
+            width: blockhorizontal * horizontalScaleFactor,
+            height: blockvertical * verticalScaleFactor,
+          )
+        )
+      ); 
     }
-    return Scaffold();
+    return Align(
+      alignment: Alignment(horizontalAlignment, verticalAlignment),
+      child: Image.asset(
+        imageAddress,
+        width: blockhorizontal * horizontalScaleFactor,
+        height: blockvertical * verticalScaleFactor
+      ),
+    );
   }
+
 }

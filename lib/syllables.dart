@@ -1,5 +1,6 @@
 import "dart:math";
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:core';
 
 Future<List<String>> generateSpanishSyllables() async {
   final prefs = await SharedPreferences.getInstance();
@@ -82,6 +83,11 @@ Future<List<String>> generateSpanishSyllables() async {
 
   ///syllables.addAll(diphthongs);
   syllables.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+
+  if(syllables.isEmpty) {
+    syllables.add("A");
+  }
+
   return syllables;
 }
 

@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'responsive_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'size_config.dart';
+import 'widget_builder.dart' as wb;
+import 'settings_screen.dart' as ss;
 
 class ConsonantsSettingsScreen extends StatefulWidget {
   const ConsonantsSettingsScreen({super.key});
@@ -20,12 +22,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/settings_background.jpg"),
-            fit: BoxFit.fill,
-          ),
-        ),
+        decoration: wb.WidgetBuilder().getBackground('assets/settings_background.jpg'),
       child: ResponsiveScreen(
         squarishMainArea: ListView.builder(
           itemCount: consonants.length,
@@ -39,13 +36,13 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
                 }
                 return Material(
                   type: MaterialType.transparency,
-                  child: _SettingsLine(
+                  child: ss.SettingsLine(
                     consonant.toUpperCase(),
                     Image.asset(
                       snapshot.data! ? 'assets/enable.png' : 'assets/disable.png',
                       width: SizeConfig.blockSizeHorizontal * 12,
                       height: SizeConfig.blockSizeVertical * 6,
-                    ),
+                    ), 8,
                     onSelected: () => _saveConsonantSetting(consonant)
                   )
                 );
@@ -77,43 +74,5 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
     await prefs.setBool(consonant, !consonantValue);
     // Trigger a rebuild to reflect changes
     setState(() {});
-  }
-}
-
-class _SettingsLine extends StatelessWidget {
-  final String title;
-
-  final Widget icon;
-
-  final VoidCallback? onSelected;
-
-  const _SettingsLine(this.title, this.icon, {this.onSelected});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkResponse(
-      highlightShape: BoxShape.rectangle,
-      onTap: onSelected,
-      child: Padding(
-        padding: EdgeInsets.zero,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontFamily: 'Ginthul',
-                  fontSize: SizeConfig.blockSizeVertical * 8,
-                ),
-              ),
-            ),
-            icon,
-          ],
-        ),
-      ),
-    );
   }
 }
