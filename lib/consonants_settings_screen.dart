@@ -22,7 +22,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: wb.WidgetBuilder().getBackground('assets/settings_background.jpg'),
+        decoration: wb.WidgetBuilder().getBackground('assets/Images/settings_background.jpg'),
       child: ResponsiveScreen(
         squarishMainArea: ListView.builder(
           itemCount: consonants.length,
@@ -39,7 +39,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
                   child: ss.SettingsLine(
                     consonant.toUpperCase(),
                     Image.asset(
-                      snapshot.data! ? 'assets/enable.png' : 'assets/disable.png',
+                      snapshot.data! ? 'assets/Images/enable.png' : 'assets/Images/disable.png',
                       width: SizeConfig.blockSizeHorizontal * 12,
                       height: SizeConfig.blockSizeVertical * 6,
                     ), 8,
@@ -52,7 +52,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
         ),
         rectangularMenuArea: IconButton(
           onPressed: () => GoRouter.of(context).go('/settings'),
-          icon: Image.asset('assets/arrow_button_back.png',
+          icon: Image.asset('assets/Images/arrow_button_back.png',
             width: SizeConfig.blockSizeHorizontal * 7,
             height: SizeConfig.blockSizeVertical * 14
           )

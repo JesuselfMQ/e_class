@@ -95,7 +95,7 @@ class _GameScreenState extends State<GameScreen> {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: wb.WidgetBuilder().getBackground('assets/game_background.jpg'),
+        decoration: wb.WidgetBuilder().getBackground('assets/Images/game_background.jpg'),
         child: Column(
           children:[
             Expanded(
@@ -107,7 +107,7 @@ class _GameScreenState extends State<GameScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Image.asset(
-                      'assets/white/points_$imageScore.png',
+                      'assets/Images/white/points_$imageScore.png',
                       width: SizeConfig.blockSizeHorizontal * 30,
                       height: SizeConfig.blockSizeVertical * 30
                     )
@@ -115,7 +115,7 @@ class _GameScreenState extends State<GameScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Image.asset(
-                      'assets/lives_$attempts.gif',
+                      'assets/Images/lives_$attempts.gif',
                       width: SizeConfig.blockSizeHorizontal * 25,
                       height: SizeConfig.blockSizeVertical * 25
                     )
@@ -124,7 +124,7 @@ class _GameScreenState extends State<GameScreen> {
                     alignment: Alignment.center, 
                     child: IconButton(
                       icon: Image.asset(
-                        'assets/play_sound_button.png',
+                        'assets/Images/play_sound_button.png',
                         fit: BoxFit.fill,
                         width: SizeConfig.blockSizeHorizontal * 8,
                         height: SizeConfig.blockSizeVertical * 16
@@ -149,7 +149,7 @@ class _GameScreenState extends State<GameScreen> {
                       children: [
                         Center(
                           child: Image.asset(
-                            'assets/note.png',
+                            'assets/Images/note.png',
                             alignment: Alignment.center,
                             width: SizeConfig.blockSizeHorizontal * 33.9750,
                             height: SizeConfig.blockSizeVertical * 36.4077
@@ -182,7 +182,7 @@ class _GameScreenState extends State<GameScreen> {
               child: IconButton(
                 onPressed: () => GoRouter.of(context).go('/'),
                 icon: Image.asset(
-                  'assets/arrow_button_back.png',
+                  'assets/Images/arrow_button_back.png',
                   width: SizeConfig.blockSizeHorizontal * 8,
                   height: SizeConfig.blockSizeVertical * 16
                 )
@@ -191,35 +191,6 @@ class _GameScreenState extends State<GameScreen> {
           ]
         )
       )
-    );
-  }
-}
-
-class TempScreen extends StatefulWidget {
-  const TempScreen({super.key});
-
-  @override
-  State<TempScreen> createState() => _TempScreenState();
-}
-
-class _TempScreenState extends State<TempScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/menu_background.png"),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: const Center( child: Text('E   C L A S S',
-          style: TextStyle(
-            fontFamily: 'Fifth Grader',
-            fontSize: 340,
-          ),
-        )
-      ))
     );
   }
 }

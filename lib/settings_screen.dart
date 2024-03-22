@@ -27,7 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: wb.WidgetBuilder().getBackground('assets/settings_background.jpg'),
+        decoration: wb.WidgetBuilder().getBackground('assets/Images/settings_background.jpg'),
         child: ResponsiveScreen(
         squarishMainArea: ListView(
           children: [
@@ -69,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         rectangularMenuArea: IconButton(
           onPressed: () => GoRouter.of(context).pop(),
-          icon: Image.asset('assets/arrow_button_back.png',
+          icon: Image.asset('assets/Images/arrow_button_back.png',
             width: SizeConfig.blockSizeHorizontal * 7,
             height: SizeConfig.blockSizeVertical * 14
             )

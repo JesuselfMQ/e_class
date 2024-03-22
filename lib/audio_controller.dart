@@ -11,19 +11,19 @@ class AudioController {
 
   Future<void> playWinningSound() async {
       int randomNumber = Random().nextInt(2);
-      await _audioPlayer.play(AssetSource('Audio/win_$randomNumber.mp3'));
+      await _audioPlayer.play(AssetSource('Audio/SFX/win_$randomNumber.mp3'));
   }
 
   Future<void> playLosingSound() async {
-      await _audioPlayer.play(AssetSource('Audio/lose.mp3'));
+      await _audioPlayer.play(AssetSource('Audio/SFX/lose.mp3'));
   }
 
   Future<void> playSwitchSound() async {
-    await _audioPlayer.play(AssetSource('Audio/switch.mp3'));
+    await _audioPlayer.play(AssetSource('Audio/SFX/switch.mp3'));
   }
 
   Future<void> playMenuMusic() async {
-    await _audioPlayer.play(AssetSource('Audio/taylorswift-x-hozier-forest-gtr-by-prorefx.mp3'));
+    await _audioPlayer.play(AssetSource('Audio/Music/taylorswift-x-hozier-forest-gtr-by-prorefx.mp3'));
   }
 
 }

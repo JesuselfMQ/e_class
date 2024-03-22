@@ -13,32 +13,32 @@ class MainMenuScreen extends StatelessWidget {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: wb.WidgetBuilder().getBackground('assets/menu_background.jpg'),
+        decoration: wb.WidgetBuilder().getBackground('assets/Images/menu_background.jpg'),
         child: Center(
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
               wb.WidgetBuilder().getImageButton(
-                'assets/star.gif',-0.68, -0.7,
+                'assets/Images/star.gif',-0.68, -0.7,
                 SizeConfig.blockSizeHorizontal,
                 SizeConfig.blockSizeVertical,20,40),
               wb.WidgetBuilder().getImageButton(
-                'assets/star.gif',0.68, -0.7,
+                'assets/Images/star.gif',0.68, -0.7,
                 SizeConfig.blockSizeHorizontal,
                 SizeConfig.blockSizeVertical,20,40),
               wb.WidgetBuilder().getImageButton(
-                'assets/flower.gif',0.5, 1.15,
+                'assets/Images/flower.gif',0.5, 1.15,
                 SizeConfig.blockSizeHorizontal,
                 SizeConfig.blockSizeVertical,20,40),
               wb.WidgetBuilder().getImageButton(
-                'assets/play_button.png',0.0,0.4,
+                'assets/Images/play_button.png',0.0,0.4,
                 SizeConfig.blockSizeHorizontal,
                 SizeConfig.blockSizeVertical,
                 horizontalScaleFactor,
                 verticalScaleFactor,
                 onSelected: () => context.go('/game')),
               wb.WidgetBuilder().getImageButton(
-                'assets/settings_button.png',0.9,0.9,
+                'assets/Images/settings_button.png',0.9,0.9,
                 SizeConfig.blockSizeHorizontal,
                 SizeConfig.blockSizeVertical,
                 horizontalScaleFactor,
