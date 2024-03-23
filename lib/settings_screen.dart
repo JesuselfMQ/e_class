@@ -6,6 +6,8 @@ import 'responsive_screen.dart';
 import 'size_config.dart';
 import 'audio_controller.dart';
 import 'widget_builder.dart' as wb;
+import 'file_paths.dart';
+import 'sounds.dart';
 
 class SettingsScreen extends StatefulWidget {
 
@@ -27,7 +29,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: wb.WidgetBuilder().getBackground('assets/Images/settings_background.jpg'),
+        decoration: wb.WidgetBuilder().getBackground('${path['background']}settings_background.jpg'),
         child: ResponsiveScreen(
         squarishMainArea: ListView(
           children: [
@@ -52,10 +54,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Icon(soundEnabled ? Icons.graphic_eq : Icons.volume_off, size: SizeConfig.blockSizeVertical * 8), 10,
                   onSelected: () {
                     settings.toggleSoundEnabled();
-                    audioController.playSwitchSound();
+                    final audioController = context.read<AudioController>();
+                    audioController.playSfx(SfxType.shift);
                   }
                 )
               ),
+            ),
+            gap,
+            ValueListenableBuilder(
+              valueListenable: settings.musicEnabled,
+              builder: (context, musicEnabled, child) => Material(
+                type: MaterialType.transparency,
+                child: SettingsLine(
+                  'Música',
+                  Icon(musicEnabled ? Icons.music_note_outlined : Icons.music_off_outlined, size: SizeConfig.blockSizeVertical * 8), 10,
+                  onSelected: () {
+                    settings.toggleMusicEnabled();
+                    final audioController = context.read<AudioController>();
+                    audioController.playSfx(SfxType.shift);
+                  }
+                )
+              )
             ),
             gap,
             Material(
@@ -69,7 +88,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         rectangularMenuArea: IconButton(
           onPressed: () => GoRouter.of(context).pop(),
-          icon: Image.asset('assets/Images/arrow_button_back.png',
+          icon: Image.asset('${path['ui']}arrow_button_back.png',
             width: SizeConfig.blockSizeHorizontal * 7,
             height: SizeConfig.blockSizeVertical * 14
             )

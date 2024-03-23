@@ -1,11 +1,13 @@
-import 'settings_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import "dart:math";
 import 'syllables.dart';
 import 'size_config.dart';
 import 'audio_controller.dart';
+import 'sounds.dart';
 import 'widget_builder.dart' as wb;
+import 'file_paths.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -39,25 +41,10 @@ class _GameScreenState extends State<GameScreen> {
   setState(() {});
   }
 
-  void playSound({bool isWinning = false}) async {
-    bool isSoundEnabled = await SettingsController().getSoundSetting();
-    if (!isSoundEnabled) return;
-    if (isWinning) {
-      audioController.playWinningSound();
-    }
-    else {
-      audioController.playSyllableSound(syllableSound);
-    }
-  }
-
-  double getFitMode() {
-    return 1.0;
-  }
-
-  void onSyllablePressed(String syllable) async {
+  void onSyllablePressed(String syllable) {
     if (syllable == syllableSound) {
-      // Play winning sound
-      playSound(isWinning: true);
+      final audioController = context.read<AudioController>();
+      audioController.playSfx(SfxType.win);
       if (imageScore == 5) {
         imageScore = 0;
       }
@@ -76,7 +63,8 @@ class _GameScreenState extends State<GameScreen> {
     } else {
       if (attempts > 1) {
 
-        audioController.playLosingSound();
+        final audioController = context.read<AudioController>();
+        audioController.playSfx(SfxType.lose);
 
         // Subtract one attempt
         setState(() {
@@ -95,7 +83,7 @@ class _GameScreenState extends State<GameScreen> {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: wb.WidgetBuilder().getBackground('assets/Images/game_background.jpg'),
+        decoration: wb.WidgetBuilder().getBackground('${path['background']}game_background.jpg'),
         child: Column(
           children:[
             Expanded(
@@ -107,7 +95,7 @@ class _GameScreenState extends State<GameScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Image.asset(
-                      'assets/Images/white/points_$imageScore.png',
+                      '${path['ui']}points_$imageScore.png',
                       width: SizeConfig.blockSizeHorizontal * 30,
                       height: SizeConfig.blockSizeVertical * 30
                     )
@@ -115,7 +103,7 @@ class _GameScreenState extends State<GameScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Image.asset(
-                      'assets/Images/lives_$attempts.gif',
+                      '${path['ui']}lives_$attempts.gif',
                       width: SizeConfig.blockSizeHorizontal * 25,
                       height: SizeConfig.blockSizeVertical * 25
                     )
@@ -124,13 +112,14 @@ class _GameScreenState extends State<GameScreen> {
                     alignment: Alignment.center, 
                     child: IconButton(
                       icon: Image.asset(
-                        'assets/Images/play_sound_button.png',
+                        '${path['ui']}play_sound_button.png',
                         fit: BoxFit.fill,
                         width: SizeConfig.blockSizeHorizontal * 8,
                         height: SizeConfig.blockSizeVertical * 16
                       ),
                       onPressed: () {
-                        playSound();
+                        final audioController = context.read<AudioController>();
+                        audioController.playSfx(SfxType.none, syllableSound);
                       },
                     )
                   )
@@ -149,7 +138,7 @@ class _GameScreenState extends State<GameScreen> {
                       children: [
                         Center(
                           child: Image.asset(
-                            'assets/Images/note.png',
+                            '${path['ui']}note.png',
                             alignment: Alignment.center,
                             width: SizeConfig.blockSizeHorizontal * 33.9750,
                             height: SizeConfig.blockSizeVertical * 36.4077
@@ -182,7 +171,7 @@ class _GameScreenState extends State<GameScreen> {
               child: IconButton(
                 onPressed: () => GoRouter.of(context).go('/'),
                 icon: Image.asset(
-                  'assets/Images/arrow_button_back.png',
+                  '${path['ui']}arrow_button_back.png',
                   width: SizeConfig.blockSizeHorizontal * 8,
                   height: SizeConfig.blockSizeVertical * 16
                 )

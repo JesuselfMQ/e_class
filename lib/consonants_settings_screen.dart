@@ -5,15 +5,16 @@ import 'package:go_router/go_router.dart';
 import 'size_config.dart';
 import 'widget_builder.dart' as wb;
 import 'settings_screen.dart' as ss;
+import 'file_paths.dart';
 
 class ConsonantsSettingsScreen extends StatefulWidget {
   const ConsonantsSettingsScreen({super.key});
 
   @override
-  _ConsonantsSettingsScreenState createState() => _ConsonantsSettingsScreenState();
+  ConsonantsSettingsScreenState createState() => ConsonantsSettingsScreenState();
 }
 
-class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
+class ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
   // Assuming consonants is a list of all the consonants you want to manage
   List<String> consonants = ["a", "e", "i", "o", "u"] + "lrmpstndcbvfjgñyzhkwxq".split('') + ["bl", "br", "cl", "cr", "dr", "fl", "fr", "gl", "gr", "pl", "pr", "tr", "tl", "ch", "ll", "gu", "rr", "vl", "vn", "vs", "vr", "vm", "iv", "uv", "vy"];
 
@@ -22,7 +23,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
-        decoration: wb.WidgetBuilder().getBackground('assets/Images/settings_background.jpg'),
+        decoration: wb.WidgetBuilder().getBackground('${path['background']}settings_background.jpg'),
       child: ResponsiveScreen(
         squarishMainArea: ListView.builder(
           itemCount: consonants.length,
@@ -39,7 +40,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
                   child: ss.SettingsLine(
                     consonant.toUpperCase(),
                     Image.asset(
-                      snapshot.data! ? 'assets/Images/enable.png' : 'assets/Images/disable.png',
+                      snapshot.data! ? '${path['ui']}enable.png' : '${path['ui']}disable.png',
                       width: SizeConfig.blockSizeHorizontal * 12,
                       height: SizeConfig.blockSizeVertical * 6,
                     ), 8,
@@ -52,7 +53,7 @@ class _ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
         ),
         rectangularMenuArea: IconButton(
           onPressed: () => GoRouter.of(context).go('/settings'),
-          icon: Image.asset('assets/Images/arrow_button_back.png',
+          icon: Image.asset('${path['ui']}arrow_button_back.png',
             width: SizeConfig.blockSizeHorizontal * 7,
             height: SizeConfig.blockSizeVertical * 14
           )

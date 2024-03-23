@@ -34,7 +34,11 @@ flutter:
 
   assets:
     - assets/Audio/Syllables/
-    - assets/Audio/SFX/
+    - assets/Audio/SFX/greetings1.mp3
+    - assets/Audio/SFX/lose1.mp3
+    - assets/Audio/SFX/shift1.mp3
+    - assets/Audio/SFX/win1.mp3
+    - assets/Audio/SFX/win2.mp3
     - assets/Audio/Music/
     - assets/Images/Background/
     - assets/Images/UI/

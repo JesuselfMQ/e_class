@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'router.dart';
 import 'settings_controller.dart';
+import 'app_lifecycle.dart';
 import 'package:device_preview/device_preview.dart';
+import 'audio_controller.dart';
 
 void main() async {
 
@@ -18,12 +20,9 @@ void main() async {
   ]);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => SettingsController(),
-      child: DevicePreview(
+    DevicePreview(
         enabled: !kReleaseMode,
         builder: (context) => const MyApp()
-      ),
     ),
   );
 }
@@ -33,16 +32,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      routeInformationProvider: router.routeInformationProvider,
-      routeInformationParser: router.routeInformationParser,
-      routerDelegate: router.routerDelegate,
-      title: 'Guess the Syllable',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-    );
+    return AppLifecycleObserver(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<SettingsController>(
+            lazy: false,
+            create: (context) => SettingsController(),
+          ),
+          ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,AudioController>(
+            lazy: false,
+            create: (context) => AudioController()..initialize(),
+            update: (context, settings, lifecycleNotifier, audio) {
+              if (audio == null) throw ArgumentError.notNull();
+              audio.attachSettings(settings);
+              audio.attachLifecycleNotifier(lifecycleNotifier);
+              return audio;
+            },
+            dispose: (context, audio) => audio.dispose(),
+          )
+        ],
+      child: Builder(builder: (context) {
+        return MaterialApp.router(
+          locale: DevicePreview.locale(context),
+          builder: DevicePreview.appBuilder,
+          routeInformationProvider: router.routeInformationProvider,
+          routeInformationParser: router.routeInformationParser,
+          routerDelegate: router.routerDelegate,
+          title: 'Guess the Syllable',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+        );
+      })
+    ));
   }
 }
