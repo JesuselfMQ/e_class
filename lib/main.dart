@@ -46,24 +46,31 @@ class MyApp extends StatelessWidget {
               if (audio == null) throw ArgumentError.notNull();
               audio.attachSettings(settings);
               audio.attachLifecycleNotifier(lifecycleNotifier);
+              audio.musicPlayer.setVolume(settings.musicVolume.value);
+              if (settings.musicVolume.value == 0.00) {
+                audio.musicPlayer.stop();
+              } else {
+                audio.musicPlayer.resume();
+              }
               return audio;
             },
-            dispose: (context, audio) => audio.dispose(),
+            dispose: (context, audio) => audio.dispose()
           )
         ],
-      child: Builder(builder: (context) {
-        return MaterialApp.router(
-          locale: DevicePreview.locale(context),
-          builder: DevicePreview.appBuilder,
-          routeInformationProvider: router.routeInformationProvider,
-          routeInformationParser: router.routeInformationParser,
-          routerDelegate: router.routerDelegate,
-          title: 'Guess the Syllable',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-        );
-      })
-    ));
+        child: Builder(builder: (context) {
+          return MaterialApp.router(
+            locale: DevicePreview.locale(context),
+            builder: DevicePreview.appBuilder,
+            routeInformationProvider: router.routeInformationProvider,
+            routeInformationParser: router.routeInformationParser,
+            routerDelegate: router.routerDelegate,
+            title: 'Guess the Syllable',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+          );
+        })
+      )
+    );
   }
 }

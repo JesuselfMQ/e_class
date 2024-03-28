@@ -6,6 +6,9 @@ import 'size_config.dart';
 import 'widget_builder.dart' as wb;
 import 'settings_screen.dart' as ss;
 import 'file_paths.dart';
+import 'audio_controller.dart';
+import 'package:provider/provider.dart';
+import 'sounds.dart';
 
 class ConsonantsSettingsScreen extends StatefulWidget {
   const ConsonantsSettingsScreen({super.key});
@@ -44,7 +47,11 @@ class ConsonantsSettingsScreenState extends State<ConsonantsSettingsScreen> {
                       width: SizeConfig.blockSizeHorizontal * 12,
                       height: SizeConfig.blockSizeVertical * 6,
                     ), 8,
-                    onSelected: () => _saveConsonantSetting(consonant)
+                    onSelected: () {
+                      _saveConsonantSetting(consonant);
+                      final audioController = context.read<AudioController>();
+                      audioController.playSfx(shift);
+                    }
                   )
                 );
               }

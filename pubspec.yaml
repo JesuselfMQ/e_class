@@ -12,14 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
   
-  audioplayers: ^5.1.0
+  audioplayers: ^5.2.1
   go_router: ^13.1.0
-  logging: ^1.1.0
   provider: ^6.0.2
   shared_preferences: ^2.0.13
 
   cupertino_icons: ^1.0.6
   device_preview: ^1.1.0
+  just_audio: ^0.9.36
 
 dev_dependencies:
   flutter_test:
@@ -39,6 +39,7 @@ flutter:
     - assets/Audio/SFX/shift1.mp3
     - assets/Audio/SFX/win1.mp3
     - assets/Audio/SFX/win2.mp3
+    - assets/Audio/SFX/win3.mp3
     - assets/Audio/Music/
     - assets/Images/Background/
     - assets/Images/UI/

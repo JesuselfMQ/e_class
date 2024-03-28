@@ -23,9 +23,9 @@ class _GameScreenState extends State<GameScreen> {
   int attempts = 3;
   int imageScore = 0;
   
-  late List<String> syllables;
-  late List<String> syllables2Display;
-  late String syllableSound;
+  late List<String> syllables = [];
+  late List<String> syllables2Display = [];
+  late String syllableSound = '';
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _GameScreenState extends State<GameScreen> {
   void onSyllablePressed(String syllable) {
     if (syllable == syllableSound) {
       final audioController = context.read<AudioController>();
-      audioController.playSfx(SfxType.win);
+      audioController.playSfx(win[Random().nextInt(3)]);
       if (imageScore == 5) {
         imageScore = 0;
       }
@@ -64,7 +64,7 @@ class _GameScreenState extends State<GameScreen> {
       if (attempts > 1) {
 
         final audioController = context.read<AudioController>();
-        audioController.playSfx(SfxType.lose);
+        audioController.playSfx(lose);
 
         // Subtract one attempt
         setState(() {
@@ -119,7 +119,7 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                       onPressed: () {
                         final audioController = context.read<AudioController>();
-                        audioController.playSfx(SfxType.none, syllableSound);
+                        audioController.playSfx(syllableSound);
                       },
                     )
                   )

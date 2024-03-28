@@ -1,41 +1,26 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'dart:collection';
 import 'settings_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:math';
-import 'sounds.dart';
+import 'file_paths.dart';
 import 'songs.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class AudioController {
-  final AudioPlayer _musicPlayer;
+    AudioPlayer soundPlayer = AudioPlayer();
 
-  final List<AudioPlayer> _sfxPlayers;
+  AudioPlayer musicPlayer = AudioPlayer();
 
-  int _currentSfxPlayer = 0;
-
-  final Random _random = Random();
-
-  final Queue<Song> _playlist;
+  String song = 'Audio/Music/${songs[Random().nextInt(songs.length)]}';
 
   SettingsController? _settings;
 
   ValueNotifier<AppLifecycleState>? _lifecycleNotifier;
 
-  AudioController({int polyphony = 1})
-      : assert(polyphony >= 1),
-        _musicPlayer = AudioPlayer(),
-        _sfxPlayers = Iterable.generate(
-                polyphony, (i) => AudioPlayer(playerId: 'sfxPlayer#$i'))
-            .toList(growable: false),
-        _playlist = Queue.of(List<Song>.of(songs)..shuffle()) {
-          _musicPlayer.onPlayerComplete.listen(_changeSong);
-        }
-
   void attachLifecycleNotifier(
       ValueNotifier<AppLifecycleState> lifecycleNotifier) {
-    _lifecycleNotifier?.removeListener(_handleAppLifecycle);
+    _lifecycleNotifier?.removeListener(handleAppLifecycle);
 
-    lifecycleNotifier.addListener(_handleAppLifecycle);
+    lifecycleNotifier.addListener(handleAppLifecycle);
     _lifecycleNotifier = lifecycleNotifier;
   }
 
@@ -46,77 +31,62 @@ class AudioController {
 
     final oldSettings = _settings;
     if (oldSettings != null) {
-      oldSettings.muted.removeListener(_mutedHandler);
-      oldSettings.musicEnabled.removeListener(_musicEnabledHandler);
-      oldSettings.soundEnabled.removeListener(_soundEnabledHandler);
+      oldSettings.musicEnabled.removeListener(musicEnabledHandler);
+      oldSettings.soundEnabled.removeListener(soundEnabledHandler);
+      oldSettings.musicVolume.removeListener(musicVolumeHandler);
+      oldSettings.soundVolume.removeListener(soundVolumeHandler);
     }
 
     _settings = settingsController;
 
-    settingsController.muted.addListener(_mutedHandler);
-    settingsController.musicEnabled.addListener(_musicEnabledHandler);
-    settingsController.soundEnabled.addListener(_soundEnabledHandler);
+    settingsController.musicEnabled.addListener(musicEnabledHandler);
+    settingsController.soundEnabled.addListener(soundEnabledHandler);
+    settingsController.musicVolume.addListener(musicVolumeHandler);
+    settingsController.soundVolume.addListener(soundVolumeHandler);
 
-    if (!settingsController.muted.value && settingsController.musicEnabled.value) {
-      _startMusic();
+    if (settingsController.musicVolume.value != 0.00) {
+      playMusic();
     }
   }
 
   void dispose() {
-    _lifecycleNotifier?.removeListener(_handleAppLifecycle);
-    _stopAllSound();
-    _musicPlayer.dispose();
-    for (final player in _sfxPlayers) {
-      player.dispose();
-    }
+    _lifecycleNotifier?.removeListener(handleAppLifecycle);
+    stopAllSound();
+    musicPlayer.dispose();
+    soundPlayer.dispose();
   }
 
   Future<void> initialize() async {
-    await AudioCache.instance.loadAll(SfxType.values
-        .expand(soundTypeToFilename)
-        .map((path) => 'Audio/SFX/$path')
+    await AudioCache.instance.loadAll(songs
+        .map((file) => path['music']! + file)
         .toList());
   }
 
-  Future<void> playSfx([SfxType type = SfxType.none, String syllable = '']) async {
-    final muted = _settings?.muted.value ?? true;
-    if (muted) {
+  Future<void> playSfx(string) async {
+    final soundVolume = _settings?.soundVolume.value ?? 1.00;
+    if (soundVolume == 0.00) {
       return;
     }
-    final soundsOn = _settings?.soundEnabled.value ?? false;
-    if (!soundsOn) {
-      return;
+    if (string.length < 4) {
+      await soundPlayer.play(AssetSource('Audio/Syllables/$string.mp3'));
+    } else {
+      await soundPlayer.play(AssetSource('Audio/SFX/$string'));
     }
-
-    if(syllable != '') {
-      final currentPlayer = _sfxPlayers[_currentSfxPlayer];
-      await currentPlayer.play(AssetSource('Audio/Syllables/$syllable.mp3'));
-      return;
-    }
-
-    final options = soundTypeToFilename(type);
-    final filename = options[_random.nextInt(options.length)];
-
-    final currentPlayer = _sfxPlayers[_currentSfxPlayer];
-    currentPlayer.play(AssetSource('SFX/$filename'));
-    _currentSfxPlayer = (_currentSfxPlayer + 1) % _sfxPlayers.length;
   }
 
-  void _changeSong(void _) {
-    _playlist.addLast(_playlist.removeFirst());
-    _playFirstSongInPlaylist();
+  void changeSong() {
   }
 
-  void _handleAppLifecycle() {
+  void handleAppLifecycle() {
     switch (_lifecycleNotifier!.value) {
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
-        _stopAllSound();
+        stopAllSound();
         break;
       case AppLifecycleState.resumed:
-        if (!_settings!.muted.value && _settings!.musicEnabled.value) {
-          _resumeMusic();
+        if (_settings!.musicVolume.value != 0.00) {
+          resumeMusic();
         }
         break;
       case AppLifecycleState.inactive:
@@ -124,81 +94,68 @@ class AudioController {
     }
   }
 
-  void _musicEnabledHandler() {
-    if (_settings!.musicEnabled.value) {
+  void musicEnabledHandler() {
+    if (_settings!.musicVolume.value == 0.00) {
       // Music got turned on.
-      if (!_settings!.muted.value) {
-        _resumeMusic();
-      }
+      stopMusic();
     } else {
-      // Music got turned off.
-      _stopMusic();
+      resumeMusic();
     }
   }
 
-  void _mutedHandler() {
-    if (_settings!.muted.value) {
-      // All sound just got muted.
-      _stopAllSound();
-    } else {
-      // All sound just got un-muted.
-      if (_settings!.musicEnabled.value) {
-        _resumeMusic();
-      }
-    }
+  void musicVolumeHandler() {
+    musicPlayer.setVolume(_settings!.musicVolume.value);
   }
 
-  Future<void> _playFirstSongInPlaylist() async {
-    await _musicPlayer.play(AssetSource('Audio/Music/${_playlist.first.filename}'));
+  void soundVolumeHandler() {
+    soundPlayer.setVolume(_settings!.soundVolume.value);
   }
 
-  Future<void> _resumeMusic() async {
-    switch (_musicPlayer.state) {
+  Future<void> playMusic() async {
+    await musicPlayer.play(AssetSource(song));
+    musicPlayer.onPlayerComplete.listen((_){
+      musicPlayer.play(AssetSource(song));
+    });
+  }
+
+  Future<void> resumeMusic() async {
+    switch (musicPlayer.state) {
       case PlayerState.paused:
-      try {
-          await _musicPlayer.resume();
+        try {
+          await musicPlayer.resume();
         } catch (e) {
-          await _playFirstSongInPlaylist();
+          await playMusic();
         }
         break;
       case PlayerState.stopped:
-        await _playFirstSongInPlaylist();
+        await playMusic();
         break;
       case PlayerState.playing:
         break;
       case PlayerState.completed:
-        await _playFirstSongInPlaylist();
+        await playMusic();
         break;
       case PlayerState.disposed:
         break;
     }
   }
 
-  void _soundEnabledHandler() {
-    for (final player in _sfxPlayers) {
-      if (player.state == PlayerState.playing) {
-        player.stop();
+  void soundEnabledHandler() async {
+      if (soundPlayer.state == PlayerState.playing) {
+        await soundPlayer.stop();
       }
-    }
   }
 
-  void _startMusic() {
-    _playFirstSongInPlaylist();
+  void stopAllSound() async {
+    if (musicPlayer.state == PlayerState.playing) {
+      await musicPlayer.stop();
+    }
+    await soundPlayer.stop();
   }
 
-  void _stopAllSound() {
-    if (_musicPlayer.state == PlayerState.playing) {
-      _musicPlayer.pause();
-    }
-    for (final player in _sfxPlayers) {
-      player.stop();
+  void stopMusic() {
+    if (musicPlayer.state == PlayerState.playing) {
+      musicPlayer.pause();
     }
   }
-
-  void _stopMusic() {
-    if (_musicPlayer.state == PlayerState.playing) {
-      _musicPlayer.pause();
-    }
-  }
-
 }

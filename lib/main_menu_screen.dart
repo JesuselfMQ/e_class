@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'size_config.dart';
 import 'widget_builder.dart' as wb;
 import 'file_paths.dart';
+import 'package:provider/provider.dart';
+import 'settings_controller.dart';
+import 'audio_controller.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -11,6 +14,7 @@ class MainMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double verticalScaleFactor = 20;
     double horizontalScaleFactor = verticalScaleFactor / 2;
+    final settings = context.watch<SettingsController>();
     SizeConfig().init(context);
     return Scaffold(
       body: Container(
@@ -37,14 +41,19 @@ class MainMenuScreen extends StatelessWidget {
                 SizeConfig.blockSizeVertical,
                 horizontalScaleFactor,
                 verticalScaleFactor,
-                onSelected: () => context.go('/game')),
+                onSelected: () {
+                  settings.changeMusicVolume(0.00);
+                  context.go('/game');
+                }
+              ),
               wb.WidgetBuilder().getImageButton(
                 '${path['ui']}settings_button.png',0.9,0.9,
                 SizeConfig.blockSizeHorizontal,
                 SizeConfig.blockSizeVertical,
                 horizontalScaleFactor,
                 verticalScaleFactor,
-                onSelected: () => context.go('/settings'))
+                onSelected: () => context.go('/settings')
+              )
             ],
           ),
         )

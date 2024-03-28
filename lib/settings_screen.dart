@@ -7,7 +7,6 @@ import 'size_config.dart';
 import 'audio_controller.dart';
 import 'widget_builder.dart' as wb;
 import 'file_paths.dart';
-import 'sounds.dart';
 
 class SettingsScreen extends StatefulWidget {
 
@@ -45,34 +44,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             gap,
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.soundEnabled,
-              builder: (context, soundEnabled, child) => Material(
+            ValueListenableBuilder(
+              valueListenable: settings.soundVolume,
+              builder: (context, soundVolume, child) => Material(
                 type: MaterialType.transparency,
-                  child: SettingsLine(
-                  'Sonido',
-                  Icon(soundEnabled ? Icons.graphic_eq : Icons.volume_off, size: SizeConfig.blockSizeVertical * 8), 10,
-                  onSelected: () {
-                    settings.toggleSoundEnabled();
-                    final audioController = context.read<AudioController>();
-                    audioController.playSfx(SfxType.shift);
-                  }
+                child: SettingsLine(
+                  'Volumen de Sonidos',
+                  Slider(
+                    value: settings.soundVolume.value,
+                    max: 1.00,
+                    min: 0.00,
+                    divisions: 50,
+                    onChanged: (double value) {
+                      setState(() {
+                        settings.changeSoundVolume(value);
+                      });
+                    }
+                  ),10,
+                  onSelected: () {},
                 )
-              ),
+              )
             ),
             gap,
             ValueListenableBuilder(
-              valueListenable: settings.musicEnabled,
-              builder: (context, musicEnabled, child) => Material(
+              valueListenable: settings.musicVolume,
+              builder: (context, musicVolume, child) => Material(
                 type: MaterialType.transparency,
                 child: SettingsLine(
-                  'Música',
-                  Icon(musicEnabled ? Icons.music_note_outlined : Icons.music_off_outlined, size: SizeConfig.blockSizeVertical * 8), 10,
-                  onSelected: () {
-                    settings.toggleMusicEnabled();
-                    final audioController = context.read<AudioController>();
-                    audioController.playSfx(SfxType.shift);
-                  }
+                  'Volumen de Musica',
+                  Slider(
+                    value: settings.musicVolume.value,
+                    max: 1.00,
+                    min: 0.00,
+                    divisions: 50,
+                    onChanged: (double value) {
+                      setState(() {
+                        settings.changeMusicVolume(value);
+                      });
+                    }
+                  ),10,
+                  onSelected: () {},
                 )
               )
             ),

@@ -1,26 +1,3 @@
-List<String> soundTypeToFilename(SfxType type) {
-  switch(type) {
-    case SfxType.win:
-      return const [
-        'win1.mp3',
-        'win2.mp3'
-      ];
-    case SfxType.lose:
-      return const [
-        'lose1.mp3'
-      ];
-    case SfxType.shift:
-      return const [
-        'shift1.mp3'
-      ];
-    case SfxType.none:
-      return [''];
-  }
-}
-
-enum SfxType {
-  win,
-  lose,
-  shift,
-  none
-}
+List win = ['win1.mp3', 'win2.mp3', 'win3.mp3'];
+var lose = 'lose1.mp3';
+var shift = 'shift1.mp3';
