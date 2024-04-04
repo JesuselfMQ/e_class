@@ -18,12 +18,13 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
 
-  AudioController audioController = AudioController();
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    const double fontScaleFactor = 8;
+    const int iconSize = 5;
     final settings = context.watch<SettingsController>();
+    final audio = context.watch<AudioController>();
     final gap = SizedBox(height: SizeConfig.blockSizeVertical * 0.5);
 
     return Scaffold(
@@ -39,8 +40,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(
                 fontFamily: 'Ginthul',
                 fontWeight: FontWeight.bold,
-                fontSize: SizeConfig.blockSizeVertical * 16,
+                fontSize: SizeConfig().getSize(12),
                 height: 1,
+              ),
+            ),
+            gap,
+            Material(
+              type: MaterialType.transparency,
+              child: SettingsLine(
+                'Letras',
+                Image.asset(
+                  '${path['ui']}letter.png',
+                  width: SizeConfig.blockSizeHorizontal * iconSize,
+                  height: SizeConfig.blockSizeVertical * iconSize,
+                ),
+                fontScaleFactor,
+                onSelected: () => context.go('/settings/consonants')
+              )
+            ),
+            gap,
+            ValueListenableBuilder(
+              valueListenable: settings.soundEnabled,
+              builder: (context, soundEnabled, child) => Material(
+                type: MaterialType.transparency,
+                child: SettingsLine(
+                  'Sonido',
+                  Image.asset(
+                    soundEnabled ? '${path['ui']}speaker_on.png' : '${path['ui']}speaker_off.png',
+                    width: SizeConfig.blockSizeHorizontal * iconSize,
+                    height: SizeConfig.blockSizeVertical * iconSize,
+                  ),
+                  fontScaleFactor,
+                  onSelected: () => settings.toggleSoundEnabled()
+                ),
+              ),
+            ),
+            gap,
+            Material(
+              type: MaterialType.transparency,
+              child: SettingsLine(
+                'Cambiar Canción',
+                Image.asset('${path['ui']}music_note.png',
+                width: SizeConfig.blockSizeHorizontal * iconSize,
+                height: SizeConfig.blockSizeVertical * iconSize,
+                ),
+                fontScaleFactor,
+                onSelected: () => audio.changeSong(),
               ),
             ),
             gap,
@@ -49,7 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               builder: (context, soundVolume, child) => Material(
                 type: MaterialType.transparency,
                 child: SettingsLine(
-                  'Volumen de Sonidos',
+                  'Volumen Sonidos',
                   Slider(
                     value: settings.soundVolume.value,
                     max: 1.00,
@@ -57,10 +102,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     divisions: 50,
                     onChanged: (double value) {
                       setState(() {
+                        if (value == 0.00) {
+                          if (settings.soundEnabled.value) {
+                            settings.toggleSoundEnabled();
+                          }
+                        } else {
+                          if (!settings.soundEnabled.value) {
+                            settings.toggleSoundEnabled();
+                          }
+                        }
                         settings.changeSoundVolume(value);
                       });
                     }
-                  ),10,
+                  ),
+                  fontScaleFactor,
                   onSelected: () {},
                 )
               )
@@ -71,7 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               builder: (context, musicVolume, child) => Material(
                 type: MaterialType.transparency,
                 child: SettingsLine(
-                  'Volumen de Musica',
+                  'Volumen Música',
                   Slider(
                     value: settings.musicVolume.value,
                     max: 1.00,
@@ -82,17 +137,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         settings.changeMusicVolume(value);
                       });
                     }
-                  ),10,
+                  ),
+                  fontScaleFactor,
                   onSelected: () {},
                 )
-              )
-            ),
-            gap,
-            Material(
-              type: MaterialType.transparency,
-              child: SettingsLine('Consonantes',
-                Icon(Icons.font_download, size: SizeConfig.blockSizeVertical * 8), 10,
-                onSelected: () => context.go('/settings/consonants')
               )
             )
           ],
@@ -119,7 +167,7 @@ class SettingsLine extends StatelessWidget {
 
   final VoidCallback? onSelected;
 
-  const SettingsLine(this.title, this.icon,this.fonScaleFactor, {this.onSelected});
+  const SettingsLine(this.title, this.icon,this.fonScaleFactor, {this.onSelected, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +186,7 @@ class SettingsLine extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: 'Ginthul',
-                  fontSize: SizeConfig.blockSizeVertical * fonScaleFactor,
+                  fontSize: SizeConfig().getSize(fonScaleFactor),
                 ),
               ),
             ),

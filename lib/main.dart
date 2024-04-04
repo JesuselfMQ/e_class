@@ -21,9 +21,9 @@ void main() async {
 
   runApp(
     DevicePreview(
-        enabled: !kReleaseMode,
-        builder: (context) => const MyApp()
-    ),
+      enabled: !kReleaseMode,
+      builder: (context) =>  const MyApp()
+    )
   );
 }
 
@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
               audio.attachSettings(settings);
               audio.attachLifecycleNotifier(lifecycleNotifier);
               audio.musicPlayer.setVolume(settings.musicVolume.value);
-              if (settings.musicVolume.value == 0.00) {
-                audio.musicPlayer.stop();
+              if (settings.musicVolume.value == 0.00 || !settings.musicEnabled.value) {
+                audio.musicPlayer.pause();
               } else {
                 audio.musicPlayer.resume();
               }
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
             title: 'Guess the Syllable',
             theme: ThemeData(
               primarySwatch: Colors.blue,
-            ),
+             ),
           );
         })
       )

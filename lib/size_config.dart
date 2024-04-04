@@ -26,4 +26,12 @@ class SizeConfig {
     safeBlockHorizontal = (screenWidth - _safeAreaHorizontal)/100;
     safeBlockVertical = (screenHeight - _safeAreaVertical)/100;
   }
+
+  double getSize(double scaleFactor) {
+    if (screenWidth >= screenHeight) {
+      return blockSizeVertical * scaleFactor;
+    } else {
+      return blockSizeHorizontal * scaleFactor;
+    }
+  }
 }

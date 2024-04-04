@@ -6,7 +6,7 @@ import 'songs.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class AudioController {
-    AudioPlayer soundPlayer = AudioPlayer();
+  AudioPlayer soundPlayer = AudioPlayer();
 
   AudioPlayer musicPlayer = AudioPlayer();
 
@@ -31,20 +31,18 @@ class AudioController {
 
     final oldSettings = _settings;
     if (oldSettings != null) {
-      oldSettings.musicEnabled.removeListener(musicEnabledHandler);
-      oldSettings.soundEnabled.removeListener(soundEnabledHandler);
       oldSettings.musicVolume.removeListener(musicVolumeHandler);
       oldSettings.soundVolume.removeListener(soundVolumeHandler);
+      oldSettings.musicEnabled.removeListener(musicEnabledHandler);
     }
 
     _settings = settingsController;
 
-    settingsController.musicEnabled.addListener(musicEnabledHandler);
-    settingsController.soundEnabled.addListener(soundEnabledHandler);
     settingsController.musicVolume.addListener(musicVolumeHandler);
     settingsController.soundVolume.addListener(soundVolumeHandler);
+    settingsController.musicEnabled.addListener(musicEnabledHandler);
 
-    if (settingsController.musicVolume.value != 0.00) {
+    if (settingsController.musicVolume.value != 0.00 && settingsController.musicEnabled.value) {
       playMusic();
     }
   }
@@ -64,17 +62,30 @@ class AudioController {
 
   Future<void> playSfx(string) async {
     final soundVolume = _settings?.soundVolume.value ?? 1.00;
+    final soundEnabled = _settings?.soundEnabled.value ?? true;
     if (soundVolume == 0.00) {
       return;
     }
     if (string.length < 4) {
       await soundPlayer.play(AssetSource('Audio/Syllables/$string.mp3'));
     } else {
-      await soundPlayer.play(AssetSource('Audio/SFX/$string'));
+      if (soundEnabled) {
+        await soundPlayer.play(AssetSource('Audio/SFX/$string'));
+      } else {
+        return;
+      }
     }
   }
 
-  void changeSong() {
+  Future<void> changeSong() async {
+    String oldSong = song;
+    String newSong = '';
+    do {
+      newSong = 'Audio/Music/${songs[Random().nextInt(songs.length)]}';
+    }
+    while (newSong == oldSong);
+    song = newSong;
+    await playMusic();
   }
 
   void handleAppLifecycle() {
@@ -85,7 +96,7 @@ class AudioController {
         stopAllSound();
         break;
       case AppLifecycleState.resumed:
-        if (_settings!.musicVolume.value != 0.00) {
+        if (_settings!.musicVolume.value != 0.00 && _settings!.musicEnabled.value) {
           resumeMusic();
         }
         break;
@@ -95,8 +106,7 @@ class AudioController {
   }
 
   void musicEnabledHandler() {
-    if (_settings!.musicVolume.value == 0.00) {
-      // Music got turned on.
+    if (_settings!.musicVolume.value == 0.00 || !_settings!.musicEnabled.value) {
       stopMusic();
     } else {
       resumeMusic();
@@ -128,7 +138,7 @@ class AudioController {
         }
         break;
       case PlayerState.stopped:
-        await playMusic();
+        await musicPlayer.resume();
         break;
       case PlayerState.playing:
         break;

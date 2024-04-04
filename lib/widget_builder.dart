@@ -14,10 +14,8 @@ class WidgetBuilder {
   Align getImageButton(String imageAddress,
     double horizontalAlignment,
     double verticalAlignment,
-    double blockhorizontal,
-    double blockvertical,
-    double horizontalScaleFactor,
-    double verticalScaleFactor,
+    double width,
+    double height,
     {VoidCallback? onSelected}) {
     if(onSelected != null) {
       return Align(
@@ -26,8 +24,8 @@ class WidgetBuilder {
           onPressed: onSelected,
           icon: Image.asset(
             imageAddress,
-            width: blockhorizontal * horizontalScaleFactor,
-            height: blockvertical * verticalScaleFactor,
+            width: width,
+            height: height,
           )
         )
       ); 
@@ -36,8 +34,8 @@ class WidgetBuilder {
       alignment: Alignment(horizontalAlignment, verticalAlignment),
       child: Image.asset(
         imageAddress,
-        width: blockhorizontal * horizontalScaleFactor,
-        height: blockvertical * verticalScaleFactor
+        width: width,
+        height: height
       ),
     );
   }

@@ -19,7 +19,7 @@ dependencies:
 
   cupertino_icons: ^1.0.6
   device_preview: ^1.1.0
-  just_audio: ^0.9.36
+  gif_view: ^0.4.3
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +40,7 @@ flutter:
     - assets/Audio/SFX/win1.mp3
     - assets/Audio/SFX/win2.mp3
     - assets/Audio/SFX/win3.mp3
+    - assets/Audio/SFX/win4.mp3
     - assets/Audio/Music/
     - assets/Images/Background/
     - assets/Images/UI/
