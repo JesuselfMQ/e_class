@@ -99,10 +99,10 @@ class AnimationHandler {
 
   /// Gets the file name of the points image.
   String getImage(int index) {
-    String fileExtension;
     if (transitionOn[index].value) {
       return "${ui}empty.png";
     }
+    String fileExtension;
     pointsOn[index].value ? fileExtension = ".gif" : fileExtension = ".png";
     return '$points${color.first}/points$fileExtension';
   }
