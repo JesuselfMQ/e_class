@@ -35,7 +35,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   late final AudioController audio;
   late final AnimationHandler animation;
 
-
   @override
   void dispose() {
     animation.dispose();
@@ -61,13 +60,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
     settings = context.watch<SettingsController>();
     audio = context.read<AudioController>();
     syllableHandler = SyllableHandler(settings);
-
-    animation.moveController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        animation.pointsOn[iconCount].value = true;
-        animation.transitionOn[iconCount].value = false;
-      }
-    });
 
     await syllableHandler.initialize();
     syllables.value = syllableHandler.filterAllSyllables();
@@ -116,7 +108,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final size = SizeConfig(context);
-    animation.init(size);
     return FillBackground(
         background: '${backgroung}game_background.jpg',
         child: Stack(children: [
@@ -133,10 +124,11 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                           first: animation.pointsOn[index],
                           second: animation.transitionOn[index],
                           builder: (_, __, ___, ____) => getGameUiElement(
-                              animation.getImage(index),
-                              size,
-                              6,
-                              30,)))
+                                animation.getImage(index),
+                                size,
+                                6,
+                                30,
+                              )))
                 ]),
                 ValueListenableBuilder(
                     valueListenable: attempts,
@@ -149,7 +141,6 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                         size,
                         10,
                         16,
-                        null,
                         () => audio.playSfx(sound)))
               ],
             )),
@@ -182,7 +173,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
             ValueListenableBuilder(
                 valueListenable: animation.transitionOn[i],
                 builder: (_, __, ___) => animation.transitionOn[i].value
-                    ? animation.getTransition(i)
+                    ? animation.getTransition(size)
                     : const SizedBox.shrink())
         ]));
   }

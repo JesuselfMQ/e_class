@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -12,48 +13,30 @@ class AnimationHandler {
   List<ValueNotifier<bool>> transitionOn = [
     ...List.generate(5, (_) => ValueNotifier(false))
   ];
-  late List<double> moveX;
   final Queue<String> color = Queue.of(pointColors);
 
   late AnimationController controller;
-  late AnimationController moveController;
   late Animation<double> sizeAnimation;
   late Animation<double> rotateAnimation;
-  late List<Animation<Offset>> moveAnimations;
-  late SizeConfig size;
+
+  final List<double> moveAlignmentEndX = [-1.0, -0.88, -0.75, -0.63, -0.51];
+  final double moveAlignmentEndY = -0.85;
+  final Alignment moveAlignmentStart = Alignment.center;
+  late ValueNotifier<Alignment> moveAlignment;
 
   AnimationHandler(TickerProvider vsync) {
     controller = AnimationController(
       duration: const Duration(milliseconds: 2500),
       vsync: vsync,
     );
-    moveController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: vsync,
-    );
+    moveAlignment = ValueNotifier(moveAlignmentStart);
     rotateAnimation = Tween<double>(begin: 0.0, end: 4.998).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.easeInOut,
       ),
     );
-  }
-
-  void init(SizeConfig size) {
-    this.size = size;
-    moveX = [-1.42, -1.22, -1.02, -0.86, -0.68];
-    moveAnimations = [
-      for (var i in moveX)
-        Tween<Offset>(begin: Offset.zero, end: Offset(i, -0.68)).animate(
-          CurvedAnimation(
-            parent: moveController,
-            curve: Curves.easeInOut,
-          ),
-        )
-    ];
-    sizeAnimation =
-        Tween<double>(begin: 0.0, end: size.safeBlockHorizontal * 0.0118)
-            .animate(
+    sizeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.easeInOut,
@@ -63,7 +46,6 @@ class AnimationHandler {
 
   void dispose() {
     controller.dispose();
-    moveController.dispose();
     for (var i in pointsOn) {
       i.dispose();
     }
@@ -75,26 +57,36 @@ class AnimationHandler {
   void startAnimation(int index) {
     transitionOn[index].value = true;
     controller.forward(from: 0.0).then((_) async {
-      await Future.delayed(const Duration(milliseconds: 500));
-      moveController.forward(from: 0.0).then((_) {
-        controller.reset();
-        moveController.reset();
+      await Future.delayed(const Duration(milliseconds: 1000));
+      moveAlignment.value =
+          Alignment(moveAlignmentEndX[index], moveAlignmentEndY);
+      Timer(const Duration(milliseconds: 2000), () {
+        pointsOn[index].value = true;
+        transitionOn[index].value = false;
+        moveAlignment.value = moveAlignmentStart;
       });
     });
   }
 
-  Widget getTransition(int count) {
-    return Center(
-        child: SlideTransition(
-      position: moveAnimations[count],
-      child: RotationTransition(
-        turns: rotateAnimation,
-        child: ScaleTransition(
-          scale: sizeAnimation,
-          child: Image.asset("$points${color.first}/points_on.png"),
+  Widget getTransition(SizeConfig size) {
+    return ValueListenableBuilder(
+      valueListenable: moveAlignment,
+      builder: (_, __, child) => AnimatedAlign(
+          duration: const Duration(milliseconds: 1000),
+          alignment: moveAlignment.value,
+          child: child),
+      child: SizedBox(
+        width: 6 * size.safeBlockHorizontal,
+        height: 12 * size.safeBlockVertical,
+        child: RotationTransition(
+          turns: rotateAnimation,
+          child: ScaleTransition(
+            scale: sizeAnimation,
+            child: Image.asset("$points${color.first}/points_on.png"),
+          ),
         ),
       ),
-    ));
+    );
   }
 
   /// Gets the file name of the points image.

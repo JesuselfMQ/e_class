@@ -152,13 +152,12 @@ class ValueListenableBuilder2<A, B> extends StatelessWidget {
 
 Widget getGameUiElement(
     String path, SizeConfig size, double percentWidth, double percentHeight,
-    [Key? key, void Function()? onSelected]) {
+    [void Function()? onSelected]) {
   return AlignedImage(
       image: path,
       width: size.safeBlockHorizontal * percentWidth,
       height: size.safeBlockVertical * percentHeight,
-      onSelected: onSelected,
-      key: key);
+      onSelected: onSelected);
 }
 
 Widget getArrowBackButton(SizeConfig size, void Function()? onPressed) {
