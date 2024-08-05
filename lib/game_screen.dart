@@ -20,9 +20,10 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
+class _GameScreenState extends State<GameScreen>
+    with SingleTickerProviderStateMixin {
   int score = 0;
-  int iconCount = -1;
+  int pointsIconCount = 0;
   bool _isInitialized = false;
 
   ValueNotifier<int> attempts = ValueNotifier(3);
@@ -69,34 +70,39 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
 
   /// When the user press a syllable button.
   void onSyllablePressed(String syllable) {
-    if (syllable == syllableSound.value) {
-      final winSfx = audio.sfx["win"]?.randomItem;
-      audio.playSfx(winSfx);
-      if (iconCount == 4) {
-        iconCount = -1;
-        animation.color.addLast(animation.color.removeFirst());
-        for (var i in animation.pointsOn) {
-          i.value = false;
-        }
-      }
-      // Increment score
-      score += 1;
-      iconCount += 1;
-      animation.startAnimation(iconCount);
-      // Select new random syllables and update the display
-      List<String> newSyllables = syllables.value.randomItems(10);
-      displaySyllables.value = newSyllables;
-      syllableSound.value = displaySyllables.value.randomItem;
+    syllable == syllableSound.value ? handleWin() : handleLose();
+  }
+
+  void handleLose() {
+    if (attempts.value > 1) {
+      final loseSfx = audio.sfx["lose"]?.randomItem;
+      audio.playSfx(loseSfx);
+      // Subtract one attempt
+      attempts.value -= 1;
     } else {
-      if (attempts.value > 1) {
-        final loseSfx = audio.sfx["lose"]?.randomItem;
-        audio.playSfx(loseSfx);
-        // Subtract one attempt
-        attempts.value -= 1;
-      } else {
-        goToMenu();
+      goToMenu();
+    }
+  }
+
+  void handleWin() {
+    final winSfx = audio.sfx["win"]?.randomItem;
+    audio.playSfx(winSfx);
+    if (pointsIconCount == 5) {
+      pointsIconCount = 0;
+      animation.color.addLast(animation.color.removeFirst());
+      for (var i in animation.pointsOn) {
+        i.value = false;
       }
     }
+  
+    animation.startAnimation(pointsIconCount);
+    // Increment score
+    score += 1;
+    pointsIconCount += 1;
+    // Select new random syllables and update the display
+    List<String> newSyllables = syllables.value.randomItems(10);
+    displaySyllables.value = newSyllables;
+    syllableSound.value = displaySyllables.value.randomItem;
   }
 
   /// Navigates back to the menu screen.
@@ -156,7 +162,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                                 return Stack(children: [
                                   getGameUiElement(
                                       "${ui}note.png", size, 34, 36),
-                                  displaySyllables.value.isEmpty
+                                  display.isEmpty
                                       ? const Text("")
                                       : SyllableButton(
                                           syllable:
@@ -169,12 +175,7 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                             ]))),
             getArrowBackButton(size, () => goToMenu())
           ]),
-          for (var i = 0; i < 5; i++)
-            ValueListenableBuilder(
-                valueListenable: animation.transitionOn[i],
-                builder: (_, __, ___) => animation.transitionOn[i].value
-                    ? animation.getTransition(size)
-                    : const SizedBox.shrink())
+          for (var i = 0; i < 5; i++) animation.getTransition(size, i)
         ]));
   }
 }
