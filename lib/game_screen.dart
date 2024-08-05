@@ -58,7 +58,7 @@ class _GameScreenState extends State<GameScreen>
   void _initGame() async {
     animation = AnimationHandler(this);
 
-    settings = context.watch<SettingsController>();
+    settings = context.read<SettingsController>();
     audio = context.read<AudioController>();
     syllableHandler = SyllableHandler(settings);
 
@@ -107,7 +107,7 @@ class _GameScreenState extends State<GameScreen>
 
   /// Navigates back to the menu screen.
   void goToMenu() {
-    settings.toggleMusicOn();
+    settings.setMusicVolume(settings.oldMusicVolume);
     GoRouter.of(context).pop();
   }
 

@@ -13,7 +13,7 @@ class MainMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = context.watch<SettingsController>();
+    final settings = context.read<SettingsController>();
     final size = SizeConfig(context);
     final images = [
       ImageData.menuImage("star.gif", -0.68, -0.7, size),
@@ -45,7 +45,7 @@ class MainMenuScreen extends StatelessWidget {
   }
 
   void goToGame(BuildContext context, SettingsController settings) {
-    if (settings.musicOn.value) settings.toggleMusicOn();
+    settings.setMusicVolume(0.0);
     context.go('/game');
   }
 }

@@ -5,6 +5,8 @@ import 'phonetic_data.dart';
 /// A class that holds settings like [soundsVolume] or [musicOn],
 /// and saves them to a SharedPreferences persistence storage instance.
 class SettingsController with ChangeNotifier, PhoneticData {
+  double oldMusicVolume = 0.0;
+
   /// Music player volume (range from 0.00 to 1.00).
   ValueNotifier<double> musicVolume = ValueNotifier(0.80);
 
@@ -43,6 +45,7 @@ class SettingsController with ChangeNotifier, PhoneticData {
   }
 
   void setMusicVolume(double value) async {
+    oldMusicVolume = musicVolume.value;
     musicVolume.value = value;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setDouble('musicVolume', value);
