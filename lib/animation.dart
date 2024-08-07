@@ -108,7 +108,7 @@ class PointsAnimationHandler {
   }
 
   /// Gets the file name of the points image.
-  String getImageName(int index) {
+  String getPointsImageFilePath(int index) {
     if (transitionOn[index].value) {
       return "${ui}empty.png";
     }
