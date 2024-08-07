@@ -35,6 +35,7 @@ class _GameScreenState extends State<GameScreen>
   late final SettingsController settings;
   late final AudioController audio;
   late final PointsAnimationHandler animation;
+  late SizeConfig size;
 
   @override
   void dispose() {
@@ -110,7 +111,7 @@ class _GameScreenState extends State<GameScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = SizeConfig(context);
+    size = SizeConfig(context);
     return FillBackground(
         background: '${backgroung}game.jpg',
         child: Stack(children: [
@@ -120,31 +121,23 @@ class _GameScreenState extends State<GameScreen>
               childAspectRatio: size.aspectRatio * 1.4,
               crossAxisCount: 3,
               children: [
-                Row(children: [
-                  ...List.generate(
-                      5,
-                      (int index) => ValueListenableBuilder2(
-                          first: animation.pointsOn[index],
-                          second: animation.transitionOn[index],
-                          builder: (_, __, ___, ____) => getGameUiElement(
-                                animation.getImageName(index),
-                                size,
-                                6,
-                                30,
-                              )))
-                ]),
-                ValueListenableBuilder(
-                    valueListenable: attempts,
-                    builder: (_, lives, __) => getGameUiElement(
-                        "${ui}lives_$lives.gif", size, 25, 25)),
-                ValueListenableBuilder(
-                    valueListenable: syllableSound,
-                    builder: (_, sound, __) => getGameUiElement(
-                        "${ui}play_sound_button.png",
-                        size,
-                        10,
-                        16,
-                        () => audio.playSfx(sound)))
+                Row(
+                    children: List.generate(
+                        5,
+                        (int index) => getGameUiElement(
+                            size,
+                            6,
+                            30,
+                            [
+                              animation.pointsOn[index],
+                              animation.transitionOn[index],
+                            ],
+                            count: index,
+                            animation: animation))),
+                getGameUiElement(size, 25, 25, [attempts],
+                    lives: attempts.value),
+                getGameUiElement(size, 10, 10, [syllableSound],
+                    onSelected: () => audio.playSfx(syllableSound.value))
               ],
             )),
             Expanded(
@@ -152,25 +145,22 @@ class _GameScreenState extends State<GameScreen>
                 child: ValueListenableBuilder(
                     valueListenable: displaySyllables,
                     builder: (_, display, __) => GridView.count(
-                            childAspectRatio: size.aspectRatio * 0.85,
-                            crossAxisCount: 5,
-                            children: <Widget>[
-                              ...List.generate(10, (int index) {
-                                return Stack(children: [
-                                  getGameUiElement(
-                                      "${ui}note.png", size, 34, 36),
-                                  display.isEmpty
-                                      ? const Text("")
-                                      : SyllableButton(
-                                          syllable:
-                                              displaySyllables.value[index],
-                                          size: size,
-                                          onPressed: () => onSyllablePressed(
-                                              displaySyllables.value[index]))
-                                ]);
-                              }),
-                            ]))),
-            getArrowBackButton(size, () => goToMenu())
+                          childAspectRatio: size.aspectRatio * 0.85,
+                          crossAxisCount: 5,
+                          children: List.generate(10, (int index) {
+                            return Stack(children: [
+                              getGameUiElement(size, 34, 36, [], note: true),
+                              display.isEmpty
+                                  ? const Text("")
+                                  : SyllableButton(
+                                      syllable: displaySyllables.value[index],
+                                      size: size,
+                                      onPressed: () => onSyllablePressed(
+                                          displaySyllables.value[index]))
+                            ]);
+                          }),
+                        ))),
+            getArrowBackButton(size, () => goToMenu()),
           ]),
           for (var i = 0; i < 5; i++) animation.getPointsTransition(size, i)
         ]));

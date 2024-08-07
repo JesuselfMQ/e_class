@@ -107,16 +107,6 @@ class PointsAnimationHandler {
     );
   }
 
-  /// Gets the file name of the points image.
-  String getImageName(int index) {
-    if (transitionOn[index].value) {
-      return "${ui}empty.png";
-    }
-    return pointsOn[index].value
-        ? "${points}points_${colors.first}.gif"
-        : "${points}points.png";
-  }
-
   void restartPointImages() {
     colors.addLast(colors.removeFirst());
     for (var i in pointsOn) {

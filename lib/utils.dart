@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'animation.dart';
 import 'file_paths.dart';
 import 'size_config.dart';
 
@@ -150,14 +151,36 @@ class ValueListenableBuilder2<A, B> extends StatelessWidget {
       );
 }
 
-Widget getGameUiElement(
-    String path, SizeConfig size, double percentWidth, double percentHeight,
-    [void Function()? onSelected]) {
-  return AlignedImage(
-      image: path,
+Widget getGameUiElement(SizeConfig size, double percentWidth,
+    double percentHeight, List<ValueNotifier<Object>> listenableValues,
+    {void Function()? onSelected,
+    PointsAnimationHandler? animation,
+    int? count,
+    int? lives,
+    String? sound,
+    bool? note}) {
+  var image = AlignedImage(
+      image:
+          getUiAssetFileName(count: count, lives: lives, animation: animation, note: note),
       width: size.safeBlockHorizontal * percentWidth,
       height: size.safeBlockVertical * percentHeight,
       onSelected: onSelected);
+  int len = listenableValues.length;
+  if (len == 0 || len > 2) {
+    return image;
+  }
+  Widget uiListenable;
+  if (len == 1) {
+    uiListenable = ValueListenableBuilder(
+        valueListenable: listenableValues[0],
+        builder: (_, value, ___) => image);
+  } else {
+    uiListenable = ValueListenableBuilder2(
+        first: listenableValues[0],
+        second: listenableValues[1],
+        builder: (_, __, ___, ____) => image);
+  }
+  return uiListenable;
 }
 
 Widget getArrowBackButton(SizeConfig size, void Function()? onPressed) {
