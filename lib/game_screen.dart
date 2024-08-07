@@ -34,7 +34,7 @@ class _GameScreenState extends State<GameScreen>
   late final SyllableHandler syllableHandler;
   late final SettingsController settings;
   late final AudioController audio;
-  late final AnimationHandler animation;
+  late final PointsAnimationHandler animation;
 
   @override
   void dispose() {
@@ -56,7 +56,7 @@ class _GameScreenState extends State<GameScreen>
   }
 
   void _initGame() async {
-    animation = AnimationHandler(this);
+    animation = PointsAnimationHandler(this);
 
     settings = context.read<SettingsController>();
     audio = context.read<AudioController>();
@@ -89,12 +89,9 @@ class _GameScreenState extends State<GameScreen>
     audio.playSfx(winSfx);
     if (pointsIconCount == 5) {
       pointsIconCount = 0;
-      animation.color.addLast(animation.color.removeFirst());
-      for (var i in animation.pointsOn) {
-        i.value = false;
-      }
+      animation.restartPointImages();
     }
-  
+
     animation.startAnimation(pointsIconCount);
     // Increment score
     score += 1;
@@ -115,7 +112,7 @@ class _GameScreenState extends State<GameScreen>
   Widget build(BuildContext context) {
     final size = SizeConfig(context);
     return FillBackground(
-        background: '${backgroung}game_background.jpg',
+        background: '${backgroung}game.jpg',
         child: Stack(children: [
           Column(children: [
             Expanded(
@@ -130,7 +127,7 @@ class _GameScreenState extends State<GameScreen>
                           first: animation.pointsOn[index],
                           second: animation.transitionOn[index],
                           builder: (_, __, ___, ____) => getGameUiElement(
-                                animation.getImage(index),
+                                animation.getImageName(index),
                                 size,
                                 6,
                                 30,
@@ -175,7 +172,7 @@ class _GameScreenState extends State<GameScreen>
                             ]))),
             getArrowBackButton(size, () => goToMenu())
           ]),
-          for (var i = 0; i < 5; i++) animation.getTransition(size, i)
+          for (var i = 0; i < 5; i++) animation.getPointsTransition(size, i)
         ]));
   }
 }

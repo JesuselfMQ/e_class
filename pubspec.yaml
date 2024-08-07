@@ -62,13 +62,10 @@ flutter:
     - assets/Audio/Music/
     - assets/Audio/SFX/
     - assets/Audio/Syllables/
-    - assets/Images/Background/
-    - assets/Images/Decoration/
+    - assets/Images/Decoration/Background/
+    - assets/Images/Decoration/Animated/
     - assets/Images/UI/
-    - assets/Images/UI/points/pink/
-    - assets/Images/UI/points/blue/
-    - assets/Images/UI/points/green/
-    - assets/Images/UI/points/orange/
+    - assets/Images/UI/points/
 
   fonts:
 

@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'phonetic_data.dart';
 
 /// A class that holds settings like [soundsVolume] or [musicOn],
-/// and saves them to a SharedPreferences persistence storage instance.
+/// and saves them to a SharedPreferences persistence storage.
 class SettingsController with ChangeNotifier, PhoneticData {
   double oldMusicVolume = 0.0;
 

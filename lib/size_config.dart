@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-/// Device's screen information.
+/// Offers device's screen size information.
 class SizeConfig {
   static late MediaQueryData _mediaQueryData;
-  late double screenWidth;
-  late double screenHeight;
+  static late double screenWidth;
+  static late double screenHeight;
   static late double blockSizeHorizontal;
   static late double blockSizeVertical;
   static late double _safeAreaHorizontal;
@@ -28,8 +28,8 @@ class SizeConfig {
     safeBlockVertical = (screenHeight - _safeAreaVertical) / 100;
   }
 
-  /// Returns the specified percent of the screen height.
-  double getFontSize(double percent) {
+  /// Returns the specified percent of the screen's height in pixels.
+  double getPercentHeight(double percent) {
     return safeBlockVertical * percent;
   }
 }

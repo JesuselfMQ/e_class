@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
     final gap = SizedBox(height: size.safeBlockVertical * 0.5);
 
     return FillBackground(
-        background: '${backgroung}settings_background.jpg',
+        background: '${backgroung}settings.jpg',
         child: ResponsiveScreen(
           squarishMainArea: ListView(
             children: [
@@ -31,16 +31,16 @@ class SettingsScreen extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Ginthul',
                   fontWeight: FontWeight.bold,
-                  fontSize: size.getFontSize(12),
+                  fontSize: size.getPercentHeight(12),
                   height: 1,
                 ),
               ),
               gap,
               SettingsLine(
-                  'Letras',
+                  'Silabas',
                   iconName: '${ui}letter.png',
                   size,
-                  onSelected: () => context.go('/settings/consonants')),
+                  onSelected: () => context.go('/settings/syllables')),
               gap,
               ValueListenableBuilder(
                 valueListenable: settings.soundsOn,
@@ -131,7 +131,7 @@ class SettingsLine extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: 'Ginthul',
-                    fontSize: size.getFontSize(percent),
+                    fontSize: size.getPercentHeight(percent),
                   ),
                 ),
               ),

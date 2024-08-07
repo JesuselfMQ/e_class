@@ -25,7 +25,7 @@ final GoRouter router = GoRouter(routes: [
                 const SettingsScreen(),
             routes: [
               GoRoute(
-                  path: 'consonants',
+                  path: 'syllables',
                   builder: (BuildContext context, GoRouterState state) =>
                       const SyllablesSettingsScreen())
             ]),

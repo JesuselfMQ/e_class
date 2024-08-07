@@ -20,7 +20,7 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
     final settings = context.read<SettingsController>();
     final size = SizeConfig(context);
     return FillBackground(
-        background: '${backgroung}settings_background.jpg',
+        background: '${backgroung}settings.jpg',
         child: ResponsiveScreen(
             squarishMainArea: ListView.builder(
                 itemCount: allPhoneticComponents.length,

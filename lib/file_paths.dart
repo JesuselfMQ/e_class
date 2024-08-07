@@ -1,8 +1,7 @@
-// File paths used in the game.
-const backgroung = "assets/Images/Background/";
+// File paths used in the app.
+const backgroung = "assets/Images/Decoration/Background/";
 const decoration = "assets/Images/Decoration/";
-const ui = "assets/Images/UI/";
+const animated = "${decoration}Animated/";
 const music = "Audio/Music/";
-const points = "assets/Images/UI/points/";
-
-const pointColors = ["pink", "blue", "green", "orange"];
+const ui = "assets/Images/UI/";
+const points = "${ui}points/";

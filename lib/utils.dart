@@ -1,4 +1,3 @@
-import 'package:e_class/extensions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -46,10 +45,11 @@ class AlignedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-        alignment: horizontal.isNull || vertical.isNull
+        alignment: horizontal == null || vertical == null
+            // Align center by default.
             ? Alignment.center
             : Alignment(horizontal!, vertical!),
-        child: onSelected.isNull
+        child: onSelected == null
             ? Image.asset(image, width: width, height: height)
             : IconButton(
                 onPressed: onSelected,

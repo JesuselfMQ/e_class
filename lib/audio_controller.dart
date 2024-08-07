@@ -8,7 +8,7 @@ import 'file_paths.dart';
 import 'settings.dart';
 import 'sounds.dart';
 
-/// Allows playing music and sound.
+/// Allows playing music and sounds.
 class AudioController with SoundFileNames {
   final AudioPlayer sfxPlayer = AudioPlayer();
 
@@ -42,7 +42,7 @@ class AudioController with SoundFileNames {
     sfxPlayer.dispose();
   }
 
-  /// Preloads all sound effects.
+  /// Preloads songs.
   Future<void> initialize() async {
     await AudioCache.instance
         .loadAll(songs.map((file) => "$music$file.mp3").toList());

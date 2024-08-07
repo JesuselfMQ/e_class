@@ -92,7 +92,7 @@ class SyllableHandler with PhoneticData {
         filterGroupedSyllables();
     syllables = syllables.sortCaseInsensitive();
     if (syllables.length < 10) {
-      // Add vowels in the case that not enough letters were enabled.
+      // Add vowels in the case that not enough syllables were enabled.
       var safeSyllables = vowels.map((vowel) => vowel.toUpperCase());
       syllables.addAll(safeSyllables);
       syllables.addAll(safeSyllables);

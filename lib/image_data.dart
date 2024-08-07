@@ -31,7 +31,7 @@ class ImageData {
   factory ImageData.menuImage(String path, double horizontalAlignment,
       double verticalAlignment, SizeConfig sizeConfig,
       [VoidCallback? onSelected]) {
-    return ImageData(decoration + path, horizontalAlignment, verticalAlignment,
+    return ImageData(animated + path, horizontalAlignment, verticalAlignment,
         sizeConfig, widthPercentMenuImage, heightPercentMenuImage, onSelected);
   }
 
