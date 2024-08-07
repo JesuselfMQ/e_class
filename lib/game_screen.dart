@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'animation.dart';
 import 'audio_controller.dart';
 import 'file_paths.dart';
+import 'game_utils.dart';
 import 'settings.dart';
 import 'size_config.dart';
 import 'syllable_handler.dart';

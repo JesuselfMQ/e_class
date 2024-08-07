@@ -64,22 +64,22 @@ class SettingsScreen extends StatelessWidget {
               ),
               gap,
               ValueListenableBuilder(
-                  valueListenable: settings.soundsVolume,
-                  builder: (_, soundsVolume, __) => SettingsLine(
-                        'Volumen Sonidos',
-                        slider: AudioSlider(settings.soundsVolume.value, size,
-                            (double value) => settings.setSoundsVolume(value)),
-                        size,
-                      )),
+                valueListenable: settings.soundsVolume,
+                builder: (_, soundsVolume, __) => SettingsLine(
+                    'Volumen Sonidos', size,
+                    sliderValue: settings.soundsVolume.value,
+                    onChangedSlider: (double value) =>
+                        settings.setSoundsVolume(value)),
+              ),
               gap,
               ValueListenableBuilder(
-                  valueListenable: settings.musicVolume,
-                  builder: (_, musicVolume, __) => SettingsLine(
-                        'Volumen Música',
-                        size,
-                        slider: AudioSlider(settings.musicVolume.value, size,
-                            (double value) => settings.setMusicVolume(value)),
-                      ))
+                valueListenable: settings.musicVolume,
+                builder: (_, musicVolume, __) => SettingsLine(
+                    'Volumen Música', size,
+                    sliderValue: settings.musicVolume.value,
+                    onChangedSlider: (double value) =>
+                        settings.setMusicVolume(value)),
+              )
             ],
           ),
           rectangularMenuArea:
@@ -99,15 +99,18 @@ class SettingsLine extends StatelessWidget {
 
   final double iconHeight;
 
-  final Widget? slider;
+  final void Function(double value)? onChangedSlider;
 
-  final VoidCallback? onSelected;
+  final double? sliderValue;
+
+  final void Function()? onSelected;
 
   final SizeConfig size;
 
   const SettingsLine(this.title, this.size,
       {this.onSelected,
-      this.slider,
+      this.onChangedSlider,
+      this.sliderValue,
       this.iconName,
       this.percent = 8,
       this.iconWidth = 5,
@@ -116,6 +119,7 @@ class SettingsLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool sliderRequired = sliderValue != null && onChangedSlider != null;
     return Material(
         type: MaterialType.transparency,
         child: InkResponse(
@@ -135,14 +139,46 @@ class SettingsLine extends StatelessWidget {
                   ),
                 ),
               ),
-              slider ??
-                  Image.asset(
-                    iconName!,
-                    width: size.safeBlockHorizontal * iconWidth,
-                    height: size.safeBlockVertical * iconHeight,
-                  ),
+              sliderRequired
+                  ? MySlider(sliderValue!, size, onChangedSlider)
+                  : Image.asset(
+                      iconName!,
+                      width: size.safeBlockHorizontal * iconWidth,
+                      height: size.safeBlockVertical * iconHeight,
+                    ),
             ],
           ),
         ));
+  }
+}
+
+/// Slider with responsive size.
+class MySlider extends StatelessWidget {
+  final double value;
+
+  final void Function(double)? onChanged;
+
+  final SizeConfig size;
+
+  const MySlider(this.value, this.size, this.onChanged, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliderTheme(
+        data: SliderTheme.of(context).copyWith(
+          overlayShape: SliderComponentShape.noOverlay,
+          trackHeight: size.safeBlockVertical * 0.9998,
+          thumbShape: RoundSliderThumbShape(
+              enabledThumbRadius: size.safeBlockHorizontal * 1.25),
+        ),
+        child: SizedBox(
+            width: size.safeBlockHorizontal * 20,
+            child: Slider(
+              value: value,
+              onChanged: onChanged,
+              max: 1.00,
+              min: 0.00,
+              divisions: 50,
+            )));
   }
 }

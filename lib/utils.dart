@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'file_paths.dart';
 import 'size_config.dart';
 
-/// Sets a background that fills the screen.
+/// Sets a background image that fills the screen.
 class FillBackground extends StatelessWidget {
   final Widget child;
 
@@ -44,81 +44,15 @@ class AlignedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var icon = Image.asset(image, width: width, height: height);
     return Align(
         alignment: horizontal == null || vertical == null
             // Align center by default.
             ? Alignment.center
             : Alignment(horizontal!, vertical!),
         child: onSelected == null
-            ? Image.asset(image, width: width, height: height)
-            : IconButton(
-                onPressed: onSelected,
-                icon: Image.asset(
-                  image,
-                  width: width,
-                  height: height,
-                )));
-  }
-}
-
-/// Audio slider with responsive size.
-class AudioSlider extends StatelessWidget {
-  final double value;
-
-  final void Function(double)? onChanged;
-
-  final SizeConfig size;
-
-  const AudioSlider(this.value, this.size, this.onChanged, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliderTheme(
-        data: SliderTheme.of(context).copyWith(
-          overlayShape: SliderComponentShape.noOverlay,
-          trackHeight: size.safeBlockVertical * 0.9998,
-          thumbShape: RoundSliderThumbShape(
-              enabledThumbRadius: size.safeBlockHorizontal * 1.25),
-        ),
-        child: SizedBox(
-            width: size.safeBlockHorizontal * 20,
-            child: Slider(
-              value: value,
-              onChanged: onChanged,
-              max: 1.00,
-              min: 0.00,
-              divisions: 50,
-            )));
-  }
-}
-
-/// Styled button for displaying syllables.
-class SyllableButton extends StatelessWidget {
-  final void Function()? onPressed;
-
-  final String syllable;
-
-  final SizeConfig size;
-
-  const SyllableButton(
-      {required this.syllable,
-      required this.size,
-      required this.onPressed,
-      super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: TextButton(
-            onPressed: onPressed,
-            child: Text(syllable,
-                style: TextStyle(
-                    fontSize: size.safeBlockVertical * 12.1359,
-                    fontFamily: 'Ginthul',
-                    foreground: Paint()
-                      ..style = PaintingStyle.fill
-                      ..strokeWidth = 4
-                      ..color = const Color.fromRGBO(69, 69, 69, 1)))));
+            ? icon
+            : IconButton(onPressed: onSelected, icon: icon));
   }
 }
 
@@ -148,16 +82,6 @@ class ValueListenableBuilder2<A, B> extends StatelessWidget {
           );
         },
       );
-}
-
-Widget getGameUiElement(
-    String path, SizeConfig size, double percentWidth, double percentHeight,
-    [void Function()? onSelected]) {
-  return AlignedImage(
-      image: path,
-      width: size.safeBlockHorizontal * percentWidth,
-      height: size.safeBlockVertical * percentHeight,
-      onSelected: onSelected);
 }
 
 Widget getArrowBackButton(SizeConfig size, void Function()? onPressed) {
