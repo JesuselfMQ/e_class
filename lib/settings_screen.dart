@@ -15,6 +15,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = SizeConfig(context);
+    final utils = Utils(size);
     final settings = context.read<SettingsController>();
     final audio = context.read<AudioController>();
     final gap = SizedBox(height: size.safeBlockVertical * 0.5);
@@ -83,7 +84,7 @@ class SettingsScreen extends StatelessWidget {
             ],
           ),
           rectangularMenuArea:
-              getArrowBackButton(size, () => GoRouter.of(context).pop()),
+              utils.getArrowBackButton(() => GoRouter.of(context).pop()),
         ));
   }
 }

@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'animation.dart';
 import 'audio_controller.dart';
 import 'file_paths.dart';
-import 'game_utils.dart';
 import 'settings.dart';
 import 'size_config.dart';
 import 'syllable_handler.dart';
@@ -110,7 +109,28 @@ class _GameScreenState extends State<GameScreen>
     GoRouter.of(context).pop();
   }
 
-  Widget getGameHud() => GridView.count(
+  @override
+  Widget build(BuildContext context) {
+    size = SizeConfig(context);
+    final utils = Utils(size);
+    return FillBackground(
+        background: '${backgroung}game.jpg',
+        child: Stack(children: [
+          Column(children: [
+            Expanded(child: getGameHud(utils)),
+            Expanded(
+                flex: 2,
+                child: ValueListenableBuilder(
+                    valueListenable: displaySyllables,
+                    builder: (_, display, __) =>
+                        getSyllablesDisplay(display, utils))),
+            utils.getArrowBackButton(() => goToMenu())
+          ]),
+          for (var i = 0; i < 5; i++) animation.getPointsTransition(size, i)
+        ]));
+  }
+
+  Widget getGameHud(Utils utils) => GridView.count(
         childAspectRatio: size.aspectRatio * 1.4,
         crossAxisCount: 3,
         children: [
@@ -120,33 +140,32 @@ class _GameScreenState extends State<GameScreen>
                   (int index) => ValueListenableBuilder2(
                       first: animation.pointsOn[index],
                       second: animation.transitionOn[index],
-                      builder: (_, __, ___, ____) => getGameUiElement(
+                      builder: (_, __, ___, ____) => utils.getCenteredImage(
                             animation.getPointsImageFilePath(index),
-                            size,
                             6,
                             30,
                           )))),
           ValueListenableBuilder(
               valueListenable: attempts,
               builder: (_, lives, __) =>
-                  getGameUiElement("${ui}lives_$lives.gif", size, 25, 25)),
+                  utils.getCenteredImage("${ui}lives_$lives.gif", 25, 25)),
           ValueListenableBuilder(
               valueListenable: syllableSound,
-              builder: (_, sound, __) => getGameUiElement(
+              builder: (_, sound, __) => utils.getCenteredImage(
                   "${ui}play_sound_button.png",
-                  size,
                   10,
                   16,
                   () => audio.playSfx(sound)))
         ],
       );
 
-  Widget getSyllablesDisplay(List<String> display) => GridView.count(
+  Widget getSyllablesDisplay(List<String> display, Utils utils) =>
+      GridView.count(
         childAspectRatio: size.aspectRatio * 0.85,
         crossAxisCount: 5,
         children: List.generate(10, (int index) {
           return Stack(children: [
-            getGameUiElement("${ui}note.png", size, 34, 36),
+            utils.getCenteredImage("${ui}note.png", 34, 36),
             display.isEmpty
                 ? const Text("")
                 : SyllableButton(
@@ -156,23 +175,34 @@ class _GameScreenState extends State<GameScreen>
           ]);
         }),
       );
+}
+
+/// Styled button for displaying syllables.
+class SyllableButton extends StatelessWidget {
+  final void Function()? onPressed;
+
+  final String syllable;
+
+  final SizeConfig size;
+
+  const SyllableButton(
+      {required this.syllable,
+      required this.size,
+      required this.onPressed,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
-    size = SizeConfig(context);
-    return FillBackground(
-        background: '${backgroung}game.jpg',
-        child: Stack(children: [
-          Column(children: [
-            Expanded(child: getGameHud()),
-            Expanded(
-                flex: 2,
-                child: ValueListenableBuilder(
-                    valueListenable: displaySyllables,
-                    builder: (_, display, __) => getSyllablesDisplay(display))),
-            getArrowBackButton(size, () => goToMenu())
-          ]),
-          for (var i = 0; i < 5; i++) animation.getPointsTransition(size, i)
-        ]));
+    return Center(
+        child: TextButton(
+            onPressed: onPressed,
+            child: Text(syllable,
+                style: TextStyle(
+                    fontSize: size.safeBlockVertical * 12.1359,
+                    fontFamily: 'Ginthul',
+                    foreground: Paint()
+                      ..style = PaintingStyle.fill
+                      ..strokeWidth = 4
+                      ..color = const Color.fromRGBO(69, 69, 69, 1)))));
   }
 }

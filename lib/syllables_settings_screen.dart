@@ -19,6 +19,7 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
     final audio = context.read<AudioController>();
     final settings = context.read<SettingsController>();
     final size = SizeConfig(context);
+    final utils = Utils(size);
     return FillBackground(
         background: '${backgroung}settings.jpg',
         child: ResponsiveScreen(
@@ -42,6 +43,6 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
                           }));
                 }),
             rectangularMenuArea:
-                getArrowBackButton(size, () => GoRouter.of(context).pop())));
+                utils.getArrowBackButton(() => GoRouter.of(context).pop())));
   }
 }

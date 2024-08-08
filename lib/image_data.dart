@@ -1,8 +1,6 @@
 import 'package:e_class/file_paths.dart';
 import 'package:flutter/material.dart';
 
-import 'size_config.dart';
-
 /// Stores useful image information.
 class ImageData {
   final String path;
@@ -10,41 +8,29 @@ class ImageData {
   final double horizontalAlignment;
   final double verticalAlignment;
   // Size data
-  final SizeConfig sizeConfig;
-  static const int widthPercentMenuImage = 20;
-  static const int heightPercentMenuImage = 40;
-  static const int widthPercentMenuButton = 11;
-  static const int heightPercentMenuButton = 18;
-  final int widthPercent;
-  final int heightPercent;
-  late final double width;
-  late final double height;
+  static const int widthMenuImage = 20;
+  static const int heightMenuImage = 40;
+  static const int widthMenuButton = 11;
+  static const int heightMenuButton = 18;
+  final int width;
+  final int height;
   final VoidCallback? onSelected;
 
   ImageData(this.path, this.horizontalAlignment, this.verticalAlignment,
-      this.sizeConfig, this.widthPercent, this.heightPercent,
-      [this.onSelected]) {
-    width = sizeConfig.safeBlockHorizontal * widthPercent;
-    height = sizeConfig.safeBlockVertical * heightPercent;
-  }
+      this.width, this.height,
+      [this.onSelected]);
 
-  factory ImageData.menuImage(String path, double horizontalAlignment,
-      double verticalAlignment, SizeConfig sizeConfig,
+  factory ImageData.menuImage(
+      String path, double horizontalAlignment, double verticalAlignment,
       [VoidCallback? onSelected]) {
     return ImageData(animated + path, horizontalAlignment, verticalAlignment,
-        sizeConfig, widthPercentMenuImage, heightPercentMenuImage, onSelected);
+        widthMenuImage, heightMenuImage, onSelected);
   }
 
-  factory ImageData.menuButton(String path, double horizontalAlignment,
-      double verticalAlignment, SizeConfig sizeConfig,
+  factory ImageData.menuButton(
+      String path, double horizontalAlignment, double verticalAlignment,
       [VoidCallback? onSelected]) {
-    return ImageData(
-        ui + path,
-        horizontalAlignment,
-        verticalAlignment,
-        sizeConfig,
-        widthPercentMenuButton,
-        heightPercentMenuButton,
-        onSelected);
+    return ImageData(ui + path, horizontalAlignment, verticalAlignment,
+        widthMenuButton, heightMenuButton, onSelected);
   }
 }

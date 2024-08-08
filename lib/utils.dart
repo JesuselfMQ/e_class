@@ -84,10 +84,26 @@ class ValueListenableBuilder2<A, B> extends StatelessWidget {
       );
 }
 
-Widget getArrowBackButton(SizeConfig size, void Function()? onPressed) {
-  return IconButton(
-      onPressed: onPressed,
-      icon: Image.asset("${ui}arrow_button_back.png",
-          width: size.safeBlockHorizontal * 9,
-          height: size.safeBlockVertical * 14));
+class Utils {
+  SizeConfig size;
+
+  Utils(this.size);
+
+  Widget getCenteredImage(
+      String path, double percentWidth, double percentHeight,
+      [void Function()? onSelected]) {
+    return AlignedImage(
+        image: path,
+        width: size.safeBlockHorizontal * percentWidth,
+        height: size.safeBlockVertical * percentHeight,
+        onSelected: onSelected);
+  }
+
+  Widget getArrowBackButton(void Function()? onPressed) {
+    return IconButton(
+        onPressed: onPressed,
+        icon: Image.asset("${ui}arrow_button_back.png",
+            width: size.safeBlockHorizontal * 9,
+            height: size.safeBlockVertical * 14));
+  }
 }
