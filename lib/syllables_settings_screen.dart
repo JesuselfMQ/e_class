@@ -1,3 +1,4 @@
+import 'package:e_class/decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -7,7 +8,6 @@ import 'file_paths.dart';
 import 'phonetic_data.dart';
 import 'responsive_screen.dart';
 import 'settings.dart';
-import 'settings_screen.dart';
 import 'size_config.dart';
 import 'utils.dart';
 
@@ -29,14 +29,13 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
                   String syllable = allPhoneticComponents[index];
                   return ValueListenableBuilder(
                       valueListenable: settings.syllablesPrefs[syllable]!,
-                      builder: (context, syllableOn, child) => SettingsLine(
+                      builder: (context, syllableOn, child) => utils.getSetting(
                               syllable.toUpperCase(),
                               iconName: syllableOn
                                   ? '${ui}enable.png'
                                   : '${ui}disable.png',
                               iconWidth: 12,
-                              iconHeight: 6,
-                              size, onSelected: () {
+                              iconHeight: 6, onSelected: () {
                             settings.toggleSyllableOn(syllable);
                             final shift = audio.sfx["shift"]?.join();
                             audio.playSfx(shift);

@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 import 'animation.dart';
 import 'audio_controller.dart';
+import 'decoration.dart';
 import 'file_paths.dart';
+import 'my_value_listenable.dart';
 import 'settings.dart';
 import 'size_config.dart';
 import 'syllable_handler.dart';
@@ -36,6 +38,7 @@ class _GameScreenState extends State<GameScreen>
   late final AudioController audio;
   late final PointsAnimationHandler animation;
   late SizeConfig size;
+  late Utils utils;
 
   @override
   void dispose() {
@@ -65,8 +68,7 @@ class _GameScreenState extends State<GameScreen>
 
     await syllableHandler.initialize();
     syllables.value = syllableHandler.filterAllSyllables();
-    displaySyllables.value = syllables.value.randomItems(10);
-    syllableSound.value = displaySyllables.value.randomItem;
+    assignNewSyllables();
   }
 
   /// When the user press a syllable button.
@@ -97,9 +99,12 @@ class _GameScreenState extends State<GameScreen>
     // Increment score
     score += 1;
     pointsIconCount += 1;
-    // Select new random syllables and update the display
-    List<String> newSyllables = syllables.value.randomItems(10);
-    displaySyllables.value = newSyllables;
+    assignNewSyllables();
+  }
+
+  /// Selects new random syllables and update the display
+  void assignNewSyllables() {
+    displaySyllables.value = syllables.value.randomItems(10);
     syllableSound.value = displaySyllables.value.randomItem;
   }
 
@@ -112,25 +117,24 @@ class _GameScreenState extends State<GameScreen>
   @override
   Widget build(BuildContext context) {
     size = SizeConfig(context);
-    final utils = Utils(size);
+    utils = Utils(size);
     return FillBackground(
         background: '${backgroung}game.jpg',
         child: Stack(children: [
           Column(children: [
-            Expanded(child: getGameHud(utils)),
+            Expanded(child: getGameHud()),
             Expanded(
                 flex: 2,
                 child: ValueListenableBuilder(
                     valueListenable: displaySyllables,
-                    builder: (_, display, __) =>
-                        getSyllablesDisplay(display, utils))),
+                    builder: (_, display, __) => getSyllablesDisplay(display))),
             utils.getArrowBackButton(() => goToMenu())
           ]),
           for (var i = 0; i < 5; i++) animation.getPointsTransition(size, i)
         ]));
   }
 
-  Widget getGameHud(Utils utils) => GridView.count(
+  Widget getGameHud() => GridView.count(
         childAspectRatio: size.aspectRatio * 1.4,
         crossAxisCount: 3,
         children: [
@@ -152,15 +156,14 @@ class _GameScreenState extends State<GameScreen>
           ValueListenableBuilder(
               valueListenable: syllableSound,
               builder: (_, sound, __) => utils.getCenteredImage(
-                  "${ui}play_sound_button.png",
+                  "${ui}play_syllable_button.png",
                   10,
                   16,
                   () => audio.playSfx(sound)))
         ],
       );
 
-  Widget getSyllablesDisplay(List<String> display, Utils utils) =>
-      GridView.count(
+  Widget getSyllablesDisplay(List<String> display) => GridView.count(
         childAspectRatio: size.aspectRatio * 0.85,
         crossAxisCount: 5,
         children: List.generate(10, (int index) {
