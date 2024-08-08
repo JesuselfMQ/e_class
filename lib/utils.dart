@@ -5,7 +5,7 @@ import 'file_paths.dart';
 import 'settings_display_widgets.dart';
 import 'size_config.dart';
 
-/// Stores methods that return widgets that use screen size information.
+/// Contains methods that return widgets that use screen size information.
 class Utils {
   SizeConfig size;
 
@@ -34,8 +34,8 @@ class Utils {
       String? iconName,
       double? iconWidth,
       double? iconHeight}) {
-    var imageRequired = iconWidth != null && iconHeight != null;
-    return imageRequired
+    var imagesizeRequired = iconWidth != null && iconHeight != null;
+    return imagesizeRequired
         ? SettingsLine(title, size,
             onSelected: onSelected,
             onChangedSlider: onChangedSlider,
