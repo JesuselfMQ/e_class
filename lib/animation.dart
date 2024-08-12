@@ -25,7 +25,8 @@ class PointsAnimationHandler {
     -0.51
   ];
 
-  final Queue<String> colors = Queue.of(["pink", "blue", "green", "orange"]);
+  final Queue<String> colors =
+      Queue.of(["pink", "blue", "green", "orange", "cyan", "purple"]);
 
   late AnimationController controller;
   late Animation<double> sizeAnimation;
@@ -35,7 +36,7 @@ class PointsAnimationHandler {
 
   PointsAnimationHandler(TickerProvider vsync) {
     controller = AnimationController(
-      duration: const Duration(milliseconds: 2500),
+      duration: const Duration(milliseconds: 2000),
       vsync: vsync,
     );
     rotateAnimation = Tween<double>(begin: 0, end: 6).animate(

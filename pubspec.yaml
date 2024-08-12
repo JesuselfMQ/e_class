@@ -69,11 +69,6 @@ flutter:
 
   fonts:
 
-    - family: Fifth Grader
-      fonts:
-
-        - asset: assets/Fifth-Grader.ttf
-
     - family: Ginthul
       fonts:
 

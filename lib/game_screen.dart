@@ -83,7 +83,7 @@ class _GameScreenState extends State<GameScreen>
       // Subtract one attempt
       attempts.value -= 1;
     } else {
-      goToMenu();
+      goToLooseScreen();
     }
   }
 
@@ -108,6 +108,10 @@ class _GameScreenState extends State<GameScreen>
     syllableSound.value = displaySyllables.value.randomItem;
   }
 
+  void goToLooseScreen() {
+    context.go('/game/lose', extra: score);
+  }
+
   /// Navigates back to the menu screen.
   void goToMenu() {
     settings.setMusicVolume(settings.oldMusicVolume);
@@ -119,7 +123,7 @@ class _GameScreenState extends State<GameScreen>
     size = SizeConfig(context);
     utils = Utils(size);
     return FillBackground(
-        background: '${backgroung}game.jpg',
+        background: '${background}game.jpg',
         child: Stack(children: [
           Column(children: [
             Expanded(child: getGameHud()),

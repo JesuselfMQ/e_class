@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'game_screen.dart';
+import 'lose_screen.dart';
 import 'main_menu_screen.dart';
+import 'my_counter.dart';
 import 'settings_screen.dart';
 import 'syllables_settings_screen.dart';
 
@@ -15,10 +17,16 @@ final GoRouter router = GoRouter(routes: [
           const MainMenuScreen(),
       routes: [
         GoRoute(
-          path: 'game',
-          builder: (BuildContext context, GoRouterState state) =>
-              const GameScreen(),
-        ),
+            path: 'game',
+            builder: (BuildContext context, GoRouterState state) =>
+                const GameScreen(),
+            routes: [
+              GoRoute(
+                  path: 'lose',
+                  builder: (BuildContext context, GoRouterState state) {
+                    final score = state.extra as int;
+                      return LoseScreen(score: score, counter: MyCounter(),);})
+            ]),
         GoRoute(
             path: 'settings',
             builder: (BuildContext context, GoRouterState state) =>
