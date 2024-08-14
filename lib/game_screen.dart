@@ -24,6 +24,8 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen>
     with SingleTickerProviderStateMixin {
+  static const maxPoints = 5;
+
   int score = 0;
   int pointsIconCount = 0;
   bool _isInitialized = false;
@@ -83,14 +85,14 @@ class _GameScreenState extends State<GameScreen>
       // Subtract one attempt
       attempts.value -= 1;
     } else {
-      goToLooseScreen();
+      goToLoseScreen();
     }
   }
 
   void handleWin() {
     final winSfx = audio.sfx["win"]?.randomItem;
     audio.playSfx(winSfx);
-    if (pointsIconCount == 5) {
+    if (pointsIconCount == maxPoints) {
       pointsIconCount = 0;
       animation.restartPointImages();
     }
@@ -108,14 +110,14 @@ class _GameScreenState extends State<GameScreen>
     syllableSound.value = displaySyllables.value.randomItem;
   }
 
-  void goToLooseScreen() {
+  void goToLoseScreen() {
     context.go('/game/lose', extra: score);
   }
 
   /// Navigates back to the menu screen.
   void goToMenu() {
     settings.setMusicVolume(settings.oldMusicVolume);
-    GoRouter.of(context).pop();
+    context.go('/');
   }
 
   @override
@@ -134,7 +136,8 @@ class _GameScreenState extends State<GameScreen>
                     builder: (_, display, __) => getSyllablesDisplay(display))),
             utils.getArrowBackButton(() => goToMenu())
           ]),
-          for (var i = 0; i < 5; i++) animation.getPointsTransition(size, i)
+          for (var i = 0; i < maxPoints; i++)
+            animation.getPointsTransition(size, i)
         ]));
   }
 
@@ -144,7 +147,7 @@ class _GameScreenState extends State<GameScreen>
         children: [
           Row(
               children: List.generate(
-                  5,
+                  maxPoints,
                   (int index) => ValueListenableBuilder2(
                       first: animation.pointsOn[index],
                       second: animation.transitionOn[index],

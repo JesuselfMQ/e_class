@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 
@@ -24,9 +23,6 @@ class PointsAnimationHandler {
     -0.63,
     -0.51
   ];
-
-  final Queue<String> colors =
-      Queue.of(["pink", "blue", "green", "orange", "cyan", "purple"]);
 
   late AnimationController controller;
   late Animation<double> sizeAnimation;
@@ -66,7 +62,7 @@ class PointsAnimationHandler {
   void startAnimation(int index) {
     transitionOn[index].value = true;
     controller.forward(from: 0).then((_) async {
-      await Future.delayed(const Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 400));
       moveAlignment.value =
           Alignment(moveAlignmentEndX[index], moveAlignmentEndY);
       Timer(moveAnimationDuration, () {

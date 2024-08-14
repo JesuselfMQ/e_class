@@ -12,11 +12,12 @@ mixin SoundFileNames {
           "win-1-sfx",
           "win-2-sfx",
           "win-3-sfx",
-          "win-4-sfx"
+          "win-4-sfx",
           "win-5-sfx"
         ],
         "lose": ["lose-1-sfx", "lose-2-sfx"],
         "shift": ["shift-1-sfx"],
-        "greetings": ["greetings-1-sfx"]
+        "greetings": ["greetings-1-sfx"],
+        "celebration": ["celebration-1-sfx"]
       };
 }

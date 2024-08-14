@@ -25,7 +25,7 @@ final GoRouter router = GoRouter(routes: [
                   path: 'lose',
                   builder: (BuildContext context, GoRouterState state) {
                     final score = state.extra as int;
-                      return LoseScreen(score: score, counter: MyCounter(),);})
+                      return LoseScreen(score: score, counter: MyCounter(context));})
             ]),
         GoRoute(
             path: 'settings',
