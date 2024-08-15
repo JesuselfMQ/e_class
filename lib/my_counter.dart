@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:e_class/extensions.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ class MyCounter {
 
   late final AudioController audio;
 
+  final Queue<String> starColors = Queue.of(colors);
+
   MyCounter(BuildContext context) {
     audio = context.read<AudioController>();
   }
@@ -40,8 +43,8 @@ class MyCounter {
       });
       imageTimer = Timer.periodic(const Duration(milliseconds: 150), (_) {
         if (!hasFinished.value) {
-          color.value = colors.first;
-          colors.addLast(colors.removeFirst());
+          color.value = starColors.first;
+          starColors.addLast(starColors.removeFirst());
         } else {
           imageTimer?.cancel();
         }

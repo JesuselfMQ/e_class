@@ -22,7 +22,7 @@ class LoseScreen extends StatelessWidget {
     final gap = SizedBox(width: size.safeBlockHorizontal * 4);
     counter.startCounter(score);
     return FillBackground(
-        background: "${background}lose.jpg",
+        backgroundFile: "lose.jpg",
         child: Stack(children: [
           Column(
             children: [

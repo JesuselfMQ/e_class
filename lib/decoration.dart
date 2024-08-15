@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'file_paths.dart';
+
 /// Sets a background image that fills the screen.
 class FillBackground extends StatelessWidget {
   final Widget child;
 
-  final String background;
+  final String backgroundFile;
 
   const FillBackground(
-      {required this.child, required this.background, super.key});
+      {required this.child, required this.backgroundFile, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,8 @@ class FillBackground extends StatelessWidget {
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(background), fit: BoxFit.fill)),
+                    image: AssetImage(background + backgroundFile),
+                    fit: BoxFit.fill)),
             child: child));
   }
 }

@@ -125,7 +125,7 @@ class _GameScreenState extends State<GameScreen>
     size = SizeConfig(context);
     utils = Utils(size);
     return FillBackground(
-        background: '${background}game.jpg',
+        backgroundFile: 'game.jpg',
         child: Stack(children: [
           Column(children: [
             Expanded(child: getGameHud()),

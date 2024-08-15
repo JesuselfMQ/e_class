@@ -26,10 +26,9 @@ class MainMenuScreen extends StatelessWidget {
           "play_button.png", 0.0, 0.4, () => goToGame(context, settings)),
       ImageData.menuButton(
           "settings_button.png", 0.9, 0.9, () => context.go('/settings')),
-      ImageData.menuButton("abc_button.png", 0.5, 0.4, () => context.go('/game/lose', extra: 20))
     ];
     return FillBackground(
-      background: '${background}menu.jpg',
+      backgroundFile: 'menu.jpg',
       child: Stack(
         children: images
             .map((data) => AlignedImage(

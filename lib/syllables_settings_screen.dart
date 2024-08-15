@@ -21,7 +21,7 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
     final size = SizeConfig(context);
     final utils = Utils(size);
     return FillBackground(
-        background: '${background}settings.jpg',
+        backgroundFile: 'settings.jpg',
         child: ResponsiveScreen(
             squarishMainArea: ListView.builder(
                 itemCount: allPhoneticComponents.length,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,8 @@ class PointsAnimationHandler {
     -0.63,
     -0.51
   ];
+
+  final Queue<String> starColors = Queue.of(colors);
 
   late AnimationController controller;
   late Animation<double> sizeAnimation;
@@ -94,8 +97,8 @@ class PointsAnimationHandler {
                   turns: rotateAnimation,
                   child: ScaleTransition(
                     scale: sizeAnimation,
-                    child:
-                        Image.asset("${points}points_${colors.first}_on.png"),
+                    child: Image.asset(
+                        "${points}points_${starColors.first}_on.png"),
                   ),
                 ),
               ),
@@ -110,12 +113,12 @@ class PointsAnimationHandler {
       return "${ui}empty.png";
     }
     return pointsOn[index].value
-        ? "${points}points_${colors.first}.gif"
+        ? "${points}points_${starColors.first}.gif"
         : "${points}points.png";
   }
 
   void restartPointImages() {
-    colors.addLast(colors.removeFirst());
+    starColors.addLast(starColors.removeFirst());
     for (var i in pointsOn) {
       i.value = false;
     }

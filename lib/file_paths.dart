@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 // File paths used in the app.
 const background = "assets/Images/Decoration/Background/";
 const decoration = "assets/Images/Decoration/";
@@ -8,5 +6,4 @@ const music = "Audio/Music/";
 const ui = "assets/Images/UI/";
 const points = "${ui}points/";
 
-final Queue<String> colors =
-      Queue.of(["pink", "blue", "green", "orange", "cyan", "purple"]);
+const colors = ["pink", "blue", "green", "orange", "cyan", "purple"];

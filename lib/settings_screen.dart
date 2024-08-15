@@ -22,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
     final gap = SizedBox(height: size.safeBlockVertical * 0.5);
 
     return FillBackground(
-        background: '${background}settings.jpg',
+        backgroundFile: 'settings.jpg',
         child: ResponsiveScreen(
           squarishMainArea: ListView(
             children: [
