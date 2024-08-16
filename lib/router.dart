@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'abc_screen.dart';
 import 'game_screen.dart';
 import 'lose_screen.dart';
 import 'main_menu_screen.dart';
 import 'my_counter.dart';
+import 'phonetic_learning_screen.dart';
 import 'settings_screen.dart';
 import 'syllables_settings_screen.dart';
 
@@ -17,6 +19,14 @@ final GoRouter router = GoRouter(routes: [
           const MainMenuScreen(),
       routes: [
         GoRoute(
+            path: 'phonetic',
+            builder: (context, state) => const AbecedaryScreen(),
+            routes: [
+              GoRoute(
+                  path: 'session/:phoneticComponent',
+                  builder: (context, state) => const LearningSessionScreen())
+            ]),
+        GoRoute(
             path: 'game',
             builder: (BuildContext context, GoRouterState state) =>
                 const GameScreen(),
@@ -25,7 +35,9 @@ final GoRouter router = GoRouter(routes: [
                   path: 'lose',
                   builder: (BuildContext context, GoRouterState state) {
                     final score = state.extra as int;
-                      return LoseScreen(score: score, counter: MyCounter(context));})
+                    return LoseScreen(
+                        score: score, counter: MyCounter(context));
+                  })
             ]),
         GoRoute(
             path: 'settings',
