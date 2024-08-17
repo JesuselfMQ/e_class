@@ -1,15 +1,23 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'decoration.dart';
 import 'file_paths.dart';
+import 'phonetic_data.dart';
 import 'settings_display_widgets.dart';
 import 'size_config.dart';
 
 /// Contains methods that return widgets that use screen size information.
-class Utils {
+class Utils with PhoneticData {
   SizeConfig size;
 
-  Utils(this.size);
+  BuildContext? context;
+
+  final Queue<String> phonetic = Queue.of(PhoneticData.phoneticLearningOrder);
+
+  Utils(this.size, [this.context]);
 
   /// Returns a centered image or image button if onSelected parameter is provided.
   Widget getCenteredImage(
@@ -48,5 +56,16 @@ class Utils {
             onChangedSlider: onChangedSlider,
             sliderValue: sliderValue,
             iconName: iconName);
+  }
+
+  Widget getPhoneticElementWidget() {
+    return Stack(children: [
+      getCenteredImage("${ui}note.png", 26, 34),
+      SyllableButton(
+          syllable: phonetic.removeFirst().toUpperCase(),
+          size: size,
+          fontSize: 16,
+          onPressed: () => context?.go('/phonetic/:letter'))
+    ]);
   }
 }

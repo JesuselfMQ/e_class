@@ -1,5 +1,7 @@
 import 'dart:math';
 
+final random = Random();
+
 extension ListItemsExtension<E> on List<E> {
   /// Gets a specified number of random list elements.
   List<E> randomItems(int count) => (this..shuffle()).take(count).toList();
@@ -7,7 +9,7 @@ extension ListItemsExtension<E> on List<E> {
 
 extension FirstItem<E> on List<E> {
   /// Gets a single random item from a list.
-  E get randomItem => this[Random().nextInt(length)];
+  E get randomItem => this[random.nextInt(length)];
 }
 
 extension StringCasingExtension on String {

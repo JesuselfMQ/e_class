@@ -45,7 +45,7 @@ mixin PhoneticData {
       vowels + consonants + ending + grouped + digraphsAndDiphthongs;
 
   /// Phonetic Elements in Learning order. Based on books: https://online.fliphtml5.com/nltbt/juxf/#p=1
-  List<String> get phoneticLearningOrder => [
+  static const phoneticLearningOrder = [
         "a",
         "e",
         "i",

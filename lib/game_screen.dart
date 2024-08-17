@@ -181,6 +181,7 @@ class _GameScreenState extends State<GameScreen>
                 : SyllableButton(
                     syllable: display[index],
                     size: size,
+                    fontSize: 12,
                     onPressed: () => onSyllablePressed(display[index]))
           ]);
         }),

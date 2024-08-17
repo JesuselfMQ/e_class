@@ -16,6 +16,7 @@ class FillBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
+          width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage(background + backgroundFile),
@@ -64,10 +65,13 @@ class SyllableButton extends StatelessWidget {
 
   final SizeConfig size;
 
+  final double fontSize;
+
   const SyllableButton(
       {required this.syllable,
       required this.size,
       required this.onPressed,
+      required this.fontSize,
       super.key});
 
   @override
@@ -77,7 +81,7 @@ class SyllableButton extends StatelessWidget {
             onPressed: onPressed,
             child: Text(syllable,
                 style: TextStyle(
-                    fontSize: size.safeBlockVertical * 12.1359,
+                    fontSize: size.getPercentHeight(fontSize),
                     fontFamily: 'Ginthul',
                     foreground: Paint()
                       ..style = PaintingStyle.fill
