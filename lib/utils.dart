@@ -59,13 +59,14 @@ class Utils with PhoneticData {
   }
 
   Widget getPhoneticElementWidget() {
+    final element = phonetic.removeFirst();
     return Stack(children: [
       getCenteredImage("${ui}note.png", 26, 34),
       SyllableButton(
-          syllable: phonetic.removeFirst().toUpperCase(),
+          syllable: element.toUpperCase(),
           size: size,
           fontSize: 16,
-          onPressed: () => context?.go('/phonetic/:letter'))
+          onPressed: () => context?.go('/phonetic/session/$element'))
     ]);
   }
 }

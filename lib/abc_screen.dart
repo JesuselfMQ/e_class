@@ -13,11 +13,11 @@ class AbecedaryScreen extends StatelessWidget with PhoneticData {
   @override
   Widget build(BuildContext context) {
     final size = SizeConfig(context);
-    final utils = Utils(size);
+    final utils = Utils(size, context);
     final ScrollController controller = ScrollController();
     const len = 98;
     return FillBackground(
-        backgroundFile: "abc.jpg",
+        backgroundFile: "selection.jpg",
         child: ScrollConfiguration(
           behavior: MyCustomScrollBehavior(),
           child: Column(

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'abc_screen.dart';
@@ -15,8 +14,7 @@ import 'syllables_settings_screen.dart';
 final GoRouter router = GoRouter(routes: [
   GoRoute(
       path: '/',
-      builder: (BuildContext context, GoRouterState state) =>
-          const MainMenuScreen(),
+      builder: (context, state) => const MainMenuScreen(),
       routes: [
         GoRoute(
             path: 'phonetic',
@@ -24,16 +22,18 @@ final GoRouter router = GoRouter(routes: [
             routes: [
               GoRoute(
                   path: 'session/:phoneticComponent',
-                  builder: (context, state) => const LearningSessionScreen())
+                  builder: (context, state) {
+                    final element = state.pathParameters['phoneticComponent']!;
+                    return LearningSessionScreen(phoneticElement: element);
+                  })
             ]),
         GoRoute(
             path: 'game',
-            builder: (BuildContext context, GoRouterState state) =>
-                const GameScreen(),
+            builder: (context, state) => const GameScreen(),
             routes: [
               GoRoute(
                   path: 'lose',
-                  builder: (BuildContext context, GoRouterState state) {
+                  builder: (context, state) {
                     final score = state.extra as int;
                     return LoseScreen(
                         score: score, counter: MyCounter(context));
@@ -41,13 +41,11 @@ final GoRouter router = GoRouter(routes: [
             ]),
         GoRoute(
             path: 'settings',
-            builder: (BuildContext context, GoRouterState state) =>
-                const SettingsScreen(),
+            builder: (context, state) => const SettingsScreen(),
             routes: [
               GoRoute(
                   path: 'syllables',
-                  builder: (BuildContext context, GoRouterState state) =>
-                      const SyllablesSettingsScreen())
+                  builder: (context, state) => const SyllablesSettingsScreen())
             ]),
       ])
 ]);
