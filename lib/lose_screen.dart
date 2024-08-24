@@ -49,10 +49,7 @@ class LoseScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: utils.getArrowBackButton(() => context.go('/')),
-              )
+              utils.getArrowBackButton(() => context.go('/')),
             ],
           ),
           Align(

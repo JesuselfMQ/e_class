@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Value listenable of two values.
 class ValueListenableBuilder2<A, B> extends StatelessWidget {
+  /// Value listenable of two values.
   const ValueListenableBuilder2(
       {required this.first,
       required this.second,

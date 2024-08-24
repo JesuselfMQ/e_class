@@ -13,9 +13,9 @@ import 'size_config.dart';
 import 'syllable_handler.dart';
 import 'utils.dart';
 
-/// This widget defines the entirety of the screen that the player sees when
-/// they are playing a game.
 class GameScreen extends StatefulWidget {
+  /// This widget defines the entirety of the screen that the player sees when
+  /// they are playing a game.
   const GameScreen({super.key});
 
   @override
@@ -151,7 +151,7 @@ class _GameScreenState extends State<GameScreen>
                   (int index) => ValueListenableBuilder2(
                       first: animation.pointsOn[index],
                       second: animation.transitionOn[index],
-                      builder: (_, __, ___, ____) => utils.getCenteredImage(
+                      builder: (_, __, ___, ____) => utils.getImage(
                             animation.getPointsImageFilePath(index),
                             6,
                             30,
@@ -159,14 +159,12 @@ class _GameScreenState extends State<GameScreen>
           ValueListenableBuilder(
               valueListenable: attempts,
               builder: (_, lives, __) =>
-                  utils.getCenteredImage("${ui}lives_$lives.gif", 25, 25)),
+                  utils.getImage("${ui}lives_$lives.gif", 25, 25)),
           ValueListenableBuilder(
               valueListenable: syllableSound,
-              builder: (_, sound, __) => utils.getCenteredImage(
-                  "${ui}play_syllable_button.png",
-                  10,
-                  16,
-                  () => audio.playSfx(sound)))
+              builder: (_, sound, __) => utils.getImage(
+                  "${ui}play_syllable_button.png", 10, 16,
+                  onSelected: () => audio.playSfx(sound)))
         ],
       );
 
@@ -175,7 +173,7 @@ class _GameScreenState extends State<GameScreen>
         crossAxisCount: 5,
         children: List.generate(10, (int index) {
           return Stack(children: [
-            utils.getCenteredImage("${ui}note.png", 34, 36),
+            utils.getImage("${ui}note.png", 34, 36),
             display.isEmpty
                 ? const Text("")
                 : SyllableButton(

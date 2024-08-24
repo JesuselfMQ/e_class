@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:gif_view/gif_view.dart';
 import 'package:go_router/go_router.dart';
 
 import 'decoration.dart';
@@ -20,20 +21,36 @@ class Utils with PhoneticData {
   Utils(this.size, [this.context]);
 
   /// Returns a centered image or image button if onSelected parameter is provided.
-  Widget getCenteredImage(
+  Widget getImage(
           String path, double percentWidth, double percentHeight,
-          [void Function()? onSelected]) =>
+          {double horizontal = 0,
+          double vertical = 0,
+          void Function()? onSelected, GifController? gif}) =>
       AlignedImage(
           image: path,
           width: size.safeBlockHorizontal * percentWidth,
           height: size.safeBlockVertical * percentHeight,
-          onSelected: onSelected);
+          horizontal: horizontal,
+          vertical: vertical,
+          onSelected: onSelected,
+          gif: gif);
 
-  Widget getArrowBackButton(void Function()? onPressed) => IconButton(
-      onPressed: onPressed,
-      icon: Image.asset("${ui}arrow_button_back.png",
-          width: size.safeBlockHorizontal * 9,
-          height: size.safeBlockVertical * 14));
+  Widget getArrowBackButton(void Function()? onPressed,
+      {bool aligned = false}) {
+    var button = IconButton(
+        onPressed: onPressed,
+        icon: Image.asset("${ui}arrow_button_back.png",
+            width: size.safeBlockHorizontal * 9,
+            height: size.safeBlockVertical * 14));
+    return aligned
+        ? Align(alignment: Alignment.bottomCenter, child: button)
+        : button;
+  }
+
+  Widget getResponsiveBox(double width, double height, Widget child) =>
+      ResponsiveSizedBox(
+          size.safeBlockHorizontal * width, size.safeBlockVertical * height,
+          child: child);
 
   Widget getSetting(String title,
       {void Function()? onSelected,
@@ -61,7 +78,7 @@ class Utils with PhoneticData {
   Widget getPhoneticElementWidget() {
     final element = phonetic.removeFirst();
     return Stack(children: [
-      getCenteredImage("${ui}note.png", 26, 34),
+      getImage("${ui}note.png", 26, 34),
       SyllableButton(
           syllable: element.toUpperCase(),
           size: size,
