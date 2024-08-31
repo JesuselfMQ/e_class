@@ -137,51 +137,54 @@ class _GameScreenState extends State<GameScreen>
             utils.getArrowBackButton(() => goToMenu())
           ]),
           for (var i = 0; i < maxPoints; i++)
-            animation.getPointsTransition(size, i)
+            animation.getPointsTransition(i, utils)
         ]));
   }
 
-  Widget getGameHud() => GridView.count(
-        childAspectRatio: size.aspectRatio * 1.4,
-        crossAxisCount: 3,
-        children: [
-          Row(
-              children: List.generate(
-                  maxPoints,
-                  (int index) => ValueListenableBuilder2(
-                      first: animation.pointsOn[index],
-                      second: animation.transitionOn[index],
-                      builder: (_, __, ___, ____) => utils.getImage(
-                            animation.getPointsImageFilePath(index),
-                            6,
-                            30,
-                          )))),
-          ValueListenableBuilder(
-              valueListenable: attempts,
-              builder: (_, lives, __) =>
-                  utils.getImage("${ui}lives_$lives.gif", 25, 25)),
-          ValueListenableBuilder(
-              valueListenable: syllableSound,
-              builder: (_, sound, __) => utils.getImage(
-                  "${ui}play_syllable_button.png", 10, 16,
-                  onSelected: () => audio.playSfx(sound)))
-        ],
-      );
+  Widget getGameHud() {
+    return GridView.count(
+      childAspectRatio: size.aspectRatio * 1.4,
+      padding: EdgeInsets.zero,
+      crossAxisCount: 3,
+      children: [
+        Row(
+            children: List.generate(
+                maxPoints,
+                (int index) => ValueListenableBuilder2(
+                    first: animation.pointsOn[index],
+                    second: animation.transitionOn[index],
+                    builder: (_, __, ___, ____) => utils.getImage(
+                          animation.getPointsImageFilePath(index),
+                          6,
+                          30,
+                        )))),
+        ValueListenableBuilder(
+            valueListenable: attempts,
+            builder: (_, lives, __) =>
+                utils.getImage("${ui}lives_$lives.gif", 25, 25)),
+        ValueListenableBuilder(
+            valueListenable: syllableSound,
+            builder: (_, sound, __) => utils.getImage(
+                "${ui}play_syllable_button.png", 10, 16,
+                onSelected: () => audio.playSfx(sound)))
+      ],
+    );
+  }
 
-  Widget getSyllablesDisplay(List<String> display) => GridView.count(
-        childAspectRatio: size.aspectRatio * 0.85,
-        crossAxisCount: 5,
-        children: List.generate(10, (int index) {
-          return Stack(children: [
-            utils.getImage("${ui}note.png", 34, 36),
-            display.isEmpty
-                ? const Text("")
-                : SyllableButton(
-                    syllable: display[index],
-                    size: size,
-                    fontSize: 12,
-                    onPressed: () => onSyllablePressed(display[index]))
-          ]);
-        }),
-      );
+  Widget getSyllablesDisplay(List<String> display) {
+    return GridView.count(
+      childAspectRatio: size.aspectRatio * 0.85,
+      padding: EdgeInsets.zero,
+      crossAxisCount: 5,
+      children: List.generate(10, (int index) {
+        return Stack(children: [
+          utils.getImage("${ui}note.png", 34, 36),
+          display.isEmpty
+              ? const Text("")
+              : SyllableButton(display[index], size, 12,
+                  onPressed: () => onSyllablePressed(display[index]))
+        ]);
+      }),
+    );
+  }
 }

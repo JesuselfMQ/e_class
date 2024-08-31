@@ -9,19 +9,6 @@ class SyllableHandler with PhoneticData {
   final SettingsController _settings;
   late final Map<String, ValueNotifier<bool>> userPrefs;
 
-  static const Map<String, List<String>> diphthongs = {
-        "iv": ["Ia", "Ie", "Io", "Iu"],
-        "uv": ["Ua", "Ue", "Ui", "Uo"],
-        "vy": ["Ay", "Ey", "Oy", "Uy"]
-      },
-      digraphs = {
-        "ll": ["lla", "lle", "lli", "llo", "llu"],
-        "rr": ["rra", "rre", "rri", "rro", "rru"],
-        "ch": ["Cha", "Che", "Chi", "Cho", "Chu"],
-        "q": ["Que", "Qui"],
-        "g": ["Gue", "Gui"]
-      };
-
   SyllableHandler(this._settings);
 
   /// Loads user preferences for every syllable.
@@ -51,7 +38,7 @@ class SyllableHandler with PhoneticData {
   /// Selects syllables where the consonant is the last letter.
   List<String> filterEndingSyllables() {
     List<String> selected = [];
-    for (var consonant in endingSingle) {
+    for (var consonant in ending.map((i) => i.replaceAll("v", ""))) {
       if (userPrefs["v$consonant"]?.value ?? false) {
         selected.addAll(vowels.map((vowel) => vowel.toUpperCase() + consonant));
       }
@@ -87,15 +74,16 @@ class SyllableHandler with PhoneticData {
     List<String> syllables = filterVowels() +
         filterSimpleSyllables() +
         filterEndingSyllables() +
-        filterDigraphsAndDiphthongs(digraphs) +
-        filterDigraphsAndDiphthongs(diphthongs) +
+        filterDigraphsAndDiphthongs(PhoneticData.digraphsSyllables) +
+        filterDigraphsAndDiphthongs(PhoneticData.diphthongSyllables) +
         filterGroupedSyllables();
     syllables = syllables.sortCaseInsensitive();
     if (syllables.length < 10) {
       // Add vowels in the case that not enough syllables were enabled.
       var safeSyllables = vowels.map((vowel) => vowel.toUpperCase());
-      syllables.addAll(safeSyllables);
-      syllables.addAll(safeSyllables);
+      for (var i = 0; i < 2; i++) {
+        syllables.addAll(safeSyllables);
+      }
     }
     return syllables;
   }

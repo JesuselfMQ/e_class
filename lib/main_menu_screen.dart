@@ -26,8 +26,10 @@ class MainMenuScreen extends StatelessWidget {
           "play_button.png", 0.0, 0.4, () => goToGame(context, settings)),
       ImageData.menuButton(
           "settings_button.png", 0.9, 0.9, () => context.go('/settings')),
-      ImageData.menuButton("abc_button.png", 0.5, 0.4, () => context.go('/phonetic')),
-      ImageData.menuButton("123_button.png", -0.5, 0.4, () => context.go('/numbers'))
+      ImageData.menuButton(
+          "abc_button.png", 0.5, 0.4, () => context.go('/phonetic')),
+      ImageData.menuButton(
+          "123_button.png", -0.5, 0.4, () => context.go('/numbers'))
     ];
     return FillBackground(
       backgroundFile: 'menu.jpg',
@@ -35,8 +37,8 @@ class MainMenuScreen extends StatelessWidget {
         children: images
             .map((data) => AlignedImage(
                 image: data.path,
-                horizontal: data.horizontalAlignment,
-                vertical: data.verticalAlignment,
+                alignment:
+                    Alignment(data.horizontalAlignment, data.verticalAlignment),
                 width: data.width * size.safeBlockHorizontal,
                 height: data.height * size.safeBlockVertical,
                 onSelected: data.onSelected))

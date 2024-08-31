@@ -65,6 +65,8 @@ flutter:
     - assets/Images/Decoration/Background/
     - assets/Images/Decoration/Animated/
     - assets/Images/UI/
+    - assets/Images/UI/chalk/
+    - assets/Images/UI/phonetic/
     - assets/Images/UI/points/
 
   fonts:

@@ -4,7 +4,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 
 import 'file_paths.dart';
-import 'size_config.dart';
+import 'utils.dart';
 
 /// Manages animations like rotating, repositioning and resizing,
 /// specifically the one's made for when earning points in games.
@@ -80,7 +80,7 @@ class PointsAnimationHandler {
     moveAlignment.value = moveAlignmentStart;
   }
 
-  Widget getPointsTransition(SizeConfig size, int index) {
+  Widget getPointsTransition(int index, Utils utils) {
     return ValueListenableBuilder(
       valueListenable: transitionOn[index],
       builder: (_, __, ___) => transitionOn[index].value
@@ -90,10 +90,10 @@ class PointsAnimationHandler {
                   duration: moveAnimationDuration,
                   alignment: moveAlignment.value,
                   child: child),
-              child: SizedBox(
-                width: 6 * size.safeBlockHorizontal,
-                height: 12 * size.safeBlockVertical,
-                child: RotationTransition(
+              child: utils.getResponsiveBox(
+                6,
+                12,
+                RotationTransition(
                   turns: rotateAnimation,
                   child: ScaleTransition(
                     scale: sizeAnimation,

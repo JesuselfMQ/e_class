@@ -1,0 +1,1 @@
+const names = {"a": ["avión", "árbol", "anillo", "abeja", "autobus"]};

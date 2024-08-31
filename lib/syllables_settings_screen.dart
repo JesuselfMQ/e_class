@@ -20,6 +20,7 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
     final settings = context.read<SettingsController>();
     final size = SizeConfig(context);
     final utils = Utils(size);
+    final shift = audio.sfx["shift"]?.join();
     return FillBackground(
         backgroundFile: 'settings.jpg',
         child: ResponsiveScreen(
@@ -37,7 +38,6 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
                               iconWidth: 12,
                               iconHeight: 6, onSelected: () {
                             settings.toggleSyllableOn(syllable);
-                            final shift = audio.sfx["shift"]?.join();
                             audio.playSfx(shift);
                           }));
                 }),

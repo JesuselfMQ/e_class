@@ -21,19 +21,20 @@ class Utils with PhoneticData {
   Utils(this.size, [this.context]);
 
   /// Returns a centered image or image button if onSelected parameter is provided.
-  Widget getImage(
-          String path, double percentWidth, double percentHeight,
+  Widget getImage(String path, double percentWidth, double percentHeight,
           {double horizontal = 0,
           double vertical = 0,
-          void Function()? onSelected, GifController? gif}) =>
+          AlignmentGeometry? alignment,
+          void Function()? onSelected,
+          GifController? gif, BoxFit? fit}) =>
       AlignedImage(
           image: path,
           width: size.safeBlockHorizontal * percentWidth,
           height: size.safeBlockVertical * percentHeight,
-          horizontal: horizontal,
-          vertical: vertical,
+          alignment: alignment ?? Alignment(horizontal, vertical),
           onSelected: onSelected,
-          gif: gif);
+          gif: gif,
+          fit: fit);
 
   Widget getArrowBackButton(void Function()? onPressed,
       {bool aligned = false}) {
@@ -59,30 +60,20 @@ class Utils with PhoneticData {
       String? iconName,
       double? iconWidth,
       double? iconHeight}) {
-    var imagesizeRequired = iconWidth != null && iconHeight != null;
-    return imagesizeRequired
-        ? SettingsLine(title, size,
-            onSelected: onSelected,
-            onChangedSlider: onChangedSlider,
-            sliderValue: sliderValue,
-            iconName: iconName,
-            iconHeight: iconHeight,
-            iconWidth: iconWidth)
-        : SettingsLine(title, size,
-            onSelected: onSelected,
-            onChangedSlider: onChangedSlider,
-            sliderValue: sliderValue,
-            iconName: iconName);
+    return SettingsLine(title, size,
+        onSelected: onSelected,
+        onChangedSlider: onChangedSlider,
+        sliderValue: sliderValue,
+        iconName: iconName,
+        iconHeight: iconHeight,
+        iconWidth: iconWidth);
   }
 
   Widget getPhoneticElementWidget() {
     final element = phonetic.removeFirst();
     return Stack(children: [
       getImage("${ui}note.png", 26, 34),
-      SyllableButton(
-          syllable: element.toUpperCase(),
-          size: size,
-          fontSize: 16,
+      SyllableButton(element.toUpperCase(), size, 16,
           onPressed: () => context?.go('/phonetic/session/$element'))
     ]);
   }

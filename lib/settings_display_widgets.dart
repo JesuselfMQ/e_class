@@ -11,9 +11,9 @@ class SettingsLine extends StatelessWidget {
 
   final double fontSize;
 
-  final double iconWidth;
+  final double? iconWidth;
 
-  final double iconHeight;
+  final double? iconHeight;
 
   final void Function(double value)? onChangedSlider;
 
@@ -27,13 +27,15 @@ class SettingsLine extends StatelessWidget {
       this.sliderValue,
       this.iconName,
       this.fontSize = 8,
-      this.iconWidth = 5,
-      this.iconHeight = 8,
+      this.iconWidth,
+      this.iconHeight,
       super.key});
 
   @override
   Widget build(BuildContext context) {
     bool sliderRequired = sliderValue != null && onChangedSlider != null;
+    var width = iconWidth ?? 5;
+    var height = iconHeight ?? 8;
     return Material(
         type: MaterialType.transparency,
         child: InkResponse(
@@ -57,8 +59,8 @@ class SettingsLine extends StatelessWidget {
                   ? SettingsSlider(sliderValue!, onChangedSlider, size)
                   : Image.asset(
                       iconName!,
-                      width: size.safeBlockHorizontal * iconWidth,
-                      height: size.safeBlockVertical * iconHeight,
+                      width: size.safeBlockHorizontal * width,
+                      height: size.safeBlockVertical * height,
                     ),
             ],
           ),

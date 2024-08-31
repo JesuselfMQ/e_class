@@ -28,21 +28,21 @@ class FillBackground extends StatelessWidget {
 /// Aligns a simple image or an image button.
 class AlignedImage extends StatelessWidget {
   final String image;
-  final double horizontal;
-  final double vertical;
+  final AlignmentGeometry alignment;
   final double width;
   final double height;
   final VoidCallback? onSelected;
   final GifController? gif;
+  final BoxFit? fit;
 
   const AlignedImage(
       {required this.image,
-      required this.horizontal,
-      required this.vertical,
+      required this.alignment,
       required this.width,
       required this.height,
       this.onSelected,
       this.gif,
+      this.fit,
       super.key});
 
   @override
@@ -50,16 +50,14 @@ class AlignedImage extends StatelessWidget {
     var icon = gif != null
         ? GifView.asset(image,
             width: width, height: height, frameRate: 5, controller: gif)
-        : Image.asset(image, width: width, height: height);
-    return Align(
-        alignment: Alignment(horizontal, vertical),
-        child: onSelected == null
-            ? icon
-            : IconButton(onPressed: onSelected, icon: icon));
+        : Image.asset(image, width: width, height: height, fit: fit);
+    var child = onSelected == null
+        ? icon
+        : IconButton(onPressed: onSelected, icon: icon);
+    return Align(alignment: alignment, child: child);
   }
 }
 
-/// Styled button for displaying syllables.
 class SyllableButton extends StatelessWidget {
   final void Function()? onPressed;
 
@@ -69,26 +67,36 @@ class SyllableButton extends StatelessWidget {
 
   final double fontSize;
 
-  const SyllableButton(
-      {required this.syllable,
-      required this.size,
-      required this.onPressed,
-      required this.fontSize,
+  final double horizontal;
+
+  final double vertical;
+
+  final bool white;
+
+  /// Styled button for displaying syllables in the game.
+  const SyllableButton(this.syllable, this.size, this.fontSize,
+      {required this.onPressed,
+      this.horizontal = 0,
+      this.vertical = 0,
+      this.white = false,
       super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: TextButton(
-            onPressed: onPressed,
-            child: Text(syllable,
-                style: TextStyle(
-                    fontSize: size.getPercentHeight(fontSize),
-                    fontFamily: 'Ginthul',
-                    foreground: Paint()
-                      ..style = PaintingStyle.fill
-                      ..strokeWidth = 4
-                      ..color = const Color.fromRGBO(69, 69, 69, 1)))));
+    var color = white
+        ? const Color.fromRGBO(204, 205, 207, 1)
+        : const Color.fromRGBO(69, 69, 69, 1);
+    var button = TextButton(
+        onPressed: onPressed,
+        child: Text(syllable,
+            style: TextStyle(
+                fontSize: size.getPercentHeight(fontSize),
+                fontFamily: 'Ginthul',
+                foreground: Paint()
+                  ..style = PaintingStyle.fill
+                  ..strokeWidth = 4
+                  ..color = color)));
+    return Align(alignment: Alignment(horizontal, vertical), child: button);
   }
 }
 
@@ -99,11 +107,19 @@ class ResponsiveSizedBox extends StatelessWidget {
 
   final Widget child;
 
-  const ResponsiveSizedBox(this.width, this.height,
-      {super.key, required this.child});
+  final bool center;
+
+  const ResponsiveSizedBox(
+    this.width,
+    this.height, {
+    required this.child,
+    this.center = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(width: width, height: height, child: child);
+    var box = SizedBox(width: width, height: height, child: child);
+    return center ? Center(child: box) : box;
   }
 }
