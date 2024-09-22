@@ -1,3 +1,6 @@
+import 'dart:collection';
+
+import 'package:e_class/file_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,7 +17,8 @@ class AbecedaryScreen extends StatelessWidget with PhoneticData {
   Widget build(BuildContext context) {
     final size = SizeConfig(context);
     final utils = Utils(size, context);
-    final ScrollController controller = ScrollController();
+    final controller = ScrollController();
+    final phonetic = Queue.of(phoneticComponents);
     const len = 102;
     return FillBackground(
         backgroundFile: "selection.jpg",
@@ -30,7 +34,7 @@ class AbecedaryScreen extends StatelessWidget with PhoneticData {
                       children: [
                     for (var i = 0; i < len; i++) ...[
                       if (i % 4 == 0 || i % 4 == 3)
-                        utils.getPhoneticElementWidget(),
+                        getPhoneticElementWidget(phonetic, utils),
                       if (i % 4 == 1 || i % 4 == 2) const SizedBox.shrink(),
                     ]
                   ])),
@@ -38,5 +42,14 @@ class AbecedaryScreen extends StatelessWidget with PhoneticData {
             ],
           ),
         ));
+  }
+
+  Widget getPhoneticElementWidget(Queue<String> phonetic, Utils utils) {
+    final element = phonetic.removeFirst();
+    return Stack(children: [
+      utils.getImage("${ui}note.png", 26, 34),
+      SyllableButton(element.toUpperCase(), utils.size, 16,
+          onPressed: () => utils.context?.go('/phonetic/session/$element'))
+    ]);
   }
 }

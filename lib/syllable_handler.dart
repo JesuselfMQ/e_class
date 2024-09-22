@@ -7,7 +7,10 @@ import 'settings.dart';
 /// Manages the generation of spanish syllables based on settings.
 class SyllableHandler with PhoneticData {
   final SettingsController _settings;
+
   late final Map<String, ValueNotifier<bool>> userPrefs;
+
+  static const minimumSyllableListLength = 10;
 
   SyllableHandler(this._settings);
 
@@ -38,7 +41,7 @@ class SyllableHandler with PhoneticData {
   /// Selects syllables where the consonant is the last letter.
   List<String> filterEndingSyllables() {
     List<String> selected = [];
-    for (var consonant in ending.map((i) => i.replaceAll("v", ""))) {
+    for (var consonant in ending) {
       if (userPrefs["v$consonant"]?.value ?? false) {
         selected.addAll(vowels.map((vowel) => vowel.toUpperCase() + consonant));
       }
@@ -74,11 +77,11 @@ class SyllableHandler with PhoneticData {
     List<String> syllables = filterVowels() +
         filterSimpleSyllables() +
         filterEndingSyllables() +
-        filterDigraphsAndDiphthongs(PhoneticData.digraphsSyllables) +
-        filterDigraphsAndDiphthongs(PhoneticData.diphthongSyllables) +
+        filterDigraphsAndDiphthongs(digraphsSyllables) +
+        filterDigraphsAndDiphthongs(diphthongSyllables) +
         filterGroupedSyllables();
     syllables = syllables.sortCaseInsensitive();
-    if (syllables.length < 10) {
+    if (syllables.length < minimumSyllableListLength) {
       // Add vowels in the case that not enough syllables were enabled.
       var safeSyllables = vowels.map((vowel) => vowel.toUpperCase());
       for (var i = 0; i < 2; i++) {

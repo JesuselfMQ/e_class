@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:gif_view/gif_view.dart';
-import 'package:go_router/go_router.dart';
 
 import 'decoration.dart';
 import 'file_paths.dart';
@@ -16,7 +15,7 @@ class Utils with PhoneticData {
 
   BuildContext? context;
 
-  final Queue<String> phonetic = Queue.of(PhoneticData.phoneticLearningOrder);
+  late final Queue<String>? phonetic;
 
   Utils(this.size, [this.context]);
 
@@ -26,7 +25,8 @@ class Utils with PhoneticData {
           double vertical = 0,
           AlignmentGeometry? alignment,
           void Function()? onSelected,
-          GifController? gif, BoxFit? fit}) =>
+          GifController? gif,
+          BoxFit? fit}) =>
       AlignedImage(
           image: path,
           width: size.safeBlockHorizontal * percentWidth,
@@ -67,14 +67,5 @@ class Utils with PhoneticData {
         iconName: iconName,
         iconHeight: iconHeight,
         iconWidth: iconWidth);
-  }
-
-  Widget getPhoneticElementWidget() {
-    final element = phonetic.removeFirst();
-    return Stack(children: [
-      getImage("${ui}note.png", 26, 34),
-      SyllableButton(element.toUpperCase(), size, 16,
-          onPressed: () => context?.go('/phonetic/session/$element'))
-    ]);
   }
 }

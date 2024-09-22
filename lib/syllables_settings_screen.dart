@@ -20,14 +20,14 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
     final settings = context.read<SettingsController>();
     final size = SizeConfig(context);
     final utils = Utils(size);
-    final shift = audio.sfx["shift"]?.join();
+    final shift = audio.sfx["shift"]!.single;
     return FillBackground(
         backgroundFile: 'settings.jpg',
         child: ResponsiveScreen(
             squarishMainArea: ListView.builder(
-                itemCount: allPhoneticComponents.length,
+                itemCount: phoneticComponents.length,
                 itemBuilder: (context, index) {
-                  String syllable = allPhoneticComponents[index];
+                  var syllable = phoneticComponents[index];
                   return ValueListenableBuilder(
                       valueListenable: settings.syllablesPrefs[syllable]!,
                       builder: (context, syllableOn, child) => utils.getSetting(

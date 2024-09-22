@@ -32,7 +32,7 @@ class SettingsController with ChangeNotifier, PhoneticData {
     final prefs = await SharedPreferences.getInstance();
     return {
       // Getting preferences boolean values (from whether a consonant is enabled (true) or not (false), default: false).
-      for (String key in allPhoneticComponents)
+      for (String key in phoneticComponents)
         key: ValueNotifier(prefs.getBool(key) ?? false)
     };
   }
@@ -81,7 +81,7 @@ class SettingsController with ChangeNotifier, PhoneticData {
     musicOn.value = prefs.getBool('musicOn') ?? true;
     soundsOn.value = prefs.getBool('soundsOn') ?? true;
     syllablesPrefs = {
-      for (String key in allPhoneticComponents)
+      for (String key in phoneticComponents)
         key: ValueNotifier(prefs.getBool(key) ?? false)
     };
     notifyListeners();
