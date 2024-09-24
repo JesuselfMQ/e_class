@@ -12,7 +12,7 @@ const names = {
   "n": ["naranja", "nena", "nido", "noche", "nube"],
   "d": ["dado", "dedo", "dinosaurio", "dona", "duda"],
   "c": ["casa", "cebolla", "cinco", "conejo", "cuchara"],
-  "q": ["queso", "quinientos"],
+  "qu": ["queso", "quinientos"],
   "b": ["barril", "bebé", "biberón", "bote", "búho"],
   "v": ["vaca", "vela", "violín", "vocales", "vuelo"],
   "rr": ["jarra", "torre", "perrito", "carro", "serrucho"],
@@ -44,10 +44,10 @@ const names = {
   "vl": ["alpaca", "elfo", "mil", "olfato", "ultrasonido"],
   "vn": ["ángel", "enfermo", "inflar", "once", "untar"],
   "vs": ["astronauta", "escalera", "isla", "ostra", "uslero"],
-  "x": ["hexagóno", "boxeo", "xilófono", "saxofón", "sexual"],
+  "x": ["hexágono", "boxeo", "xilófono", "saxofón", "sexual"],
   "vr": ["arcoíris", "erguir", "reír", "orquídea", "urna"],
   "vm": ["ambulancia", "embarazo", "impresora", "ombligo", "tumbado"],
   "iv": ["piano", "pie", "piojo", "viuda"],
   "uv": ["lengua", "juez", "buitre", "monstruo"],
-  "vy": ["Uruguay", "buey", "morrocoyo", "cucuy"]
+  "vy": ["Uruguay", "buey", "morrocoy", "cucuy"]
 };

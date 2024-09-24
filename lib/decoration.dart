@@ -8,10 +8,10 @@ import 'size_config.dart';
 class FillBackground extends StatelessWidget {
   final Widget child;
 
-  final String backgroundFile;
+  final String file;
 
   const FillBackground(
-      {required this.child, required this.backgroundFile, super.key});
+      {required this.child, required this.file, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class FillBackground extends StatelessWidget {
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(background + backgroundFile),
+                    image: AssetImage(background + file),
                     fit: BoxFit.fill)),
             child: child));
   }

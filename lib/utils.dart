@@ -36,7 +36,7 @@ class Utils with PhoneticData {
           gif: gif,
           fit: fit);
 
-  Widget getArrowBackButton(void Function()? onPressed,
+  Widget arrowBackButton(void Function()? onPressed,
       {bool aligned = false}) {
     var button = IconButton(
         onPressed: onPressed,
@@ -48,7 +48,7 @@ class Utils with PhoneticData {
         : button;
   }
 
-  Widget getResponsiveBox(double width, double height, Widget child) =>
+  Widget responsiveBox(double width, double height, Widget child) =>
       ResponsiveSizedBox(
           size.safeBlockHorizontal * width, size.safeBlockVertical * height,
           child: child);

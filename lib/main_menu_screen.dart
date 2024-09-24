@@ -23,16 +23,14 @@ class MainMenuScreen extends StatelessWidget {
       ImageData.menuImage("cat.gif", 0.0, 1.18),
       ImageData.menuImage("cloud.gif", 1.00, -0.75),
       ImageData.menuButton(
-          "play_button.png", 0.0, 0.4, () => goToGame(context, settings)),
+          "play_button.png", -0.3, 0.4, () => goToGame(context, settings)),
       ImageData.menuButton(
           "settings_button.png", 0.9, 0.9, () => context.go('/settings')),
       ImageData.menuButton(
-          "abc_button.png", 0.5, 0.4, () => context.go('/phonetic')),
-      ImageData.menuButton(
-          "123_button.png", -0.5, 0.4, () => context.go('/numbers'))
+          "abc_button.png", 0.3, 0.4, () => context.go('/phonetic')),
     ];
     return FillBackground(
-      backgroundFile: 'menu.jpg',
+      file: 'menu.jpg',
       child: Stack(
         children: images
             .map((data) => AlignedImage(

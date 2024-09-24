@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 /// Holds lists of basic spanish phonetic elements.
 mixin PhoneticData {
   List<String> get vowels => ["a", "e", "i", "o", "u"];
@@ -36,14 +34,13 @@ mixin PhoneticData {
   List<String> get grouped =>
       ["pl", "bl", "cl", "fl", "gl", "pr", "br", "cr", "fr", "tr", "gr", "dr"];
 
-  List<String> get digraphs => ["ch", "ll", "rr", "qu", "gu"];
+  List<String> get digraphs => ["gu", "ch", "ll", "rr", "qu"];
 
   List<String> get diphthongs => ["iv", "uv", "vy"];
 
   String get extension => "-single";
 
-  List<String> get vowelsFilename =>
-      vowels.map((i) => i + extension).toList();
+  List<String> get vowelsFilename => vowels.map((i) => i + extension).toList();
 
   /// Phonetic Elements in Learning order. Based on books: https://online.fliphtml5.com/nltbt/juxf/#p=1
   List<String> get phoneticComponents =>
@@ -92,20 +89,4 @@ mixin PhoneticData {
         "q": ["Que", "Qui"],
         "g": ["Gue", "Gui"]
       };
-
-  Queue<String> filterVowelsFileName(String phoneticElement) {
-    List<String> display = [];
-    if ((grouped + ending).contains(phoneticElement)) {
-      display.addAll(vowelsFilename);
-    } else if (diphthongs.contains(phoneticElement)) {
-      var single = phoneticElement.replaceAll("v", "");
-      display.addAll(vowelsFilename.where((i) {
-        if (i[0] == "i" && single == "y") return false;
-        return i[0] != single;
-      }));
-    } else if (phoneticElement == "gu") {
-      display.addAll(["e$extension", "i$extension"]);
-    }
-    return Queue.of(display);
-  }
 }

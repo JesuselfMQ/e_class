@@ -10,8 +10,8 @@ import 'utils.dart';
 import 'scroll_behavior.dart';
 import 'size_config.dart';
 
-class AbecedaryScreen extends StatelessWidget with PhoneticData {
-  const AbecedaryScreen({super.key});
+class PhoneticSelectionScreen extends StatelessWidget with PhoneticData {
+  const PhoneticSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class AbecedaryScreen extends StatelessWidget with PhoneticData {
     final phonetic = Queue.of(phoneticComponents);
     const len = 102;
     return FillBackground(
-        backgroundFile: "selection.jpg",
+        file: "selection.jpg",
         child: ScrollConfiguration(
           behavior: MyCustomScrollBehavior(),
           child: Column(
@@ -38,7 +38,7 @@ class AbecedaryScreen extends StatelessWidget with PhoneticData {
                       if (i % 4 == 1 || i % 4 == 2) const SizedBox.shrink(),
                     ]
                   ])),
-              utils.getArrowBackButton(() => GoRouter.of(context).pop())
+              utils.arrowBackButton(() => GoRouter.of(context).pop())
             ],
           ),
         ));

@@ -22,7 +22,7 @@ class LoseScreen extends StatelessWidget {
     final gap = SizedBox(width: size.safeBlockHorizontal * 4);
     counter.startCounter(score);
     return FillBackground(
-        backgroundFile: "lose.jpg",
+        file: "lose.jpg",
         child: Stack(children: [
           Column(
             children: [
@@ -49,7 +49,7 @@ class LoseScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              utils.getArrowBackButton(() => context.go('/')),
+              utils.arrowBackButton(() => context.go('/')),
             ],
           ),
           Align(

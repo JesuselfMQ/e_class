@@ -125,7 +125,7 @@ class _GameScreenState extends State<GameScreen>
     size = SizeConfig(context);
     utils = Utils(size);
     return FillBackground(
-        backgroundFile: 'game.jpg',
+        file: 'game.jpg',
         child: Stack(children: [
           Column(children: [
             Expanded(child: getGameHud()),
@@ -134,7 +134,7 @@ class _GameScreenState extends State<GameScreen>
                 child: ValueListenableBuilder(
                     valueListenable: displaySyllables,
                     builder: (_, display, __) => getSyllablesDisplay(display))),
-            utils.getArrowBackButton(() => goToMenu())
+            utils.arrowBackButton(() => goToMenu())
           ]),
           for (var i = 0; i < maxPoints; i++)
             animation.getPointsTransition(i, utils)

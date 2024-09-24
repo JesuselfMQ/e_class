@@ -22,7 +22,7 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
     final utils = Utils(size);
     final shift = audio.sfx["shift"]!.single;
     return FillBackground(
-        backgroundFile: 'settings.jpg',
+        file: 'settings.jpg',
         child: ResponsiveScreen(
             squarishMainArea: ListView.builder(
                 itemCount: phoneticComponents.length,
@@ -42,6 +42,6 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
                           }));
                 }),
             rectangularMenuArea:
-                utils.getArrowBackButton(() => GoRouter.of(context).pop())));
+                utils.arrowBackButton(() => GoRouter.of(context).pop())));
   }
 }

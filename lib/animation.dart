@@ -90,7 +90,7 @@ class PointsAnimationHandler {
                   duration: moveAnimationDuration,
                   alignment: moveAlignment.value,
                   child: child),
-              child: utils.getResponsiveBox(
+              child: utils.responsiveBox(
                 6,
                 12,
                 RotationTransition(

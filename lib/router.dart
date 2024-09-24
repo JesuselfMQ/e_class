@@ -1,11 +1,11 @@
 import 'package:go_router/go_router.dart';
 
-import 'abc_screen.dart';
 import 'game_screen.dart';
 import 'lose_screen.dart';
 import 'main_menu_screen.dart';
 import 'my_counter.dart';
 import 'phonetic_learning_screen.dart';
+import 'phonetic_selection_screen.dart';
 import 'settings_screen.dart';
 import 'syllables_settings_screen.dart';
 
@@ -18,7 +18,7 @@ final GoRouter router = GoRouter(routes: [
       routes: [
         GoRoute(
             path: 'phonetic',
-            builder: (context, state) => const AbecedaryScreen(),
+            builder: (context, state) => const PhoneticSelectionScreen(),
             routes: [
               GoRoute(
                   path: 'session/:phoneticComponent',

@@ -10,7 +10,7 @@ import 'audio_controller.dart';
 import 'decoration.dart';
 import 'example_names.dart';
 import 'file_paths.dart';
-import 'phonetic_data.dart';
+import 'phonetic_element.dart';
 import 'size_config.dart';
 import 'utils.dart';
 
@@ -24,7 +24,7 @@ class LearningSessionScreen extends StatefulWidget {
 }
 
 class _LearningSessionScreenState extends State<LearningSessionScreen>
-    with SingleTickerProviderStateMixin, PhoneticData {
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
   late SizeConfig size;
@@ -33,72 +33,84 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
 
   late final AudioController audio;
 
+  late final PhoneticElement selected;
+
   late final Animation<double> sizeAnimation;
 
   late final Queue<List<String>> exampleImages;
 
-  late final Queue<String> selectedVowels;
+  late final Queue<String>? vowels;
+
+  late final ValueNotifier<String>? currentVowel;
+
+  late final bool usingVowels;
+
+  final ValueNotifier<Map<String, String>> currentExample =
+      ValueNotifier({"": ""});
 
   final GifController gif = GifController(autoPlay: false);
 
-  ValueNotifier<double> teacherOpacity = ValueNotifier(0);
-
-  ValueNotifier<Map<String, String>> currentExample = ValueNotifier({"": ""});
-
-  ValueNotifier<String>? currentVowel;
+  final ValueNotifier<double> teacherOpacity = ValueNotifier(0);
 
   double clipRectWidth = 0.0;
 
   @override
   void initState() {
     super.initState();
+    selected = PhoneticElement(widget.phoneticElement);
     audio = context.read<AudioController>();
+    initDisplayValues();
+    initAnimation();
+  }
+
+  void initDisplayValues() {
+    initExamples();
+    vowels = filterVowels();
+    usingVowels = vowels != null;
+    currentVowel = usingVowels ? ValueNotifier(vowels!.first) : null;
+  }
+
+  void initExamples() {
+    var limit = 5;
+    if (["qu", "gu"].contains(selected.element)) {
+      limit = 2;
+    } else if (selected.isDiphthong) {
+      limit = 4;
+    }
+    exampleImages = Queue.of([
+      for (var i = 0; i < limit; i++)
+        [names[selected.element]?[i] ?? "", "${selected.element}$i.png"]
+    ]);
+    currentExample.value = {exampleImages.first[0]: exampleImages.first[1]};
+  }
+
+  Queue<String>? filterVowels() {
+    if (selected.isConsonant || selected.isVowel || selected.isDigraph)
+      return null;
+    List<String> vowels = selected.vowelsFilename;
+    if (selected.element == "gu") {
+      vowels.removeWhere((v) => ["a", "o", "u"].contains(v[0]));
+    } else if (selected.isDiphthong) {
+      vowels.removeWhere((v) {
+        if (v[0] == "i" && selected.singleLetter == "y") return true;
+        return v[0] == selected.singleLetter;
+      });
+    }
+    return Queue.of(vowels);
+  }
+
+  void initAnimation() {
     controller = AnimationController(
-      duration: const Duration(milliseconds: 10),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
-
     sizeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.easeInOut,
       ),
     );
-    createExampleImages();
-    createDisplayPhonetic();
-    startAnimation();
-  }
-
-  void createExampleImages() {
-    int limit;
-
-    if (["gu", "qu"].contains(widget.phoneticElement)) {
-      limit = 2;
-    } else if (diphthongs.contains(widget.phoneticElement)) {
-      limit = 4;
-    } else {
-      limit = 5;
-    }
-
-    exampleImages = Queue.of([
-      for (var i = 0; i < limit; i++)
-        [
-          names[widget.phoneticElement]?[i] ?? "",
-          "${widget.phoneticElement}$i.png"
-        ]
-    ]);
-  }
-
-  void createDisplayPhonetic() {
-    currentExample.value = {exampleImages.first[0]: exampleImages.first[1]};
-    selectedVowels = filterVowelsFileName(widget.phoneticElement);
-
-    currentVowel =
-        selectedVowels.isEmpty ? null : ValueNotifier(selectedVowels.first);
-  }
-
-  void startAnimation() {
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 0), () {
       controller.forward(from: 0).then((_) => teacherOpacity.value = 1);
     });
   }
@@ -108,6 +120,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
     controller.dispose();
     teacherOpacity.dispose();
     currentExample.dispose();
+    currentVowel?.dispose();
     super.dispose();
   }
 
@@ -116,7 +129,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
     size = SizeConfig(context);
     utils = Utils(size);
     return FillBackground(
-        backgroundFile: "session.jpg",
+        file: "session.jpg",
         child: Stack(children: [
           Align(
               alignment: const Alignment(0, -0.35), child: chalkBoardDisplay()),
@@ -127,13 +140,12 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
                   duration: const Duration(seconds: 1),
                   child: utils.getImage("${ui}teacher.gif", 21, 48.86,
                       horizontal: -1, vertical: 1, gif: gif))),
-          utils.getArrowBackButton(() => GoRouter.of(context).pop(),
-              aligned: true)
+          utils.arrowBackButton(() => GoRouter.of(context).pop(), aligned: true)
         ]));
   }
 
   Widget chalkBoardDisplay() {
-    return utils.getResponsiveBox(
+    return utils.responsiveBox(
         75,
         78,
         Stack(
@@ -142,7 +154,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
             ScaleTransition(
                 scale: sizeAnimation,
                 child: Image.asset("${ui}chalkboard.png", fit: BoxFit.fill)),
-            phoneticElementImage(),
+            phoneticElement(),
             exampleImage(),
             exampleWord(),
             utils.getImage("${ui}arrow.png", 10, 16,
@@ -151,38 +163,21 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
         ));
   }
 
-  Widget phoneticElementImage() {
-    var isGrouped = grouped.contains(widget.phoneticElement);
-    var withVowel = (ending + diphthongs + grouped + ["gu"])
-        .contains(widget.phoneticElement);
-    var phoneticFilename =
-        (ending + diphthongs).contains(widget.phoneticElement)
-            ? "${widget.phoneticElement.replaceAll("v", "")}-single"
-            : widget.phoneticElement;
-    var phoneticImage = utils.getImage(
-        "$phonetic$phoneticFilename.gif", getWidth(), isGrouped ? 11 : 14.5,
-        fit: withVowel ? null : BoxFit.fill, horizontal: -0.8);
+  Widget phoneticElement() {
+    var phoneticImage = utils.getImage("$phonetic${selected.filename}.gif",
+        getWidth(), selected.isGrouped ? 11 : 14.5,
+        fit: usingVowels ? null : BoxFit.fill, horizontal: -0.8);
     return GestureDetector(
         onTap: () => greet(),
-        child: currentVowel == null
-            ? phoneticImage
-            : getFullSyllable(phoneticImage));
+        child: usingVowels ? getFullSyllable(phoneticImage) : phoneticImage);
   }
 
   double getWidth() {
-    double width;
-    var isGrouped = (grouped + ["gu"]).contains(widget.phoneticElement);
-    var isDiphtong = (diphthongs + ending
-          ..remove("vm"))
-        .contains(widget.phoneticElement);
-    if (widget.phoneticElement == "vm") {
-      width = 6;
-    } else if (isDiphtong) {
-      width = 4;
-    } else if (isGrouped) {
+    double width = 10;
+    if (selected.isDiphthong || selected.isEnding) {
+      width = 4.5;
+    } else if (selected.isGrouped || selected.element == "gu") {
       width = 8;
-    } else {
-      width = 10;
     }
     return width;
   }
@@ -197,10 +192,9 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
     return Padding(
       padding: EdgeInsets.only(left: 5.9 * size.safeBlockHorizontal),
       child: Row(
-          children:
-              (grouped + ["iv", "uv", "gu"]).contains(widget.phoneticElement)
-                  ? [phoneticImage, vowel]
-                  : [vowel, phoneticImage]),
+          children: selected.isEnding || selected.element == "vy"
+              ? [vowel, phoneticImage]
+              : [phoneticImage, vowel]),
     );
   }
 
@@ -227,10 +221,8 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
   }
 
   void nextSyllable() {
-    if (selectedVowels.isNotEmpty) {
-      selectedVowels.addLast(selectedVowels.removeFirst());
-    }
-    currentVowel?.value = selectedVowels.first;
+    vowels!.addLast(vowels!.removeFirst());
+    currentVowel!.value = vowels!.first;
   }
 
   void nextImage() {
@@ -240,6 +232,6 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
 
   void nextElement() {
     nextImage();
-    nextSyllable();
+    if (usingVowels) nextSyllable();
   }
 }
