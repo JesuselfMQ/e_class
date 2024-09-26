@@ -1,5 +1,6 @@
-import 'package:e_class/file_paths.dart';
 import 'package:flutter/material.dart';
+
+import 'file_paths.dart';
 
 /// Stores useful image information.
 class ImageData {

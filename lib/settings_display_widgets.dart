@@ -51,7 +51,7 @@ class SettingsLine extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: 'Ginthul',
-                    fontSize: size.getPercentHeight(fontSize),
+                    fontSize: size.getHeight(fontSize),
                   ),
                 ),
               ),

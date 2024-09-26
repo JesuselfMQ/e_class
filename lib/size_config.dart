@@ -29,7 +29,5 @@ class SizeConfig {
   }
 
   /// Returns the specified percent of the screen's height in pixels.
-  double getPercentHeight(double percent) {
-    return safeBlockVertical * percent;
-  }
+  double getHeight(double percent) => safeBlockVertical * percent;
 }

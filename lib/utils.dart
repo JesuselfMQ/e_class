@@ -36,11 +36,10 @@ class Utils with PhoneticData {
           gif: gif,
           fit: fit);
 
-  Widget arrowBackButton(void Function()? onPressed,
-      {bool aligned = false}) {
+  Widget arrowBackButton(void Function()? onPressed, {bool aligned = false}) {
     var button = IconButton(
         onPressed: onPressed,
-        icon: Image.asset("${ui}arrow_button_back.png",
+        icon: Image.asset('${ui}arrow_button_back.png',
             width: size.safeBlockHorizontal * 9,
             height: size.safeBlockVertical * 14));
     return aligned

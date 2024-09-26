@@ -45,7 +45,7 @@ class AudioController with SoundFileNames {
   /// Preloads songs.
   Future<void> initialize() async {
     await AudioCache.instance
-        .loadAll(songs.map((file) => "$music$file.mp3").toList());
+        .loadAll(songs.map((file) => '$music$file.mp3').toList());
   }
 
   /// Plays the next song in the playlist.
@@ -71,7 +71,7 @@ class AudioController with SoundFileNames {
       if (!soundsOn) {
         return;
       }
-      await sfxPlayer.play(AssetSource("Audio/SFX/$string.mp3"));
+      await sfxPlayer.play(AssetSource('Audio/SFX/$string.mp3'));
     }
   }
 
@@ -150,7 +150,7 @@ class AudioController with SoundFileNames {
   }
 
   Future<void> _playCurrentSong(void _) async {
-    await musicPlayer.play(AssetSource("$music${_playlist.first}.mp3"));
+    await musicPlayer.play(AssetSource('$music${_playlist.first}.mp3'));
   }
 
   Future<void> _resumeMusic() async {

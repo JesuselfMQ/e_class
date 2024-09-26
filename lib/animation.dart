@@ -68,9 +68,7 @@ class PointsAnimationHandler {
       await Future.delayed(const Duration(milliseconds: 400));
       moveAlignment.value =
           Alignment(moveAlignmentEndX[index], moveAlignmentEndY);
-      Timer(moveAnimationDuration, () {
-        finishAndRestartAnimation(index);
-      });
+      Timer(moveAnimationDuration, () => finishAndRestartAnimation(index));
     });
   }
 
@@ -98,7 +96,7 @@ class PointsAnimationHandler {
                   child: ScaleTransition(
                     scale: sizeAnimation,
                     child: Image.asset(
-                        "${points}points_${starColors.first}_on.png"),
+                        '${points}points_${starColors.first}_on.png'),
                   ),
                 ),
               ),
@@ -110,11 +108,11 @@ class PointsAnimationHandler {
   /// Gets the file name of the points image.
   String getPointsImageFilePath(int index) {
     if (transitionOn[index].value) {
-      return "${ui}empty.png";
+      return '${ui}empty.png';
     }
     return pointsOn[index].value
-        ? "${points}points_${starColors.first}.gif"
-        : "${points}points.png";
+        ? '${points}points_${starColors.first}.gif'
+        : '${points}points.png';
   }
 
   void restartPointImages() {

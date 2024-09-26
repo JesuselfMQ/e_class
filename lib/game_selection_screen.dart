@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'decoration.dart';
-
 class GameSelectionScreen extends StatelessWidget {
   const GameSelectionScreen({super.key});
 

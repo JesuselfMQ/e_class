@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:e_class/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +13,7 @@ class MyCounter {
 
   ValueNotifier<bool> hasFinished = ValueNotifier<bool>(false);
 
-  ValueNotifier<String> color = ValueNotifier<String>("pink");
+  ValueNotifier<String> color = ValueNotifier<String>('pink');
 
   Timer? _timer;
 
@@ -54,7 +53,7 @@ class MyCounter {
 
   void playCelebrateSfxOnce() {
     if (!hasPlayedCelebrateSfx) {
-      audio.playSfx(audio.sfx["celebration"]?.randomItem);
+      audio.playSfx(audio.sfx['celebration']!.single);
       hasPlayedCelebrateSfx = true;
     }
   }

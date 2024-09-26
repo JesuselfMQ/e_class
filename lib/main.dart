@@ -22,8 +22,7 @@ void main() async {
     DeviceOrientation.landscapeLeft,
   ]);
 
-  runApp(DevicePreview(
-      enabled: !kReleaseMode, builder: (context) => const MyApp()));
+  runApp(DevicePreview(enabled: !kReleaseMode, builder: (_) => const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -37,18 +36,18 @@ class MyApp extends StatelessWidget {
             providers: [
           // App's settings.
           ChangeNotifierProvider<SettingsController>(
-            create: (context) => SettingsController(),
+            create: (_) => SettingsController(),
           ),
           // Audio.
           ProxyProvider2<AppLifecycleStateNotifier, SettingsController,
               AudioController>(
-            create: (context) => AudioController()..initialize(),
-            update: (context, lifecycleNotifier, settings, audio) {
+            create: (_) => AudioController()..initialize(),
+            update: (_, lifecycleNotifier, settings, audio) {
               if (audio == null) throw ArgumentError.notNull();
               audio.attachDependencies(lifecycleNotifier, settings);
               return audio;
             },
-            dispose: (context, audio) => audio.dispose(),
+            dispose: (_, audio) => audio.dispose(),
             // Ensure that the AudioController is created on startup,
             // so music starts immediately.
             lazy: false,

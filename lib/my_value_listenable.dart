@@ -21,7 +21,7 @@ class ValueListenableBuilder2<A, B> extends StatelessWidget {
         builder: (_, a, __) {
           return ValueListenableBuilder<B>(
             valueListenable: second,
-            builder: (context, b, __) {
+            builder: (context, b, _) {
               return builder(context, a, b, child);
             },
           );

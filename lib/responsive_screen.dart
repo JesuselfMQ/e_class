@@ -20,7 +20,7 @@ class ResponsiveScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
+    return LayoutBuilder(builder: (_, constraints) {
       // This widget wants to fill the whole screen.
       final size = constraints.biggest;
       // Divide the shortest side of the widget's size by 30 to determine the amount of padding.

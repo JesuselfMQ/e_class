@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'phonetic_data.dart';
 
 /// A class that holds settings like [soundsVolume] or [musicOn],

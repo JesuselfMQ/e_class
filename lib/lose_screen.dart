@@ -22,7 +22,7 @@ class LoseScreen extends StatelessWidget {
     final gap = SizedBox(width: size.safeBlockHorizontal * 4);
     counter.startCounter(score);
     return FillBackground(
-        file: "lose.jpg",
+        file: 'lose.jpg',
         child: Stack(children: [
           Column(
             children: [
@@ -33,14 +33,14 @@ class LoseScreen extends StatelessWidget {
                     ValueListenableBuilder(
                       valueListenable: counter.color,
                       builder: (_, color, __) => Image.asset(
-                          "${points}points_${color}_on.png",
+                          '${points}points_${color}_on.png',
                           width: size.safeBlockHorizontal * 12,
                           height: size.safeBlockVertical * 24),
                     ),
                     gap,
                     ValueListenableBuilder(
                       valueListenable: counter.counter,
-                      builder: (_, value, __) => Text("Puntos: $value",
+                      builder: (_, value, __) => Text('Puntos: $value',
                           style: TextStyle(
                             fontSize: size.safeBlockHorizontal * 10,
                             fontFamily: 'Ginthul',
@@ -56,24 +56,28 @@ class LoseScreen extends StatelessWidget {
               alignment: const Alignment(0, 0.4),
               child: IconButton(
                   onPressed: () => context.replace('/game'),
-                  icon: Image.asset("${ui}retry.png",
+                  icon: Image.asset('${ui}retry.png',
                       width: size.safeBlockHorizontal * 15,
                       height: size.safeBlockVertical * 30))),
-          // This is the confetti animation that is overlaid on top of the
-          // screen when the counter reaches the score value.
-          SizedBox.expand(
-            child: ValueListenableBuilder(
-              valueListenable: counter.hasFinished,
-              builder: (_, value, child) => Visibility(
-                visible: value,
-                child: IgnorePointer(
-                  child: Confetti(
-                    isStopped: !value,
-                  ),
-                ),
-              ),
+          celebration(),
+        ]));
+  }
+
+  Widget celebration() {
+    // This is the confetti animation that is overlaid on top of the
+    // screen when the counter reaches the score value.
+    return SizedBox.expand(
+      child: ValueListenableBuilder(
+        valueListenable: counter.hasFinished,
+        builder: (_, value, child) => Visibility(
+          visible: value,
+          child: IgnorePointer(
+            child: Confetti(
+              isStopped: !value,
             ),
           ),
-        ]));
+        ),
+      ),
+    );
   }
 }

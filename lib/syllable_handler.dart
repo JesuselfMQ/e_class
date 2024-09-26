@@ -1,6 +1,6 @@
-import 'package:e_class/extensions.dart';
 import 'package:flutter/foundation.dart';
 
+import 'extensions.dart';
 import 'phonetic_data.dart';
 import 'settings.dart';
 
@@ -42,7 +42,7 @@ class SyllableHandler with PhoneticData {
   List<String> filterEndingSyllables() {
     List<String> selected = [];
     for (var consonant in ending) {
-      if (userPrefs["v$consonant"]?.value ?? false) {
+      if (userPrefs['v$consonant']?.value ?? false) {
         selected.addAll(vowels.map((vowel) => vowel.toUpperCase() + consonant));
       }
     }

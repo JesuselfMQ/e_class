@@ -16,18 +16,18 @@ class MainMenuScreen extends StatelessWidget {
     final settings = context.read<SettingsController>();
     final size = SizeConfig(context);
     final images = [
-      ImageData("${animated}kid.gif", -1.10, 1.10, 30, 45),
-      ImageData.menuImage("star.gif", -0.68, -0.7),
-      ImageData.menuImage("star.gif", 0.68, -0.7),
-      ImageData.menuImage("flower.gif", 0.5, 1.38),
-      ImageData.menuImage("cat.gif", 0.0, 1.18),
-      ImageData.menuImage("cloud.gif", 1.00, -0.75),
+      ImageData('${animated}kid.gif', -1.10, 1.10, 30, 45),
+      ImageData.menuImage('star.gif', -0.68, -0.7),
+      ImageData.menuImage('star.gif', 0.68, -0.7),
+      ImageData.menuImage('flower.gif', 0.5, 1.38),
+      ImageData.menuImage('cat.gif', 0.0, 1.18),
+      ImageData.menuImage('cloud.gif', 1.00, -0.75),
       ImageData.menuButton(
-          "play_button.png", -0.3, 0.4, () => goToGame(context, settings)),
+          'play_button.png', -0.3, 0.4, () => goToGame(context, settings)),
       ImageData.menuButton(
-          "settings_button.png", 0.9, 0.9, () => context.go('/settings')),
+          'settings_button.png', 0.9, 0.9, () => context.go('/settings')),
       ImageData.menuButton(
-          "abc_button.png", 0.3, 0.4, () => context.go('/phonetic')),
+          'abc_button.png', 0.3, 0.4, () => context.go('/phonetic')),
     ];
     return FillBackground(
       file: 'menu.jpg',

@@ -10,8 +10,7 @@ class FillBackground extends StatelessWidget {
 
   final String file;
 
-  const FillBackground(
-      {required this.child, required this.file, super.key});
+  const FillBackground({required this.child, required this.file, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +18,7 @@ class FillBackground extends StatelessWidget {
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(background + file),
-                    fit: BoxFit.fill)),
+                    image: AssetImage(background + file), fit: BoxFit.fill)),
             child: child));
   }
 }
@@ -90,7 +88,7 @@ class SyllableButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(syllable,
             style: TextStyle(
-                fontSize: size.getPercentHeight(fontSize),
+                fontSize: size.getHeight(fontSize),
                 fontFamily: 'Ginthul',
                 foreground: Paint()
                   ..style = PaintingStyle.fill
@@ -107,19 +105,19 @@ class ResponsiveSizedBox extends StatelessWidget {
 
   final Widget child;
 
-  final bool center;
+  final bool centered;
 
   const ResponsiveSizedBox(
     this.width,
     this.height, {
     required this.child,
-    this.center = false,
+    this.centered = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     var box = SizedBox(width: width, height: height, child: child);
-    return center ? Center(child: box) : box;
+    return centered ? Center(child: box) : box;
   }
 }

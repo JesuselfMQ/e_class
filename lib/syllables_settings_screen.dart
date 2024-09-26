@@ -1,9 +1,9 @@
-import 'package:e_class/decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'audio_controller.dart';
+import 'decoration.dart';
 import 'file_paths.dart';
 import 'phonetic_data.dart';
 import 'responsive_screen.dart';
@@ -20,7 +20,7 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
     final settings = context.read<SettingsController>();
     final size = SizeConfig(context);
     final utils = Utils(size);
-    final shift = audio.sfx["shift"]!.single;
+    final shift = audio.sfx['shift']!.single;
     return FillBackground(
         file: 'settings.jpg',
         child: ResponsiveScreen(

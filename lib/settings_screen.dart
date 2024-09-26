@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Ginthul',
                   fontWeight: FontWeight.bold,
-                  fontSize: size.getPercentHeight(12),
+                  fontSize: size.getHeight(12),
                   height: 1,
                 ),
               ),
@@ -48,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
                     iconName: soundsOn
                         ? '${ui}speaker_on.png'
                         : '${ui}speaker_off.png', onSelected: () {
-                  final shift = audio.sfx["shift"]?.join();
+                  final shift = audio.sfx['shift']?.join();
                   audio.playSfx(shift);
                   settings.toggleSoundsOn();
                 }),

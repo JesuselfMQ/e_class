@@ -1,4 +1,3 @@
-import 'package:e_class/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'animation.dart';
 import 'audio_controller.dart';
 import 'decoration.dart';
+import 'extensions.dart';
 import 'file_paths.dart';
 import 'my_value_listenable.dart';
 import 'settings.dart';
@@ -33,7 +33,7 @@ class _GameScreenState extends State<GameScreen>
   ValueNotifier<int> attempts = ValueNotifier(3);
   ValueNotifier<List<String>> syllables = ValueNotifier([]);
   ValueNotifier<List<String>> displaySyllables = ValueNotifier([]);
-  ValueNotifier<String> syllableSound = ValueNotifier("");
+  ValueNotifier<String> syllableSound = ValueNotifier('');
 
   late final SyllableHandler syllableHandler;
   late final SettingsController settings;
@@ -80,7 +80,7 @@ class _GameScreenState extends State<GameScreen>
 
   void handleLose() {
     if (attempts.value > 1) {
-      final loseSfx = audio.sfx["lose"]?.randomItem;
+      final loseSfx = audio.sfx['lose']?.randomItem;
       audio.playSfx(loseSfx);
       // Subtract one attempt
       attempts.value -= 1;
@@ -90,7 +90,7 @@ class _GameScreenState extends State<GameScreen>
   }
 
   void handleWin() {
-    final winSfx = audio.sfx["win"]?.randomItem;
+    final winSfx = audio.sfx['win']?.randomItem;
     audio.playSfx(winSfx);
     if (pointsIconCount == maxPoints) {
       pointsIconCount = 0;
@@ -161,11 +161,11 @@ class _GameScreenState extends State<GameScreen>
         ValueListenableBuilder(
             valueListenable: attempts,
             builder: (_, lives, __) =>
-                utils.getImage("${ui}lives_$lives.gif", 25, 25)),
+                utils.getImage('${ui}lives_$lives.gif', 25, 25)),
         ValueListenableBuilder(
             valueListenable: syllableSound,
             builder: (_, sound, __) => utils.getImage(
-                "${ui}play_syllable_button.png", 10, 16,
+                '${ui}play_syllable_button.png', 10, 16,
                 onSelected: () => audio.playSfx(sound)))
       ],
     );
@@ -178,9 +178,9 @@ class _GameScreenState extends State<GameScreen>
       crossAxisCount: 5,
       children: List.generate(10, (int index) {
         return Stack(children: [
-          utils.getImage("${ui}note.png", 34, 36),
+          utils.getImage('${ui}note.png', 34, 36),
           display.isEmpty
-              ? const Text("")
+              ? const Text('')
               : SyllableButton(display[index], size, 12,
                   onPressed: () => onSyllablePressed(display[index]))
         ]);
