@@ -78,7 +78,7 @@ class PointsAnimationHandler {
     moveAlignment.value = moveAlignmentStart;
   }
 
-  Widget getPointsTransition(int index, Utils utils) {
+  Widget getPointsTransition(int index, ResponsiveUtils utils) {
     return ValueListenableBuilder(
       valueListenable: transitionOn[index],
       builder: (_, __, ___) => transitionOn[index].value

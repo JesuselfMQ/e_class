@@ -40,7 +40,7 @@ mixin PhoneticData {
 
   String get extension => '-lower';
 
-  List<String> get vowelsFilename => vowels.map((i) => i + extension).toList();
+  List<String> get vowelsFilename => vowels.map((v) => v + extension).toList();
 
   /// Phonetic Elements in Learning order. Based on books: https://online.fliphtml5.com/nltbt/juxf/#p=1
   List<String> get phoneticComponents =>

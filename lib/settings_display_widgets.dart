@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'size_config.dart';
-
 class SettingsLine extends StatelessWidget {
   final String title;
-
-  final SizeConfig size;
 
   final String? iconName;
 
@@ -15,16 +11,13 @@ class SettingsLine extends StatelessWidget {
 
   final double? iconHeight;
 
-  final void Function(double value)? onChangedSlider;
-
-  final double? sliderValue;
+  final SettingsSlider? slider;
 
   final void Function()? onSelected;
 
-  const SettingsLine(this.title, this.size,
+  const SettingsLine(this.title,
       {this.onSelected,
-      this.onChangedSlider,
-      this.sliderValue,
+      this.slider,
       this.iconName,
       this.fontSize = 8,
       this.iconWidth,
@@ -33,9 +26,6 @@ class SettingsLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool sliderRequired = sliderValue != null && onChangedSlider != null;
-    var width = iconWidth ?? 5;
-    var height = iconHeight ?? 8;
     return Material(
         type: MaterialType.transparency,
         child: InkResponse(
@@ -51,16 +41,16 @@ class SettingsLine extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: 'Ginthul',
-                    fontSize: size.getHeight(fontSize),
+                    fontSize: fontSize,
                   ),
                 ),
               ),
-              sliderRequired
-                  ? SettingsSlider(sliderValue!, onChangedSlider, size)
+              slider != null
+                  ? slider!
                   : Image.asset(
                       iconName!,
-                      width: size.safeBlockHorizontal * width,
-                      height: size.safeBlockVertical * height,
+                      width: iconWidth,
+                      height: iconHeight,
                     ),
             ],
           ),
@@ -74,21 +64,26 @@ class SettingsSlider extends StatelessWidget {
 
   final void Function(double)? onChanged;
 
-  final SizeConfig size;
+  final double width;
 
-  const SettingsSlider(this.value, this.onChanged, this.size, {super.key});
+  final double height;
+
+  final double radius;
+
+  const SettingsSlider(
+      this.value, this.width, this.height, this.radius, this.onChanged,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
     return SliderTheme(
         data: SliderTheme.of(context).copyWith(
           overlayShape: SliderComponentShape.noOverlay,
-          trackHeight: size.safeBlockVertical * 0.9998,
-          thumbShape: RoundSliderThumbShape(
-              enabledThumbRadius: size.safeBlockHorizontal * 1.25),
+          trackHeight: height,
+          thumbShape: RoundSliderThumbShape(enabledThumbRadius: radius),
         ),
         child: SizedBox(
-            width: size.safeBlockHorizontal * 20,
+            width: width,
             child: Slider(
               value: value,
               onChanged: onChanged,

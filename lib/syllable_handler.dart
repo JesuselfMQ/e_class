@@ -10,14 +10,13 @@ class SyllableHandler with PhoneticData {
 
   late final Map<String, ValueNotifier<bool>> userPrefs;
 
-  static const minimumSyllableListLength = 10;
+  static const minLength = 10;
 
   SyllableHandler(this._settings);
 
   /// Loads user preferences for every syllable.
-  Future<void> initialize() async {
-    userPrefs = await _settings.getSyllablesPrefs();
-  }
+  Future<void> initialize() async =>
+      userPrefs = await _settings.getSyllablesPrefs();
 
   /// Selects enabled vowels.
   List<String> filterVowels() {
@@ -80,13 +79,11 @@ class SyllableHandler with PhoneticData {
         filterDigraphsAndDiphthongs(digraphsSyllables) +
         filterDigraphsAndDiphthongs(diphthongSyllables) +
         filterGroupedSyllables();
-    syllables = syllables.sortCaseInsensitive();
-    if (syllables.length < minimumSyllableListLength) {
+    //syllables = syllables.sortCaseInsensitive();
+    if (syllables.length < minLength) {
       // Add vowels in the case that not enough syllables were enabled.
       var safeSyllables = vowels.map((vowel) => vowel.toUpperCase());
-      for (var i = 0; i < 2; i++) {
-        syllables.addAll(safeSyllables);
-      }
+      syllables.addAll([...safeSyllables, ...safeSyllables]);
     }
     return syllables;
   }

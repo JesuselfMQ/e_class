@@ -9,7 +9,6 @@ import 'extensions.dart';
 import 'file_paths.dart';
 import 'my_value_listenable.dart';
 import 'settings.dart';
-import 'size_config.dart';
 import 'syllable_handler.dart';
 import 'utils.dart';
 
@@ -30,17 +29,16 @@ class _GameScreenState extends State<GameScreen>
   int pointsIconCount = 0;
   bool _isInitialized = false;
 
-  ValueNotifier<int> attempts = ValueNotifier(3);
-  ValueNotifier<List<String>> syllables = ValueNotifier([]);
-  ValueNotifier<List<String>> displaySyllables = ValueNotifier([]);
-  ValueNotifier<String> syllableSound = ValueNotifier('');
+  final ValueNotifier<int> attempts = ValueNotifier(3);
+  final ValueNotifier<List<String>> syllables = ValueNotifier([]);
+  final ValueNotifier<List<String>> displaySyllables = ValueNotifier([]);
+  final ValueNotifier<String> syllableSound = ValueNotifier('');
 
   late final SyllableHandler syllableHandler;
   late final SettingsController settings;
   late final AudioController audio;
   late final PointsAnimationHandler animation;
-  late SizeConfig size;
-  late Utils utils;
+  late ResponsiveUtils utils;
 
   @override
   void dispose() {
@@ -55,10 +53,7 @@ class _GameScreenState extends State<GameScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!_isInitialized) {
-      _initGame();
-      _isInitialized = true;
-    }
+    if (!_isInitialized) _initGame();
   }
 
   void _initGame() async {
@@ -71,12 +66,12 @@ class _GameScreenState extends State<GameScreen>
     await syllableHandler.initialize();
     syllables.value = syllableHandler.filterAllSyllables();
     assignNewSyllables();
+    _isInitialized = true;
   }
 
   /// When the user press a syllable button.
-  void onSyllablePressed(String syllable) {
-    syllable == syllableSound.value ? handleWin() : handleLose();
-  }
+  void onSyllablePressed(String syllable) =>
+      syllable == syllableSound.value ? handleWin() : handleLose();
 
   void handleLose() {
     if (attempts.value > 1) {
@@ -110,9 +105,7 @@ class _GameScreenState extends State<GameScreen>
     syllableSound.value = displaySyllables.value.randomItem;
   }
 
-  void goToLoseScreen() {
-    context.go('/game/lose', extra: score);
-  }
+  void goToLoseScreen() => context.go('/game/lose', extra: score);
 
   /// Navigates back to the menu screen.
   void goToMenu() {
@@ -122,8 +115,7 @@ class _GameScreenState extends State<GameScreen>
 
   @override
   Widget build(BuildContext context) {
-    size = SizeConfig(context);
-    utils = Utils(size);
+    utils = ResponsiveUtils(context);
     return FillBackground(
         file: 'game.jpg',
         child: Stack(children: [
@@ -143,7 +135,7 @@ class _GameScreenState extends State<GameScreen>
 
   Widget getGameHud() {
     return GridView.count(
-      childAspectRatio: size.aspectRatio * 1.4,
+      childAspectRatio: utils.aspectRatio * 1.4,
       padding: EdgeInsets.zero,
       crossAxisCount: 3,
       children: [
@@ -173,7 +165,7 @@ class _GameScreenState extends State<GameScreen>
 
   Widget getSyllablesDisplay(List<String> display) {
     return GridView.count(
-      childAspectRatio: size.aspectRatio * 0.85,
+      childAspectRatio: utils.aspectRatio * 0.85,
       padding: EdgeInsets.zero,
       crossAxisCount: 5,
       children: List.generate(10, (int index) {
@@ -181,7 +173,7 @@ class _GameScreenState extends State<GameScreen>
           utils.getImage('${ui}note.png', 34, 36),
           display.isEmpty
               ? const Text('')
-              : SyllableButton(display[index], size, 12,
+              : SyllableButton(display[index], utils, 12,
                   onPressed: () => onSyllablePressed(display[index]))
         ]);
       }),

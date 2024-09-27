@@ -7,7 +7,6 @@ import 'decoration.dart';
 import 'file_paths.dart';
 import 'responsive_screen.dart';
 import 'settings.dart';
-import 'size_config.dart';
 import 'utils.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -15,11 +14,10 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = SizeConfig(context);
-    final utils = Utils(size);
+    final utils = ResponsiveUtils(context);
     final settings = context.read<SettingsController>();
     final audio = context.read<AudioController>();
-    final gap = SizedBox(height: size.safeBlockVertical * 0.5);
+    final gap = SizedBox(height: utils.safeBlockVertical * 0.5);
 
     return FillBackground(
         file: 'settings.jpg',
@@ -33,7 +31,7 @@ class SettingsScreen extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Ginthul',
                   fontWeight: FontWeight.bold,
-                  fontSize: size.getHeight(12),
+                  fontSize: utils.getHeight(12),
                   height: 1,
                 ),
               ),
@@ -61,13 +59,12 @@ class SettingsScreen extends StatelessWidget {
               ),
               gap,
               ValueListenableBuilder(
-                valueListenable: settings.soundsVolume,
-                builder: (_, soundsVolume, __) => utils.getSetting(
-                    'Volumen Sonidos',
-                    sliderValue: settings.soundsVolume.value,
-                    onChangedSlider: (double value) =>
-                        settings.setSoundsVolume(value)),
-              ),
+                  valueListenable: settings.soundsVolume,
+                  builder: (_, soundsVolume, __) => utils.getSetting(
+                      'Volumen Sonidos',
+                      sliderValue: settings.soundsVolume.value,
+                      onChangedSlider: (double value) =>
+                          settings.setSoundsVolume(value))),
               gap,
               ValueListenableBuilder(
                 valueListenable: settings.musicVolume,

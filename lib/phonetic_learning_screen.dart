@@ -9,13 +9,13 @@ import 'audio_controller.dart';
 import 'decoration.dart';
 import 'file_paths.dart';
 import 'phonetic_element.dart';
-import 'size_config.dart';
 import 'utils.dart';
 
 class LearningSessionScreen extends StatefulWidget {
-  final String phoneticElement;
+  final String _phoneticElement;
 
-  const LearningSessionScreen({required this.phoneticElement, super.key});
+  const LearningSessionScreen({required String phoneticElement, super.key})
+      : _phoneticElement = phoneticElement;
 
   @override
   State<LearningSessionScreen> createState() => _LearningSessionScreenState();
@@ -25,9 +25,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
-  late SizeConfig size;
-
-  late Utils utils;
+  late ResponsiveUtils utils;
 
   late final AudioController audio;
 
@@ -49,7 +47,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
   @override
   void initState() {
     super.initState();
-    selected = PhoneticElement(widget.phoneticElement);
+    selected = PhoneticElement(widget._phoneticElement);
     audio = context.read<AudioController>();
     initDisplayValues();
     initAnimation();
@@ -91,8 +89,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
 
   @override
   Widget build(BuildContext context) {
-    size = SizeConfig(context);
-    utils = Utils(size);
+    utils = ResponsiveUtils(context);
     return FillBackground(
         file: 'session.jpg',
         child: Stack(children: [
@@ -157,7 +154,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
               fit: BoxFit.fill);
         });
     return Padding(
-      padding: EdgeInsets.only(left: 5.9 * size.safeBlockHorizontal),
+      padding: EdgeInsets.only(left: 5.9 * utils.safeBlockHorizontal),
       child: Row(
           children: selected.isEnding || selected.element == 'vy'
               ? [vowel, phoneticImage]
@@ -169,7 +166,7 @@ class _LearningSessionScreenState extends State<LearningSessionScreen>
     return ValueListenableBuilder(
         valueListenable: currentExample,
         builder: (_, value, __) {
-          return SyllableButton(value.keys.single, size, 20,
+          return SyllableButton(value.keys.single, utils, 20,
               vertical: 0.75, white: true, onPressed: () => greet());
         });
   }

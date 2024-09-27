@@ -1,23 +1,34 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:gif_view/gif_view.dart';
 
 import 'decoration.dart';
 import 'file_paths.dart';
-import 'phonetic_data.dart';
 import 'settings_display_widgets.dart';
-import 'size_config.dart';
 
 /// Contains methods that return widgets that use screen size information.
-class Utils with PhoneticData {
-  SizeConfig size;
+class ResponsiveUtils {
+  static late MediaQueryData _mediaQueryData;
+  static late double _screenWidth;
+  static late double _screenHeight;
+  static late double _safeAreaHorizontal;
+  static late double _safeAreaVertical;
+  late double safeBlockHorizontal;
+  late double safeBlockVertical;
+  late double aspectRatio;
+  BuildContext context;
 
-  BuildContext? context;
-
-  late final Queue<String>? phonetic;
-
-  Utils(this.size, [this.context]);
+  ResponsiveUtils(this.context) {
+    _mediaQueryData = MediaQuery.of(context);
+    _screenWidth = _mediaQueryData.size.width;
+    _screenHeight = _mediaQueryData.size.height;
+    aspectRatio = _screenWidth / _screenHeight;
+    _safeAreaHorizontal =
+        _mediaQueryData.padding.left + _mediaQueryData.padding.right;
+    _safeAreaVertical =
+        _mediaQueryData.padding.top + _mediaQueryData.padding.bottom;
+    safeBlockHorizontal = (_screenWidth - _safeAreaHorizontal) / 100;
+    safeBlockVertical = (_screenHeight - _safeAreaVertical) / 100;
+  }
 
   /// Returns a centered image or image button if onSelected parameter is provided.
   Widget getImage(String path, double percentWidth, double percentHeight,
@@ -29,8 +40,8 @@ class Utils with PhoneticData {
           BoxFit? fit}) =>
       AlignedImage(
           image: path,
-          width: size.safeBlockHorizontal * percentWidth,
-          height: size.safeBlockVertical * percentHeight,
+          width: safeBlockHorizontal * percentWidth,
+          height: safeBlockVertical * percentHeight,
           alignment: alignment ?? Alignment(horizontal, vertical),
           onSelected: onSelected,
           gif: gif,
@@ -40,8 +51,7 @@ class Utils with PhoneticData {
     var button = IconButton(
         onPressed: onPressed,
         icon: Image.asset('${ui}arrow_button_back.png',
-            width: size.safeBlockHorizontal * 9,
-            height: size.safeBlockVertical * 14));
+            width: safeBlockHorizontal * 9, height: safeBlockVertical * 14));
     return aligned
         ? Align(alignment: Alignment.bottomCenter, child: button)
         : button;
@@ -49,7 +59,7 @@ class Utils with PhoneticData {
 
   Widget responsiveBox(double width, double height, Widget child) =>
       ResponsiveSizedBox(
-          size.safeBlockHorizontal * width, size.safeBlockVertical * height,
+          safeBlockHorizontal * width, safeBlockVertical * height,
           child: child);
 
   Widget getSetting(String title,
@@ -59,12 +69,33 @@ class Utils with PhoneticData {
       String? iconName,
       double? iconWidth,
       double? iconHeight}) {
-    return SettingsLine(title, size,
+    double? width;
+    double? height;
+    final needSlider = sliderValue != null && onChangedSlider != null;
+    if (!needSlider) {
+      width = iconWidth != null
+          ? iconWidth * safeBlockHorizontal
+          : 5 * safeBlockHorizontal;
+      height = iconHeight != null
+          ? iconHeight * safeBlockVertical
+          : 8 * safeBlockHorizontal;
+    }
+    return SettingsLine(title,
         onSelected: onSelected,
-        onChangedSlider: onChangedSlider,
-        sliderValue: sliderValue,
+        fontSize: 8 * safeBlockVertical,
+        slider: needSlider
+            ? SettingsSlider(
+                sliderValue,
+                safeBlockHorizontal * 20,
+                safeBlockVertical * 0.9998,
+                safeBlockHorizontal * 1.25,
+                onChangedSlider)
+            : null,
         iconName: iconName,
-        iconHeight: iconHeight,
-        iconWidth: iconWidth);
+        iconHeight: height,
+        iconWidth: width);
   }
+
+  /// Returns the specified percent of the screen's height in pixels.
+  double getHeight(double percent) => safeBlockVertical * percent;
 }

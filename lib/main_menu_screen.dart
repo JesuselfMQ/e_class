@@ -6,7 +6,7 @@ import 'decoration.dart';
 import 'file_paths.dart';
 import 'image_data.dart';
 import 'settings.dart';
-import 'size_config.dart';
+import 'utils.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -14,7 +14,7 @@ class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settings = context.read<SettingsController>();
-    final size = SizeConfig(context);
+    final utils = ResponsiveUtils(context);
     final images = [
       ImageData('${animated}kid.gif', -1.10, 1.10, 30, 45),
       ImageData.menuImage('star.gif', -0.68, -0.7),
@@ -37,8 +37,8 @@ class MainMenuScreen extends StatelessWidget {
                 image: data.path,
                 alignment:
                     Alignment(data.horizontalAlignment, data.verticalAlignment),
-                width: data.width * size.safeBlockHorizontal,
-                height: data.height * size.safeBlockVertical,
+                width: data.width * utils.safeBlockHorizontal,
+                height: data.height * utils.safeBlockVertical,
                 onSelected: data.onSelected))
             .toList(),
       ),

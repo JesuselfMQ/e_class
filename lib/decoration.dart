@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gif_view/gif_view.dart';
 
 import 'file_paths.dart';
-import 'size_config.dart';
+import 'utils.dart';
 
 /// Sets a background image that fills the screen.
 class FillBackground extends StatelessWidget {
@@ -61,7 +61,7 @@ class SyllableButton extends StatelessWidget {
 
   final String syllable;
 
-  final SizeConfig size;
+  final ResponsiveUtils utils;
 
   final double fontSize;
 
@@ -72,7 +72,7 @@ class SyllableButton extends StatelessWidget {
   final bool white;
 
   /// Styled button for displaying syllables in the game.
-  const SyllableButton(this.syllable, this.size, this.fontSize,
+  const SyllableButton(this.syllable, this.utils, this.fontSize,
       {required this.onPressed,
       this.horizontal = 0,
       this.vertical = 0,
@@ -88,7 +88,7 @@ class SyllableButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(syllable,
             style: TextStyle(
-                fontSize: size.getHeight(fontSize),
+                fontSize: utils.getHeight(fontSize),
                 fontFamily: 'Ginthul',
                 foreground: Paint()
                   ..style = PaintingStyle.fill

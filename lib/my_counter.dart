@@ -9,7 +9,7 @@ import 'audio_controller.dart';
 import 'file_paths.dart';
 
 class MyCounter {
-  ValueNotifier<int> counter = ValueNotifier<int>(0);
+  ValueNotifier<int> count = ValueNotifier<int>(0);
 
   ValueNotifier<bool> hasFinished = ValueNotifier<bool>(false);
 
@@ -32,8 +32,8 @@ class MyCounter {
   void startCounter(int targetValue) {
     Timer(const Duration(milliseconds: 250), () {
       _timer = Timer.periodic(const Duration(milliseconds: 150), (_) {
-        if (counter.value < targetValue) {
-          counter.value++;
+        if (count.value < targetValue) {
+          count.value++;
         } else {
           hasFinished.value = true;
           playCelebrateSfxOnce();

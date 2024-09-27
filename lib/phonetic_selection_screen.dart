@@ -7,19 +7,18 @@ import 'decoration.dart';
 import 'file_paths.dart';
 import 'phonetic_data.dart';
 import 'scroll_behavior.dart';
-import 'size_config.dart';
 import 'utils.dart';
 
 class PhoneticSelectionScreen extends StatelessWidget with PhoneticData {
+  static const len = 102;
+
   const PhoneticSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = SizeConfig(context);
-    final utils = Utils(size, context);
+    final utils = ResponsiveUtils(context);
     final controller = ScrollController();
     final phonetic = Queue.of(phoneticComponents);
-    const len = 102;
     return FillBackground(
         file: 'selection.jpg',
         child: ScrollConfiguration(
@@ -44,12 +43,13 @@ class PhoneticSelectionScreen extends StatelessWidget with PhoneticData {
         ));
   }
 
-  Widget getPhoneticElementWidget(Queue<String> phonetic, Utils utils) {
+  Widget getPhoneticElementWidget(
+      Queue<String> phonetic, ResponsiveUtils utils) {
     final element = phonetic.removeFirst();
     return Stack(children: [
       utils.getImage('${ui}note.png', 26, 34),
-      SyllableButton(element.toUpperCase(), utils.size, 16,
-          onPressed: () => utils.context?.go('/phonetic/session/$element'))
+      SyllableButton(element.toUpperCase(), utils, 16,
+          onPressed: () => utils.context.go('/phonetic/session/$element'))
     ]);
   }
 }

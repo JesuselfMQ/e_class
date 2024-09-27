@@ -5,7 +5,6 @@ import 'confetti.dart';
 import 'decoration.dart';
 import 'file_paths.dart';
 import 'my_counter.dart';
-import 'size_config.dart';
 import 'utils.dart';
 
 class LoseScreen extends StatelessWidget {
@@ -17,9 +16,8 @@ class LoseScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = SizeConfig(context);
-    final utils = Utils(size);
-    final gap = SizedBox(width: size.safeBlockHorizontal * 4);
+    final utils = ResponsiveUtils(context);
+    final gap = SizedBox(width: utils.safeBlockHorizontal * 4);
     counter.startCounter(score);
     return FillBackground(
         file: 'lose.jpg',
@@ -32,17 +30,15 @@ class LoseScreen extends StatelessWidget {
                   children: [
                     ValueListenableBuilder(
                       valueListenable: counter.color,
-                      builder: (_, color, __) => Image.asset(
-                          '${points}points_${color}_on.png',
-                          width: size.safeBlockHorizontal * 12,
-                          height: size.safeBlockVertical * 24),
+                      builder: (_, color, __) => utils.getImage(
+                          '${points}points_${color}_on.png', 12, 24),
                     ),
                     gap,
                     ValueListenableBuilder(
-                      valueListenable: counter.counter,
-                      builder: (_, value, __) => Text('Puntos: $value',
+                      valueListenable: counter.count,
+                      builder: (_, count, __) => Text('Puntos: $count',
                           style: TextStyle(
-                            fontSize: size.safeBlockHorizontal * 10,
+                            fontSize: utils.safeBlockHorizontal * 10,
                             fontFamily: 'Ginthul',
                           )),
                     )
@@ -52,20 +48,15 @@ class LoseScreen extends StatelessWidget {
               utils.arrowBackButton(() => context.go('/')),
             ],
           ),
-          Align(
-              alignment: const Alignment(0, 0.4),
-              child: IconButton(
-                  onPressed: () => context.replace('/game'),
-                  icon: Image.asset('${ui}retry.png',
-                      width: size.safeBlockHorizontal * 15,
-                      height: size.safeBlockVertical * 30))),
+          utils.getImage('${ui}retry.png', 15, 30,
+              vertical: 0.4, onSelected: () => context.replace('/game')),
           celebration(),
         ]));
   }
 
+  /// This is the confetti animation that is overlaid on top of the
+  /// screen when the counter reaches the score value.
   Widget celebration() {
-    // This is the confetti animation that is overlaid on top of the
-    // screen when the counter reaches the score value.
     return SizedBox.expand(
       child: ValueListenableBuilder(
         valueListenable: counter.hasFinished,

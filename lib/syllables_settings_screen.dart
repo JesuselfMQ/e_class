@@ -8,7 +8,6 @@ import 'file_paths.dart';
 import 'phonetic_data.dart';
 import 'responsive_screen.dart';
 import 'settings.dart';
-import 'size_config.dart';
 import 'utils.dart';
 
 class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
@@ -18,19 +17,18 @@ class SyllablesSettingsScreen extends StatelessWidget with PhoneticData {
   Widget build(BuildContext context) {
     final audio = context.read<AudioController>();
     final settings = context.read<SettingsController>();
-    final size = SizeConfig(context);
-    final utils = Utils(size);
+    final utils = ResponsiveUtils(context);
     final shift = audio.sfx['shift']!.single;
     return FillBackground(
         file: 'settings.jpg',
         child: ResponsiveScreen(
             squarishMainArea: ListView.builder(
                 itemCount: phoneticComponents.length,
-                itemBuilder: (context, index) {
+                itemBuilder: (_, index) {
                   var syllable = phoneticComponents[index];
                   return ValueListenableBuilder(
                       valueListenable: settings.syllablesPrefs[syllable]!,
-                      builder: (context, syllableOn, child) => utils.getSetting(
+                      builder: (_, syllableOn, __) => utils.getSetting(
                               syllable.toUpperCase(),
                               iconName: syllableOn
                                   ? '${ui}enable.png'

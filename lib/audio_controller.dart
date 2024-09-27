@@ -177,9 +177,7 @@ class AudioController with SoundFileNames {
   }
 
   void _soundsOnHandler() {
-    if (sfxPlayer.state == PlayerState.playing) {
-      sfxPlayer.stop();
-    }
+    if (sfxPlayer.state == PlayerState.playing) sfxPlayer.stop();
   }
 
   void _soundsVolumeHandler() async {
@@ -196,8 +194,6 @@ class AudioController with SoundFileNames {
   }
 
   void _stopMusic() {
-    if (musicPlayer.state == PlayerState.playing) {
-      musicPlayer.pause();
-    }
+    if (musicPlayer.state == PlayerState.playing) musicPlayer.pause();
   }
 }
